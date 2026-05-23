@@ -1,0 +1,106 @@
+using System.Security.Claims;
+using ForumAPI.DTOs.CauHoi;
+using ForumAPI.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace ForumAPI.Endpoints;
+
+public static class CauHoiEndpoints
+{
+    public static void MapCauHoiEndpoints(this IEndpointRouteBuilder app)
+    {
+        // Gom nhóm API lại trên Swagger cho đẹp
+        var group = app.MapGroup("/api/cauhoi").WithTags("Câu Hỏi");
+
+        // 1. API POST: Đăng câu hỏi mới
+        group.MapPost("/", [Authorize] async (
+            [FromBody] CreateCauHoiRequest request,
+            ICauHoiService cauHoiService,
+            ClaimsPrincipal user) =>
+        {
+            // Lấy ID người dùng từ JWT Token
+            var userIdString = user.FindFirst(ClaimTypes.NameIdentifier)?.Value 
+                               ?? user.FindFirst("id")?.Value;
+                               
+            if (!int.TryParse(userIdString, out int userId))
+            {
+                return Results.Unauthorized(); 
+            }
+
+            // Gọi Service để lưu vào DB
+            var newId = await cauHoiService.CreateCauHoiAsync(request, userId);
+
+            return Results.Ok(new 
+            { 
+                Message = "Đăng câu hỏi thành công!", 
+                CauHoiId = newId 
+            });
+        }); // <--- Đóng ngoặc API POST ở đây
+
+        // 2. API GET: Lấy danh sách toàn bộ câu hỏi (Nằm ĐỘC LẬP bên ngoài POST)
+        group.MapGet("/", async (ICauHoiService cauHoiService) =>
+        {
+            var danhSach = await cauHoiService.GetAllCauHoiAsync();
+            return Results.Ok(danhSach);
+        });
+
+        // 3. API GET: Lấy chi tiết 1 câu hỏi theo ID
+        group.MapGet("/{id}", async (int id, ICauHoiService cauHoiService) =>
+        {
+            var cauHoi = await cauHoiService.GetCauHoiByIdAsync(id);
+            
+            // Nếu không tìm thấy (do nhập sai ID hoặc câu hỏi đã bị xóa)
+            if (cauHoi == null)
+            {
+                return Results.NotFound(new { Message = "Không tìm thấy câu hỏi này!" });
+            }
+
+            return Results.Ok(cauHoi);
+        });
+
+        // 4. API PUT: Chỉnh sửa câu hỏi (Cần đăng nhập)
+        group.MapPut("/{id}", [Authorize] async (
+            int id,
+            [FromBody] UpdateCauHoiRequest request,
+            ICauHoiService cauHoiService,
+            ClaimsPrincipal user) =>
+        {
+            // Lấy ID người dùng từ Token
+            var userIdString = user.FindFirst(ClaimTypes.NameIdentifier)?.Value 
+                               ?? user.FindFirst("id")?.Value;
+            if (!int.TryParse(userIdString, out int userId)) return Results.Unauthorized();
+
+            // Gọi Service sửa bài
+            var isSuccess = await cauHoiService.UpdateCauHoiAsync(id, userId, request);
+
+            if (!isSuccess)
+            {
+                return Results.BadRequest(new { Message = "Sửa thất bại! Câu hỏi không tồn tại hoặc bạn không có quyền sửa bài của người khác." });
+            }
+
+            return Results.Ok(new { Message = "Chỉnh sửa câu hỏi thành công!" });
+        });
+
+        // 5. API DELETE: Xóa câu hỏi (Xóa mềm - Cần đăng nhập)
+        group.MapDelete("/{id}", [Authorize] async (
+            int id,
+            ICauHoiService cauHoiService,
+            ClaimsPrincipal user) =>
+        {
+            var userIdString = user.FindFirst(ClaimTypes.NameIdentifier)?.Value 
+                               ?? user.FindFirst("id")?.Value;
+            if (!int.TryParse(userIdString, out int userId)) return Results.Unauthorized();
+
+            // Gọi Service xóa bài
+            var isSuccess = await cauHoiService.DeleteCauHoiAsync(id, userId);
+
+            if (!isSuccess)
+            {
+                return Results.BadRequest(new { Message = "Xóa thất bại! Câu hỏi không tồn tại, đã bị xóa từ trước hoặc bạn không có quyền xóa." });
+            }
+
+            return Results.Ok(new { Message = "Đã xóa câu hỏi thành công!" });
+        });
+    }
+}

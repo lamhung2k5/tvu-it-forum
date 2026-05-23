@@ -5,6 +5,8 @@ using ForumAPI.Repositories;
 using ForumAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,9 +17,40 @@ builder.Services.AddScoped<INguoiDungRepository, NguoiDungRepository>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
+// Đăng ký cho khối Câu hỏi (Sprint 2)
+builder.Services.AddScoped<ICauHoiRepository, CauHoiRepository>();
+builder.Services.AddScoped<ICauHoiService, CauHoiService>();
+
 // Cấu hình Swagger/OpenAPI (Giao diện cực tiện để test API)
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    // Tạo nút Authorize (ổ khóa) trên Swagger
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "Nhập token theo cú pháp: Bearer [Khoảng trắng] [Chuỗi Token của bạn]",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    // Ép Swagger phải đính kèm Token này vào mỗi lần gửi API đi
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
 
 // --- 2. CẤU HÌNH JWT AUTHENTICATION ---
 var jwtKey = builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("Thiếu cấu hình Jwt:Key trong appsettings.json");
@@ -62,5 +95,7 @@ app.UseAuthorization();
 
 // --- 5. MAP ENDPOINT ---
 app.MapAuthEndpoints();
+
+app.MapCauHoiEndpoints();
 
 app.Run();
