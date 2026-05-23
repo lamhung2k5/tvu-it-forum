@@ -1,0 +1,2170 @@
+{
+  "nguoiDung": [
+    {
+      "idNguoiDung": 1,
+      "hoTen": "Sơn Trần Minh Mẫn",
+      "email": "man.demo@student.tvu.edu.vn",
+      "matKhauHash": "hash_demo_123",
+      "anhDaiDien": null,
+      "vaiTro": "SinhVien",
+      "trangThai": "HoatDong",
+      "ngayTao": "2026-05-23"
+    },
+    {
+      "idNguoiDung": 2,
+      "hoTen": "Võ Quốc Thắng",
+      "email": "thang.demo@student.tvu.edu.vn",
+      "matKhauHash": "hash_demo_123",
+      "anhDaiDien": null,
+      "vaiTro": "SinhVien",
+      "trangThai": "HoatDong",
+      "ngayTao": "2026-05-23"
+    },
+    {
+      "idNguoiDung": 3,
+      "hoTen": "Nguyễn An Khoa",
+      "email": "khoa.demo@student.tvu.edu.vn",
+      "matKhauHash": "hash_demo_123",
+      "anhDaiDien": null,
+      "vaiTro": "SinhVien",
+      "trangThai": "HoatDong",
+      "ngayTao": "2026-05-23"
+    },
+    {
+      "idNguoiDung": 4,
+      "hoTen": "Trần Bảo Ngân",
+      "email": "ngan.demo@student.tvu.edu.vn",
+      "matKhauHash": "hash_demo_123",
+      "anhDaiDien": null,
+      "vaiTro": "SinhVien",
+      "trangThai": "HoatDong",
+      "ngayTao": "2026-05-23"
+    },
+    {
+      "idNguoiDung": 5,
+      "hoTen": "Admin Forum",
+      "email": "admin@tvu-it-forum.local",
+      "matKhauHash": "hash_admin_demo",
+      "anhDaiDien": null,
+      "vaiTro": "Admin",
+      "trangThai": "HoatDong",
+      "ngayTao": "2026-05-23"
+    }
+  ],
+  "chuyenMuc": [
+    {
+      "idChuyenMuc": 1,
+      "tenChuyenMuc": "Lập trình C#/.NET",
+      "moTa": "Hỏi đáp về C#, ASP.NET Core, API, Entity Framework",
+      "trangThai": "HoatDong"
+    },
+    {
+      "idChuyenMuc": 2,
+      "tenChuyenMuc": "Cơ sở dữ liệu",
+      "moTa": "SQL, SQLite, thiết kế bảng, ERD, truy vấn",
+      "trangThai": "HoatDong"
+    },
+    {
+      "idChuyenMuc": 3,
+      "tenChuyenMuc": "Frontend VueJS",
+      "moTa": "VueJS, Element Plus, form, router, gọi API",
+      "trangThai": "HoatDong"
+    },
+    {
+      "idChuyenMuc": 4,
+      "tenChuyenMuc": "Git/GitHub/Docker",
+      "moTa": "Quản lý mã nguồn, nhánh, pull request, docker compose",
+      "trangThai": "HoatDong"
+    },
+    {
+      "idChuyenMuc": 5,
+      "tenChuyenMuc": "Mạng máy tính",
+      "moTa": "IP, DNS, HTTP, TCP/IP, bảo mật cơ bản",
+      "trangThai": "HoatDong"
+    },
+    {
+      "idChuyenMuc": 6,
+      "tenChuyenMuc": "Kiểm thử phần mềm",
+      "moTa": "Test case, bug report, kiểm thử chức năng",
+      "trangThai": "HoatDong"
+    }
+  ],
+  "the": [
+    {
+      "idThe": 1,
+      "tenThe": "CSharp",
+      "moTa": "Ngôn ngữ C#",
+      "trangThai": "HoatDong"
+    },
+    {
+      "idThe": 2,
+      "tenThe": "DotNet",
+      "moTa": ".NET API",
+      "trangThai": "HoatDong"
+    },
+    {
+      "idThe": 3,
+      "tenThe": "SQLite",
+      "moTa": "CSDL SQLite",
+      "trangThai": "HoatDong"
+    },
+    {
+      "idThe": 4,
+      "tenThe": "SQL",
+      "moTa": "Truy vấn SQL",
+      "trangThai": "HoatDong"
+    },
+    {
+      "idThe": 5,
+      "tenThe": "VueJS",
+      "moTa": "Framework VueJS",
+      "trangThai": "HoatDong"
+    },
+    {
+      "idThe": 6,
+      "tenThe": "ElementPlus",
+      "moTa": "Thư viện giao diện Element Plus",
+      "trangThai": "HoatDong"
+    },
+    {
+      "idThe": 7,
+      "tenThe": "Git",
+      "moTa": "Git cơ bản",
+      "trangThai": "HoatDong"
+    },
+    {
+      "idThe": 8,
+      "tenThe": "GitHub",
+      "moTa": "GitHub, PR, repository",
+      "trangThai": "HoatDong"
+    },
+    {
+      "idThe": 9,
+      "tenThe": "Docker",
+      "moTa": "Container/Docker",
+      "trangThai": "HoatDong"
+    },
+    {
+      "idThe": 10,
+      "tenThe": "HTTP",
+      "moTa": "HTTP request/response",
+      "trangThai": "HoatDong"
+    },
+    {
+      "idThe": 11,
+      "tenThe": "Testing",
+      "moTa": "Kiểm thử",
+      "trangThai": "HoatDong"
+    },
+    {
+      "idThe": 12,
+      "tenThe": "API",
+      "moTa": "REST API",
+      "trangThai": "HoatDong"
+    }
+  ],
+  "cauHoi": [
+    {
+      "idCauHoi": 1,
+      "idNguoiDung": 1,
+      "idChuyenMuc": 1,
+      "tieuDe": "Lỗi không map được DTO khi tạo API đăng ký",
+      "noiDung": "Em tạo RegisterRequestDto nhưng controller nhận vào bị null. Cần kiểm tra những phần nào trong ASP.NET Core?",
+      "trangThai": "DaDang",
+      "luotXem": 10,
+      "ngayTao": "2026-05-23 08:00:00",
+      "ngayCapNhat": "2026-05-23 08:00:00",
+      "tagIds": [
+        1,
+        2,
+        12
+      ]
+    },
+    {
+      "idCauHoi": 2,
+      "idNguoiDung": 2,
+      "idChuyenMuc": 1,
+      "tieuDe": "Nên đặt UserService xử lý đăng ký như thế nào?",
+      "noiDung": "Trong mô hình service-repository, phần kiểm tra email trùng nên đặt ở service hay repository?",
+      "trangThai": "DaDang",
+      "luotXem": 17,
+      "ngayTao": "2026-05-23 09:00:00",
+      "ngayCapNhat": "2026-05-23 09:00:00",
+      "tagIds": [
+        1,
+        2,
+        12
+      ]
+    },
+    {
+      "idCauHoi": 3,
+      "idNguoiDung": 3,
+      "idChuyenMuc": 1,
+      "tieuDe": "Hash mật khẩu demo có cần làm thật không?",
+      "noiDung": "Khi làm đồ án forum hỏi đáp, phần mật khẩu nên lưu plain text hay hash để đúng nghiệp vụ?",
+      "trangThai": "DaDang",
+      "luotXem": 24,
+      "ngayTao": "2026-05-23 10:00:00",
+      "ngayCapNhat": "2026-05-23 10:00:00",
+      "tagIds": [
+        1,
+        2
+      ]
+    },
+    {
+      "idCauHoi": 4,
+      "idNguoiDung": 4,
+      "idChuyenMuc": 2,
+      "tieuDe": "Thiết kế bảng câu hỏi và thẻ nhiều-nhiều",
+      "noiDung": "Một câu hỏi có nhiều thẻ và một thẻ thuộc nhiều câu hỏi thì cần tạo bảng trung gian như thế nào?",
+      "trangThai": "DaDang",
+      "luotXem": 31,
+      "ngayTao": "2026-05-23 11:00:00",
+      "ngayCapNhat": "2026-05-23 11:00:00",
+      "tagIds": [
+        3,
+        4
+      ]
+    },
+    {
+      "idCauHoi": 5,
+      "idNguoiDung": 1,
+      "idChuyenMuc": 2,
+      "tieuDe": "SQLite có hỗ trợ khóa ngoại không?",
+      "noiDung": "Em dùng SQLite, khi xóa người dùng thì câu hỏi liên quan xử lý ràng buộc ra sao?",
+      "trangThai": "DaDang",
+      "luotXem": 38,
+      "ngayTao": "2026-05-23 12:00:00",
+      "ngayCapNhat": "2026-05-23 12:00:00",
+      "tagIds": [
+        3,
+        4
+      ]
+    },
+    {
+      "idCauHoi": 6,
+      "idNguoiDung": 2,
+      "idChuyenMuc": 2,
+      "tieuDe": "Cột TrangThai nên dùng kiểu dữ liệu gì?",
+      "noiDung": "Trong các bảng CauHoi, CauTraLoi, BinhLuan, TrangThai nên để string hay enum/int?",
+      "trangThai": "DaDang",
+      "luotXem": 45,
+      "ngayTao": "2026-05-23 13:00:00",
+      "ngayCapNhat": "2026-05-23 13:00:00",
+      "tagIds": [
+        3,
+        4
+      ]
+    },
+    {
+      "idCauHoi": 7,
+      "idNguoiDung": 3,
+      "idChuyenMuc": 3,
+      "tieuDe": "Element Plus validate form đăng ký",
+      "noiDung": "Làm sao validate email, mật khẩu và xác nhận mật khẩu trong form Element Plus?",
+      "trangThai": "DaDang",
+      "luotXem": 52,
+      "ngayTao": "2026-05-23 14:00:00",
+      "ngayCapNhat": "2026-05-23 14:00:00",
+      "tagIds": [
+        5,
+        6
+      ]
+    },
+    {
+      "idCauHoi": 8,
+      "idNguoiDung": 4,
+      "idChuyenMuc": 3,
+      "tieuDe": "Vue gọi API đăng ký bị CORS",
+      "noiDung": "Frontend Vue gọi API .NET bị lỗi CORS thì backend cần cấu hình gì?",
+      "trangThai": "DaDang",
+      "luotXem": 59,
+      "ngayTao": "2026-05-23 15:00:00",
+      "ngayCapNhat": "2026-05-23 15:00:00",
+      "tagIds": [
+        5,
+        12
+      ]
+    },
+    {
+      "idCauHoi": 9,
+      "idNguoiDung": 1,
+      "idChuyenMuc": 3,
+      "tieuDe": "Router chuyển trang sau khi đăng ký",
+      "noiDung": "Sau khi đăng ký thành công, VueJS nên chuyển sang login hay tự đăng nhập luôn?",
+      "trangThai": "DaDang",
+      "luotXem": 66,
+      "ngayTao": "2026-05-23 16:00:00",
+      "ngayCapNhat": "2026-05-23 16:00:00",
+      "tagIds": [
+        5
+      ]
+    },
+    {
+      "idCauHoi": 10,
+      "idNguoiDung": 2,
+      "idChuyenMuc": 4,
+      "tieuDe": "Cách tạo nhánh riêng để làm việc",
+      "noiDung": "Em mới clone repo, cần tạo nhánh cá nhân và push code lên GitHub như thế nào?",
+      "trangThai": "DaDang",
+      "luotXem": 73,
+      "ngayTao": "2026-05-23 17:00:00",
+      "ngayCapNhat": "2026-05-23 17:00:00",
+      "tagIds": [
+        7,
+        8
+      ]
+    },
+    {
+      "idCauHoi": 11,
+      "idNguoiDung": 3,
+      "idChuyenMuc": 4,
+      "tieuDe": "Pull request vào develop là gì?",
+      "noiDung": "Sau khi làm xong task thì tạo pull request vào nhánh develop theo quy trình ra sao?",
+      "trangThai": "DaDang",
+      "luotXem": 80,
+      "ngayTao": "2026-05-23 18:00:00",
+      "ngayCapNhat": "2026-05-23 18:00:00",
+      "tagIds": [
+        7,
+        8
+      ]
+    },
+    {
+      "idCauHoi": 12,
+      "idNguoiDung": 4,
+      "idChuyenMuc": 4,
+      "tieuDe": "Docker dùng để chạy project như thế nào?",
+      "noiDung": "Nếu project có backend và SQLite thì Docker có cần thiết trong sprint đầu không?",
+      "trangThai": "DaDang",
+      "luotXem": 87,
+      "ngayTao": "2026-05-23 19:00:00",
+      "ngayCapNhat": "2026-05-23 19:00:00",
+      "tagIds": [
+        9
+      ]
+    },
+    {
+      "idCauHoi": 13,
+      "idNguoiDung": 1,
+      "idChuyenMuc": 5,
+      "tieuDe": "HTTP status code cho đăng ký trùng email",
+      "noiDung": "Khi email đã tồn tại thì API nên trả mã 400, 409 hay 500?",
+      "trangThai": "DaDang",
+      "luotXem": 94,
+      "ngayTao": "2026-05-23 20:00:00",
+      "ngayCapNhat": "2026-05-23 20:00:00",
+      "tagIds": [
+        10,
+        12
+      ]
+    },
+    {
+      "idCauHoi": 14,
+      "idNguoiDung": 2,
+      "idChuyenMuc": 5,
+      "tieuDe": "DNS khác IP ở điểm nào?",
+      "noiDung": "Khi nhập domain website thì trình duyệt tìm server bằng DNS như thế nào?",
+      "trangThai": "DaDang",
+      "luotXem": 101,
+      "ngayTao": "2026-05-23 21:00:00",
+      "ngayCapNhat": "2026-05-23 21:00:00",
+      "tagIds": [
+        10
+      ]
+    },
+    {
+      "idCauHoi": 15,
+      "idNguoiDung": 3,
+      "idChuyenMuc": 5,
+      "tieuDe": "GET và POST khác nhau thế nào?",
+      "noiDung": "Trong forum hỏi đáp, khi đăng câu hỏi mới nên dùng GET hay POST? Vì sao?",
+      "trangThai": "DaDang",
+      "luotXem": 108,
+      "ngayTao": "2026-05-23 22:00:00",
+      "ngayCapNhat": "2026-05-23 22:00:00",
+      "tagIds": [
+        10,
+        12
+      ]
+    },
+    {
+      "idCauHoi": 16,
+      "idNguoiDung": 4,
+      "idChuyenMuc": 6,
+      "tieuDe": "Test case đăng ký thành công cần những bước nào?",
+      "noiDung": "Em muốn viết test case cho chức năng đăng ký user mới, cần input và expected result ra sao?",
+      "trangThai": "DaDang",
+      "luotXem": 115,
+      "ngayTao": "2026-05-23 23:00:00",
+      "ngayCapNhat": "2026-05-23 23:00:00",
+      "tagIds": [
+        11
+      ]
+    },
+    {
+      "idCauHoi": 17,
+      "idNguoiDung": 1,
+      "idChuyenMuc": 6,
+      "tieuDe": "Test lỗi email trùng trong đăng ký",
+      "noiDung": "Nếu nhập email đã có trong hệ thống thì frontend/backend cần hiển thị lỗi gì?",
+      "trangThai": "DaDang",
+      "luotXem": 122,
+      "ngayTao": "2026-05-24 00:00:00",
+      "ngayCapNhat": "2026-05-24 00:00:00",
+      "tagIds": [
+        11,
+        12
+      ]
+    },
+    {
+      "idCauHoi": 18,
+      "idNguoiDung": 2,
+      "idChuyenMuc": 6,
+      "tieuDe": "Bug report nên ghi những trường nào?",
+      "noiDung": "Khi test web phát hiện lỗi, em cần ghi bug report gồm tiêu đề, bước tái hiện và kết quả mong đợi như thế nào?",
+      "trangThai": "DaDang",
+      "luotXem": 129,
+      "ngayTao": "2026-05-24 01:00:00",
+      "ngayCapNhat": "2026-05-24 01:00:00",
+      "tagIds": [
+        11
+      ]
+    },
+    {
+      "idCauHoi": 19,
+      "idNguoiDung": 3,
+      "idChuyenMuc": 1,
+      "tieuDe": "Lỗi không map được DTO khi tạo API đăng ký #19",
+      "noiDung": "Em tạo RegisterRequestDto nhưng controller nhận vào bị null. Cần kiểm tra những phần nào trong ASP.NET Core?",
+      "trangThai": "DaDang",
+      "luotXem": 16,
+      "ngayTao": "2026-05-24 02:00:00",
+      "ngayCapNhat": "2026-05-24 02:00:00",
+      "tagIds": [
+        1,
+        2,
+        12
+      ]
+    },
+    {
+      "idCauHoi": 20,
+      "idNguoiDung": 4,
+      "idChuyenMuc": 1,
+      "tieuDe": "Nên đặt UserService xử lý đăng ký như thế nào? #20",
+      "noiDung": "Trong mô hình service-repository, phần kiểm tra email trùng nên đặt ở service hay repository?",
+      "trangThai": "DaDang",
+      "luotXem": 23,
+      "ngayTao": "2026-05-24 03:00:00",
+      "ngayCapNhat": "2026-05-24 03:00:00",
+      "tagIds": [
+        1,
+        2,
+        12
+      ]
+    },
+    {
+      "idCauHoi": 21,
+      "idNguoiDung": 1,
+      "idChuyenMuc": 1,
+      "tieuDe": "Hash mật khẩu demo có cần làm thật không? #21",
+      "noiDung": "Khi làm đồ án forum hỏi đáp, phần mật khẩu nên lưu plain text hay hash để đúng nghiệp vụ?",
+      "trangThai": "DaDang",
+      "luotXem": 30,
+      "ngayTao": "2026-05-24 04:00:00",
+      "ngayCapNhat": "2026-05-24 04:00:00",
+      "tagIds": [
+        1,
+        2
+      ]
+    },
+    {
+      "idCauHoi": 22,
+      "idNguoiDung": 2,
+      "idChuyenMuc": 2,
+      "tieuDe": "Thiết kế bảng câu hỏi và thẻ nhiều-nhiều #22",
+      "noiDung": "Một câu hỏi có nhiều thẻ và một thẻ thuộc nhiều câu hỏi thì cần tạo bảng trung gian như thế nào?",
+      "trangThai": "DaDang",
+      "luotXem": 37,
+      "ngayTao": "2026-05-24 05:00:00",
+      "ngayCapNhat": "2026-05-24 05:00:00",
+      "tagIds": [
+        3,
+        4
+      ]
+    },
+    {
+      "idCauHoi": 23,
+      "idNguoiDung": 3,
+      "idChuyenMuc": 2,
+      "tieuDe": "SQLite có hỗ trợ khóa ngoại không? #23",
+      "noiDung": "Em dùng SQLite, khi xóa người dùng thì câu hỏi liên quan xử lý ràng buộc ra sao?",
+      "trangThai": "DaDang",
+      "luotXem": 44,
+      "ngayTao": "2026-05-24 06:00:00",
+      "ngayCapNhat": "2026-05-24 06:00:00",
+      "tagIds": [
+        3,
+        4
+      ]
+    },
+    {
+      "idCauHoi": 24,
+      "idNguoiDung": 4,
+      "idChuyenMuc": 2,
+      "tieuDe": "Cột TrangThai nên dùng kiểu dữ liệu gì? #24",
+      "noiDung": "Trong các bảng CauHoi, CauTraLoi, BinhLuan, TrangThai nên để string hay enum/int?",
+      "trangThai": "DaDang",
+      "luotXem": 51,
+      "ngayTao": "2026-05-24 07:00:00",
+      "ngayCapNhat": "2026-05-24 07:00:00",
+      "tagIds": [
+        3,
+        4
+      ]
+    },
+    {
+      "idCauHoi": 25,
+      "idNguoiDung": 1,
+      "idChuyenMuc": 3,
+      "tieuDe": "Element Plus validate form đăng ký #25",
+      "noiDung": "Làm sao validate email, mật khẩu và xác nhận mật khẩu trong form Element Plus?",
+      "trangThai": "DaDang",
+      "luotXem": 58,
+      "ngayTao": "2026-05-24 08:00:00",
+      "ngayCapNhat": "2026-05-24 08:00:00",
+      "tagIds": [
+        5,
+        6
+      ]
+    },
+    {
+      "idCauHoi": 26,
+      "idNguoiDung": 2,
+      "idChuyenMuc": 3,
+      "tieuDe": "Vue gọi API đăng ký bị CORS #26",
+      "noiDung": "Frontend Vue gọi API .NET bị lỗi CORS thì backend cần cấu hình gì?",
+      "trangThai": "DaDang",
+      "luotXem": 65,
+      "ngayTao": "2026-05-24 09:00:00",
+      "ngayCapNhat": "2026-05-24 09:00:00",
+      "tagIds": [
+        5,
+        12
+      ]
+    },
+    {
+      "idCauHoi": 27,
+      "idNguoiDung": 3,
+      "idChuyenMuc": 3,
+      "tieuDe": "Router chuyển trang sau khi đăng ký #27",
+      "noiDung": "Sau khi đăng ký thành công, VueJS nên chuyển sang login hay tự đăng nhập luôn?",
+      "trangThai": "DaDang",
+      "luotXem": 72,
+      "ngayTao": "2026-05-24 10:00:00",
+      "ngayCapNhat": "2026-05-24 10:00:00",
+      "tagIds": [
+        5
+      ]
+    },
+    {
+      "idCauHoi": 28,
+      "idNguoiDung": 4,
+      "idChuyenMuc": 4,
+      "tieuDe": "Cách tạo nhánh riêng để làm việc #28",
+      "noiDung": "Em mới clone repo, cần tạo nhánh cá nhân và push code lên GitHub như thế nào?",
+      "trangThai": "DaDang",
+      "luotXem": 79,
+      "ngayTao": "2026-05-24 11:00:00",
+      "ngayCapNhat": "2026-05-24 11:00:00",
+      "tagIds": [
+        7,
+        8
+      ]
+    },
+    {
+      "idCauHoi": 29,
+      "idNguoiDung": 1,
+      "idChuyenMuc": 4,
+      "tieuDe": "Pull request vào develop là gì? #29",
+      "noiDung": "Sau khi làm xong task thì tạo pull request vào nhánh develop theo quy trình ra sao?",
+      "trangThai": "DaDang",
+      "luotXem": 86,
+      "ngayTao": "2026-05-24 12:00:00",
+      "ngayCapNhat": "2026-05-24 12:00:00",
+      "tagIds": [
+        7,
+        8
+      ]
+    },
+    {
+      "idCauHoi": 30,
+      "idNguoiDung": 2,
+      "idChuyenMuc": 4,
+      "tieuDe": "Docker dùng để chạy project như thế nào? #30",
+      "noiDung": "Nếu project có backend và SQLite thì Docker có cần thiết trong sprint đầu không?",
+      "trangThai": "DaDang",
+      "luotXem": 93,
+      "ngayTao": "2026-05-24 13:00:00",
+      "ngayCapNhat": "2026-05-24 13:00:00",
+      "tagIds": [
+        9
+      ]
+    },
+    {
+      "idCauHoi": 31,
+      "idNguoiDung": 3,
+      "idChuyenMuc": 5,
+      "tieuDe": "HTTP status code cho đăng ký trùng email #31",
+      "noiDung": "Khi email đã tồn tại thì API nên trả mã 400, 409 hay 500?",
+      "trangThai": "DaDang",
+      "luotXem": 100,
+      "ngayTao": "2026-05-24 14:00:00",
+      "ngayCapNhat": "2026-05-24 14:00:00",
+      "tagIds": [
+        10,
+        12
+      ]
+    },
+    {
+      "idCauHoi": 32,
+      "idNguoiDung": 4,
+      "idChuyenMuc": 5,
+      "tieuDe": "DNS khác IP ở điểm nào? #32",
+      "noiDung": "Khi nhập domain website thì trình duyệt tìm server bằng DNS như thế nào?",
+      "trangThai": "DaDang",
+      "luotXem": 107,
+      "ngayTao": "2026-05-24 15:00:00",
+      "ngayCapNhat": "2026-05-24 15:00:00",
+      "tagIds": [
+        10
+      ]
+    },
+    {
+      "idCauHoi": 33,
+      "idNguoiDung": 1,
+      "idChuyenMuc": 5,
+      "tieuDe": "GET và POST khác nhau thế nào? #33",
+      "noiDung": "Trong forum hỏi đáp, khi đăng câu hỏi mới nên dùng GET hay POST? Vì sao?",
+      "trangThai": "DaDang",
+      "luotXem": 114,
+      "ngayTao": "2026-05-24 16:00:00",
+      "ngayCapNhat": "2026-05-24 16:00:00",
+      "tagIds": [
+        10,
+        12
+      ]
+    },
+    {
+      "idCauHoi": 34,
+      "idNguoiDung": 2,
+      "idChuyenMuc": 6,
+      "tieuDe": "Test case đăng ký thành công cần những bước nào? #34",
+      "noiDung": "Em muốn viết test case cho chức năng đăng ký user mới, cần input và expected result ra sao?",
+      "trangThai": "DaDang",
+      "luotXem": 121,
+      "ngayTao": "2026-05-24 17:00:00",
+      "ngayCapNhat": "2026-05-24 17:00:00",
+      "tagIds": [
+        11
+      ]
+    },
+    {
+      "idCauHoi": 35,
+      "idNguoiDung": 3,
+      "idChuyenMuc": 6,
+      "tieuDe": "Test lỗi email trùng trong đăng ký #35",
+      "noiDung": "Nếu nhập email đã có trong hệ thống thì frontend/backend cần hiển thị lỗi gì?",
+      "trangThai": "DaDang",
+      "luotXem": 128,
+      "ngayTao": "2026-05-24 18:00:00",
+      "ngayCapNhat": "2026-05-24 18:00:00",
+      "tagIds": [
+        11,
+        12
+      ]
+    },
+    {
+      "idCauHoi": 36,
+      "idNguoiDung": 4,
+      "idChuyenMuc": 6,
+      "tieuDe": "Bug report nên ghi những trường nào? #36",
+      "noiDung": "Khi test web phát hiện lỗi, em cần ghi bug report gồm tiêu đề, bước tái hiện và kết quả mong đợi như thế nào?",
+      "trangThai": "DaDang",
+      "luotXem": 15,
+      "ngayTao": "2026-05-24 19:00:00",
+      "ngayCapNhat": "2026-05-24 19:00:00",
+      "tagIds": [
+        11
+      ]
+    },
+    {
+      "idCauHoi": 37,
+      "idNguoiDung": 1,
+      "idChuyenMuc": 1,
+      "tieuDe": "Lỗi không map được DTO khi tạo API đăng ký #37",
+      "noiDung": "Em tạo RegisterRequestDto nhưng controller nhận vào bị null. Cần kiểm tra những phần nào trong ASP.NET Core?",
+      "trangThai": "DaDang",
+      "luotXem": 22,
+      "ngayTao": "2026-05-24 20:00:00",
+      "ngayCapNhat": "2026-05-24 20:00:00",
+      "tagIds": [
+        1,
+        2,
+        12
+      ]
+    },
+    {
+      "idCauHoi": 38,
+      "idNguoiDung": 2,
+      "idChuyenMuc": 1,
+      "tieuDe": "Nên đặt UserService xử lý đăng ký như thế nào? #38",
+      "noiDung": "Trong mô hình service-repository, phần kiểm tra email trùng nên đặt ở service hay repository?",
+      "trangThai": "DaDang",
+      "luotXem": 29,
+      "ngayTao": "2026-05-24 21:00:00",
+      "ngayCapNhat": "2026-05-24 21:00:00",
+      "tagIds": [
+        1,
+        2,
+        12
+      ]
+    },
+    {
+      "idCauHoi": 39,
+      "idNguoiDung": 3,
+      "idChuyenMuc": 1,
+      "tieuDe": "Hash mật khẩu demo có cần làm thật không? #39",
+      "noiDung": "Khi làm đồ án forum hỏi đáp, phần mật khẩu nên lưu plain text hay hash để đúng nghiệp vụ?",
+      "trangThai": "DaDang",
+      "luotXem": 36,
+      "ngayTao": "2026-05-24 22:00:00",
+      "ngayCapNhat": "2026-05-24 22:00:00",
+      "tagIds": [
+        1,
+        2
+      ]
+    },
+    {
+      "idCauHoi": 40,
+      "idNguoiDung": 4,
+      "idChuyenMuc": 2,
+      "tieuDe": "Thiết kế bảng câu hỏi và thẻ nhiều-nhiều #40",
+      "noiDung": "Một câu hỏi có nhiều thẻ và một thẻ thuộc nhiều câu hỏi thì cần tạo bảng trung gian như thế nào?",
+      "trangThai": "DaDang",
+      "luotXem": 43,
+      "ngayTao": "2026-05-24 23:00:00",
+      "ngayCapNhat": "2026-05-24 23:00:00",
+      "tagIds": [
+        3,
+        4
+      ]
+    },
+    {
+      "idCauHoi": 41,
+      "idNguoiDung": 1,
+      "idChuyenMuc": 2,
+      "tieuDe": "SQLite có hỗ trợ khóa ngoại không? #41",
+      "noiDung": "Em dùng SQLite, khi xóa người dùng thì câu hỏi liên quan xử lý ràng buộc ra sao?",
+      "trangThai": "DaDang",
+      "luotXem": 50,
+      "ngayTao": "2026-05-25 00:00:00",
+      "ngayCapNhat": "2026-05-25 00:00:00",
+      "tagIds": [
+        3,
+        4
+      ]
+    },
+    {
+      "idCauHoi": 42,
+      "idNguoiDung": 2,
+      "idChuyenMuc": 2,
+      "tieuDe": "Cột TrangThai nên dùng kiểu dữ liệu gì? #42",
+      "noiDung": "Trong các bảng CauHoi, CauTraLoi, BinhLuan, TrangThai nên để string hay enum/int?",
+      "trangThai": "DaDang",
+      "luotXem": 57,
+      "ngayTao": "2026-05-25 01:00:00",
+      "ngayCapNhat": "2026-05-25 01:00:00",
+      "tagIds": [
+        3,
+        4
+      ]
+    },
+    {
+      "idCauHoi": 43,
+      "idNguoiDung": 3,
+      "idChuyenMuc": 3,
+      "tieuDe": "Element Plus validate form đăng ký #43",
+      "noiDung": "Làm sao validate email, mật khẩu và xác nhận mật khẩu trong form Element Plus?",
+      "trangThai": "DaDang",
+      "luotXem": 64,
+      "ngayTao": "2026-05-25 02:00:00",
+      "ngayCapNhat": "2026-05-25 02:00:00",
+      "tagIds": [
+        5,
+        6
+      ]
+    },
+    {
+      "idCauHoi": 44,
+      "idNguoiDung": 4,
+      "idChuyenMuc": 3,
+      "tieuDe": "Vue gọi API đăng ký bị CORS #44",
+      "noiDung": "Frontend Vue gọi API .NET bị lỗi CORS thì backend cần cấu hình gì?",
+      "trangThai": "DaDang",
+      "luotXem": 71,
+      "ngayTao": "2026-05-25 03:00:00",
+      "ngayCapNhat": "2026-05-25 03:00:00",
+      "tagIds": [
+        5,
+        12
+      ]
+    },
+    {
+      "idCauHoi": 45,
+      "idNguoiDung": 1,
+      "idChuyenMuc": 3,
+      "tieuDe": "Router chuyển trang sau khi đăng ký #45",
+      "noiDung": "Sau khi đăng ký thành công, VueJS nên chuyển sang login hay tự đăng nhập luôn?",
+      "trangThai": "DaDang",
+      "luotXem": 78,
+      "ngayTao": "2026-05-25 04:00:00",
+      "ngayCapNhat": "2026-05-25 04:00:00",
+      "tagIds": [
+        5
+      ]
+    },
+    {
+      "idCauHoi": 46,
+      "idNguoiDung": 2,
+      "idChuyenMuc": 4,
+      "tieuDe": "Cách tạo nhánh riêng để làm việc #46",
+      "noiDung": "Em mới clone repo, cần tạo nhánh cá nhân và push code lên GitHub như thế nào?",
+      "trangThai": "DaDang",
+      "luotXem": 85,
+      "ngayTao": "2026-05-25 05:00:00",
+      "ngayCapNhat": "2026-05-25 05:00:00",
+      "tagIds": [
+        7,
+        8
+      ]
+    },
+    {
+      "idCauHoi": 47,
+      "idNguoiDung": 3,
+      "idChuyenMuc": 4,
+      "tieuDe": "Pull request vào develop là gì? #47",
+      "noiDung": "Sau khi làm xong task thì tạo pull request vào nhánh develop theo quy trình ra sao?",
+      "trangThai": "DaDang",
+      "luotXem": 92,
+      "ngayTao": "2026-05-25 06:00:00",
+      "ngayCapNhat": "2026-05-25 06:00:00",
+      "tagIds": [
+        7,
+        8
+      ]
+    },
+    {
+      "idCauHoi": 48,
+      "idNguoiDung": 4,
+      "idChuyenMuc": 4,
+      "tieuDe": "Docker dùng để chạy project như thế nào? #48",
+      "noiDung": "Nếu project có backend và SQLite thì Docker có cần thiết trong sprint đầu không?",
+      "trangThai": "DaDang",
+      "luotXem": 99,
+      "ngayTao": "2026-05-25 07:00:00",
+      "ngayCapNhat": "2026-05-25 07:00:00",
+      "tagIds": [
+        9
+      ]
+    },
+    {
+      "idCauHoi": 49,
+      "idNguoiDung": 1,
+      "idChuyenMuc": 5,
+      "tieuDe": "HTTP status code cho đăng ký trùng email #49",
+      "noiDung": "Khi email đã tồn tại thì API nên trả mã 400, 409 hay 500?",
+      "trangThai": "DaDang",
+      "luotXem": 106,
+      "ngayTao": "2026-05-25 08:00:00",
+      "ngayCapNhat": "2026-05-25 08:00:00",
+      "tagIds": [
+        10,
+        12
+      ]
+    },
+    {
+      "idCauHoi": 50,
+      "idNguoiDung": 2,
+      "idChuyenMuc": 5,
+      "tieuDe": "DNS khác IP ở điểm nào? #50",
+      "noiDung": "Khi nhập domain website thì trình duyệt tìm server bằng DNS như thế nào?",
+      "trangThai": "DaDang",
+      "luotXem": 113,
+      "ngayTao": "2026-05-25 09:00:00",
+      "ngayCapNhat": "2026-05-25 09:00:00",
+      "tagIds": [
+        10
+      ]
+    }
+  ],
+  "cauTraLoi": [
+    {
+      "idCauTraLoi": 1,
+      "idCauHoi": 1,
+      "idNguoiDung": 2,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 08:35:00",
+      "ngayCapNhat": "2026-05-23 08:35:00",
+      "duocChapNhan": true
+    },
+    {
+      "idCauTraLoi": 2,
+      "idCauHoi": 1,
+      "idNguoiDung": 5,
+      "noiDung": "Cách xử lý tốt là tách rõ phần giao diện, API và database. Khi test cần so sánh expected result với actual result, không chỉ nhìn giao diện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 09:00:00",
+      "ngayCapNhat": "2026-05-23 09:00:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 3,
+      "idCauHoi": 2,
+      "idNguoiDung": 3,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 09:35:00",
+      "ngayCapNhat": "2026-05-23 09:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 4,
+      "idCauHoi": 3,
+      "idNguoiDung": 4,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 10:35:00",
+      "ngayCapNhat": "2026-05-23 10:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 5,
+      "idCauHoi": 4,
+      "idNguoiDung": 1,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 11:35:00",
+      "ngayCapNhat": "2026-05-23 11:35:00",
+      "duocChapNhan": true
+    },
+    {
+      "idCauTraLoi": 6,
+      "idCauHoi": 5,
+      "idNguoiDung": 2,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 12:35:00",
+      "ngayCapNhat": "2026-05-23 12:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 7,
+      "idCauHoi": 5,
+      "idNguoiDung": 5,
+      "noiDung": "Cách xử lý tốt là tách rõ phần giao diện, API và database. Khi test cần so sánh expected result với actual result, không chỉ nhìn giao diện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 13:00:00",
+      "ngayCapNhat": "2026-05-23 13:00:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 8,
+      "idCauHoi": 6,
+      "idNguoiDung": 3,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 13:35:00",
+      "ngayCapNhat": "2026-05-23 13:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 9,
+      "idCauHoi": 7,
+      "idNguoiDung": 4,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 14:35:00",
+      "ngayCapNhat": "2026-05-23 14:35:00",
+      "duocChapNhan": true
+    },
+    {
+      "idCauTraLoi": 10,
+      "idCauHoi": 8,
+      "idNguoiDung": 1,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 15:35:00",
+      "ngayCapNhat": "2026-05-23 15:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 11,
+      "idCauHoi": 9,
+      "idNguoiDung": 2,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 16:35:00",
+      "ngayCapNhat": "2026-05-23 16:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 12,
+      "idCauHoi": 9,
+      "idNguoiDung": 5,
+      "noiDung": "Cách xử lý tốt là tách rõ phần giao diện, API và database. Khi test cần so sánh expected result với actual result, không chỉ nhìn giao diện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 17:00:00",
+      "ngayCapNhat": "2026-05-23 17:00:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 13,
+      "idCauHoi": 10,
+      "idNguoiDung": 3,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 17:35:00",
+      "ngayCapNhat": "2026-05-23 17:35:00",
+      "duocChapNhan": true
+    },
+    {
+      "idCauTraLoi": 14,
+      "idCauHoi": 11,
+      "idNguoiDung": 4,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 18:35:00",
+      "ngayCapNhat": "2026-05-23 18:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 15,
+      "idCauHoi": 12,
+      "idNguoiDung": 1,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 19:35:00",
+      "ngayCapNhat": "2026-05-23 19:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 16,
+      "idCauHoi": 13,
+      "idNguoiDung": 2,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 20:35:00",
+      "ngayCapNhat": "2026-05-23 20:35:00",
+      "duocChapNhan": true
+    },
+    {
+      "idCauTraLoi": 17,
+      "idCauHoi": 13,
+      "idNguoiDung": 5,
+      "noiDung": "Cách xử lý tốt là tách rõ phần giao diện, API và database. Khi test cần so sánh expected result với actual result, không chỉ nhìn giao diện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 21:00:00",
+      "ngayCapNhat": "2026-05-23 21:00:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 18,
+      "idCauHoi": 14,
+      "idNguoiDung": 3,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 21:35:00",
+      "ngayCapNhat": "2026-05-23 21:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 19,
+      "idCauHoi": 15,
+      "idNguoiDung": 4,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 22:35:00",
+      "ngayCapNhat": "2026-05-23 22:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 20,
+      "idCauHoi": 16,
+      "idNguoiDung": 1,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 23:35:00",
+      "ngayCapNhat": "2026-05-23 23:35:00",
+      "duocChapNhan": true
+    },
+    {
+      "idCauTraLoi": 21,
+      "idCauHoi": 17,
+      "idNguoiDung": 2,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 00:35:00",
+      "ngayCapNhat": "2026-05-24 00:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 22,
+      "idCauHoi": 17,
+      "idNguoiDung": 5,
+      "noiDung": "Cách xử lý tốt là tách rõ phần giao diện, API và database. Khi test cần so sánh expected result với actual result, không chỉ nhìn giao diện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 01:00:00",
+      "ngayCapNhat": "2026-05-24 01:00:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 23,
+      "idCauHoi": 18,
+      "idNguoiDung": 3,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 01:35:00",
+      "ngayCapNhat": "2026-05-24 01:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 24,
+      "idCauHoi": 19,
+      "idNguoiDung": 4,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 02:35:00",
+      "ngayCapNhat": "2026-05-24 02:35:00",
+      "duocChapNhan": true
+    },
+    {
+      "idCauTraLoi": 25,
+      "idCauHoi": 20,
+      "idNguoiDung": 1,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 03:35:00",
+      "ngayCapNhat": "2026-05-24 03:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 26,
+      "idCauHoi": 21,
+      "idNguoiDung": 2,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 04:35:00",
+      "ngayCapNhat": "2026-05-24 04:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 27,
+      "idCauHoi": 21,
+      "idNguoiDung": 5,
+      "noiDung": "Cách xử lý tốt là tách rõ phần giao diện, API và database. Khi test cần so sánh expected result với actual result, không chỉ nhìn giao diện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 05:00:00",
+      "ngayCapNhat": "2026-05-24 05:00:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 28,
+      "idCauHoi": 22,
+      "idNguoiDung": 3,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 05:35:00",
+      "ngayCapNhat": "2026-05-24 05:35:00",
+      "duocChapNhan": true
+    },
+    {
+      "idCauTraLoi": 29,
+      "idCauHoi": 23,
+      "idNguoiDung": 4,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 06:35:00",
+      "ngayCapNhat": "2026-05-24 06:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 30,
+      "idCauHoi": 24,
+      "idNguoiDung": 1,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 07:35:00",
+      "ngayCapNhat": "2026-05-24 07:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 31,
+      "idCauHoi": 25,
+      "idNguoiDung": 2,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 08:35:00",
+      "ngayCapNhat": "2026-05-24 08:35:00",
+      "duocChapNhan": true
+    },
+    {
+      "idCauTraLoi": 32,
+      "idCauHoi": 25,
+      "idNguoiDung": 5,
+      "noiDung": "Cách xử lý tốt là tách rõ phần giao diện, API và database. Khi test cần so sánh expected result với actual result, không chỉ nhìn giao diện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 09:00:00",
+      "ngayCapNhat": "2026-05-24 09:00:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 33,
+      "idCauHoi": 26,
+      "idNguoiDung": 3,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 09:35:00",
+      "ngayCapNhat": "2026-05-24 09:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 34,
+      "idCauHoi": 27,
+      "idNguoiDung": 4,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 10:35:00",
+      "ngayCapNhat": "2026-05-24 10:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 35,
+      "idCauHoi": 28,
+      "idNguoiDung": 1,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 11:35:00",
+      "ngayCapNhat": "2026-05-24 11:35:00",
+      "duocChapNhan": true
+    },
+    {
+      "idCauTraLoi": 36,
+      "idCauHoi": 29,
+      "idNguoiDung": 2,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 12:35:00",
+      "ngayCapNhat": "2026-05-24 12:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 37,
+      "idCauHoi": 29,
+      "idNguoiDung": 5,
+      "noiDung": "Cách xử lý tốt là tách rõ phần giao diện, API và database. Khi test cần so sánh expected result với actual result, không chỉ nhìn giao diện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 13:00:00",
+      "ngayCapNhat": "2026-05-24 13:00:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 38,
+      "idCauHoi": 30,
+      "idNguoiDung": 3,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 13:35:00",
+      "ngayCapNhat": "2026-05-24 13:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 39,
+      "idCauHoi": 31,
+      "idNguoiDung": 4,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 14:35:00",
+      "ngayCapNhat": "2026-05-24 14:35:00",
+      "duocChapNhan": true
+    },
+    {
+      "idCauTraLoi": 40,
+      "idCauHoi": 32,
+      "idNguoiDung": 1,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 15:35:00",
+      "ngayCapNhat": "2026-05-24 15:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 41,
+      "idCauHoi": 33,
+      "idNguoiDung": 2,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 16:35:00",
+      "ngayCapNhat": "2026-05-24 16:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 42,
+      "idCauHoi": 33,
+      "idNguoiDung": 5,
+      "noiDung": "Cách xử lý tốt là tách rõ phần giao diện, API và database. Khi test cần so sánh expected result với actual result, không chỉ nhìn giao diện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 17:00:00",
+      "ngayCapNhat": "2026-05-24 17:00:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 43,
+      "idCauHoi": 34,
+      "idNguoiDung": 3,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 17:35:00",
+      "ngayCapNhat": "2026-05-24 17:35:00",
+      "duocChapNhan": true
+    },
+    {
+      "idCauTraLoi": 44,
+      "idCauHoi": 35,
+      "idNguoiDung": 4,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 18:35:00",
+      "ngayCapNhat": "2026-05-24 18:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 45,
+      "idCauHoi": 36,
+      "idNguoiDung": 1,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 19:35:00",
+      "ngayCapNhat": "2026-05-24 19:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 46,
+      "idCauHoi": 37,
+      "idNguoiDung": 2,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 20:35:00",
+      "ngayCapNhat": "2026-05-24 20:35:00",
+      "duocChapNhan": true
+    },
+    {
+      "idCauTraLoi": 47,
+      "idCauHoi": 37,
+      "idNguoiDung": 5,
+      "noiDung": "Cách xử lý tốt là tách rõ phần giao diện, API và database. Khi test cần so sánh expected result với actual result, không chỉ nhìn giao diện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 21:00:00",
+      "ngayCapNhat": "2026-05-24 21:00:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 48,
+      "idCauHoi": 38,
+      "idNguoiDung": 3,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 21:35:00",
+      "ngayCapNhat": "2026-05-24 21:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 49,
+      "idCauHoi": 39,
+      "idNguoiDung": 4,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 22:35:00",
+      "ngayCapNhat": "2026-05-24 22:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 50,
+      "idCauHoi": 40,
+      "idNguoiDung": 1,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 23:35:00",
+      "ngayCapNhat": "2026-05-24 23:35:00",
+      "duocChapNhan": true
+    },
+    {
+      "idCauTraLoi": 51,
+      "idCauHoi": 41,
+      "idNguoiDung": 2,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-25 00:35:00",
+      "ngayCapNhat": "2026-05-25 00:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 52,
+      "idCauHoi": 41,
+      "idNguoiDung": 5,
+      "noiDung": "Cách xử lý tốt là tách rõ phần giao diện, API và database. Khi test cần so sánh expected result với actual result, không chỉ nhìn giao diện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-25 01:00:00",
+      "ngayCapNhat": "2026-05-25 01:00:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 53,
+      "idCauHoi": 42,
+      "idNguoiDung": 3,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-25 01:35:00",
+      "ngayCapNhat": "2026-05-25 01:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 54,
+      "idCauHoi": 43,
+      "idNguoiDung": 4,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-25 02:35:00",
+      "ngayCapNhat": "2026-05-25 02:35:00",
+      "duocChapNhan": true
+    },
+    {
+      "idCauTraLoi": 55,
+      "idCauHoi": 44,
+      "idNguoiDung": 1,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-25 03:35:00",
+      "ngayCapNhat": "2026-05-25 03:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 56,
+      "idCauHoi": 45,
+      "idNguoiDung": 2,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-25 04:35:00",
+      "ngayCapNhat": "2026-05-25 04:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 57,
+      "idCauHoi": 45,
+      "idNguoiDung": 5,
+      "noiDung": "Cách xử lý tốt là tách rõ phần giao diện, API và database. Khi test cần so sánh expected result với actual result, không chỉ nhìn giao diện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-25 05:00:00",
+      "ngayCapNhat": "2026-05-25 05:00:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 58,
+      "idCauHoi": 46,
+      "idNguoiDung": 3,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-25 05:35:00",
+      "ngayCapNhat": "2026-05-25 05:35:00",
+      "duocChapNhan": true
+    },
+    {
+      "idCauTraLoi": 59,
+      "idCauHoi": 47,
+      "idNguoiDung": 4,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-25 06:35:00",
+      "ngayCapNhat": "2026-05-25 06:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 60,
+      "idCauHoi": 48,
+      "idNguoiDung": 1,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-25 07:35:00",
+      "ngayCapNhat": "2026-05-25 07:35:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 61,
+      "idCauHoi": 49,
+      "idNguoiDung": 2,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-25 08:35:00",
+      "ngayCapNhat": "2026-05-25 08:35:00",
+      "duocChapNhan": true
+    },
+    {
+      "idCauTraLoi": 62,
+      "idCauHoi": 49,
+      "idNguoiDung": 5,
+      "noiDung": "Cách xử lý tốt là tách rõ phần giao diện, API và database. Khi test cần so sánh expected result với actual result, không chỉ nhìn giao diện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-25 09:00:00",
+      "ngayCapNhat": "2026-05-25 09:00:00",
+      "duocChapNhan": false
+    },
+    {
+      "idCauTraLoi": 63,
+      "idCauHoi": 50,
+      "idNguoiDung": 3,
+      "noiDung": "Bạn nên kiểm tra đúng luồng nghiệp vụ, dữ liệu đầu vào, validate form và response trả về từ API. Với lỗi cụ thể thì chụp màn hình và ghi lại bước tái hiện.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-25 09:35:00",
+      "ngayCapNhat": "2026-05-25 09:35:00",
+      "duocChapNhan": false
+    }
+  ],
+  "binhLuan": [
+    {
+      "idBinhLuan": 1,
+      "idCauHoi": 1,
+      "idNguoiDung": 3,
+      "noiDung": "Mình cũng gặp trường hợp tương tự, cần thêm dữ liệu mẫu để test rõ hơn.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 08:15:00",
+      "ngayCapNhat": "2026-05-23 08:15:00"
+    },
+    {
+      "idBinhLuan": 2,
+      "idCauHoi": 3,
+      "idNguoiDung": 1,
+      "noiDung": "Mình cũng gặp trường hợp tương tự, cần thêm dữ liệu mẫu để test rõ hơn.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 10:15:00",
+      "ngayCapNhat": "2026-05-23 10:15:00"
+    },
+    {
+      "idBinhLuan": 3,
+      "idCauHoi": 5,
+      "idNguoiDung": 3,
+      "noiDung": "Mình cũng gặp trường hợp tương tự, cần thêm dữ liệu mẫu để test rõ hơn.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 12:15:00",
+      "ngayCapNhat": "2026-05-23 12:15:00"
+    },
+    {
+      "idBinhLuan": 4,
+      "idCauHoi": 7,
+      "idNguoiDung": 1,
+      "noiDung": "Mình cũng gặp trường hợp tương tự, cần thêm dữ liệu mẫu để test rõ hơn.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 14:15:00",
+      "ngayCapNhat": "2026-05-23 14:15:00"
+    },
+    {
+      "idBinhLuan": 5,
+      "idCauHoi": 9,
+      "idNguoiDung": 3,
+      "noiDung": "Mình cũng gặp trường hợp tương tự, cần thêm dữ liệu mẫu để test rõ hơn.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 16:15:00",
+      "ngayCapNhat": "2026-05-23 16:15:00"
+    },
+    {
+      "idBinhLuan": 6,
+      "idCauHoi": 11,
+      "idNguoiDung": 1,
+      "noiDung": "Mình cũng gặp trường hợp tương tự, cần thêm dữ liệu mẫu để test rõ hơn.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 18:15:00",
+      "ngayCapNhat": "2026-05-23 18:15:00"
+    },
+    {
+      "idBinhLuan": 7,
+      "idCauHoi": 13,
+      "idNguoiDung": 3,
+      "noiDung": "Mình cũng gặp trường hợp tương tự, cần thêm dữ liệu mẫu để test rõ hơn.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 20:15:00",
+      "ngayCapNhat": "2026-05-23 20:15:00"
+    },
+    {
+      "idBinhLuan": 8,
+      "idCauHoi": 15,
+      "idNguoiDung": 1,
+      "noiDung": "Mình cũng gặp trường hợp tương tự, cần thêm dữ liệu mẫu để test rõ hơn.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-23 22:15:00",
+      "ngayCapNhat": "2026-05-23 22:15:00"
+    },
+    {
+      "idBinhLuan": 9,
+      "idCauHoi": 17,
+      "idNguoiDung": 3,
+      "noiDung": "Mình cũng gặp trường hợp tương tự, cần thêm dữ liệu mẫu để test rõ hơn.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 00:15:00",
+      "ngayCapNhat": "2026-05-24 00:15:00"
+    },
+    {
+      "idBinhLuan": 10,
+      "idCauHoi": 19,
+      "idNguoiDung": 1,
+      "noiDung": "Mình cũng gặp trường hợp tương tự, cần thêm dữ liệu mẫu để test rõ hơn.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 02:15:00",
+      "ngayCapNhat": "2026-05-24 02:15:00"
+    },
+    {
+      "idBinhLuan": 11,
+      "idCauHoi": 21,
+      "idNguoiDung": 3,
+      "noiDung": "Mình cũng gặp trường hợp tương tự, cần thêm dữ liệu mẫu để test rõ hơn.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 04:15:00",
+      "ngayCapNhat": "2026-05-24 04:15:00"
+    },
+    {
+      "idBinhLuan": 12,
+      "idCauHoi": 23,
+      "idNguoiDung": 1,
+      "noiDung": "Mình cũng gặp trường hợp tương tự, cần thêm dữ liệu mẫu để test rõ hơn.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 06:15:00",
+      "ngayCapNhat": "2026-05-24 06:15:00"
+    },
+    {
+      "idBinhLuan": 13,
+      "idCauHoi": 25,
+      "idNguoiDung": 3,
+      "noiDung": "Mình cũng gặp trường hợp tương tự, cần thêm dữ liệu mẫu để test rõ hơn.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 08:15:00",
+      "ngayCapNhat": "2026-05-24 08:15:00"
+    },
+    {
+      "idBinhLuan": 14,
+      "idCauHoi": 27,
+      "idNguoiDung": 1,
+      "noiDung": "Mình cũng gặp trường hợp tương tự, cần thêm dữ liệu mẫu để test rõ hơn.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 10:15:00",
+      "ngayCapNhat": "2026-05-24 10:15:00"
+    },
+    {
+      "idBinhLuan": 15,
+      "idCauHoi": 29,
+      "idNguoiDung": 3,
+      "noiDung": "Mình cũng gặp trường hợp tương tự, cần thêm dữ liệu mẫu để test rõ hơn.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 12:15:00",
+      "ngayCapNhat": "2026-05-24 12:15:00"
+    },
+    {
+      "idBinhLuan": 16,
+      "idCauHoi": 31,
+      "idNguoiDung": 1,
+      "noiDung": "Mình cũng gặp trường hợp tương tự, cần thêm dữ liệu mẫu để test rõ hơn.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 14:15:00",
+      "ngayCapNhat": "2026-05-24 14:15:00"
+    },
+    {
+      "idBinhLuan": 17,
+      "idCauHoi": 33,
+      "idNguoiDung": 3,
+      "noiDung": "Mình cũng gặp trường hợp tương tự, cần thêm dữ liệu mẫu để test rõ hơn.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 16:15:00",
+      "ngayCapNhat": "2026-05-24 16:15:00"
+    },
+    {
+      "idBinhLuan": 18,
+      "idCauHoi": 35,
+      "idNguoiDung": 1,
+      "noiDung": "Mình cũng gặp trường hợp tương tự, cần thêm dữ liệu mẫu để test rõ hơn.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 18:15:00",
+      "ngayCapNhat": "2026-05-24 18:15:00"
+    },
+    {
+      "idBinhLuan": 19,
+      "idCauHoi": 37,
+      "idNguoiDung": 3,
+      "noiDung": "Mình cũng gặp trường hợp tương tự, cần thêm dữ liệu mẫu để test rõ hơn.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 20:15:00",
+      "ngayCapNhat": "2026-05-24 20:15:00"
+    },
+    {
+      "idBinhLuan": 20,
+      "idCauHoi": 39,
+      "idNguoiDung": 1,
+      "noiDung": "Mình cũng gặp trường hợp tương tự, cần thêm dữ liệu mẫu để test rõ hơn.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-24 22:15:00",
+      "ngayCapNhat": "2026-05-24 22:15:00"
+    },
+    {
+      "idBinhLuan": 21,
+      "idCauHoi": 41,
+      "idNguoiDung": 3,
+      "noiDung": "Mình cũng gặp trường hợp tương tự, cần thêm dữ liệu mẫu để test rõ hơn.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-25 00:15:00",
+      "ngayCapNhat": "2026-05-25 00:15:00"
+    },
+    {
+      "idBinhLuan": 22,
+      "idCauHoi": 43,
+      "idNguoiDung": 1,
+      "noiDung": "Mình cũng gặp trường hợp tương tự, cần thêm dữ liệu mẫu để test rõ hơn.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-25 02:15:00",
+      "ngayCapNhat": "2026-05-25 02:15:00"
+    },
+    {
+      "idBinhLuan": 23,
+      "idCauHoi": 45,
+      "idNguoiDung": 3,
+      "noiDung": "Mình cũng gặp trường hợp tương tự, cần thêm dữ liệu mẫu để test rõ hơn.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-25 04:15:00",
+      "ngayCapNhat": "2026-05-25 04:15:00"
+    },
+    {
+      "idBinhLuan": 24,
+      "idCauHoi": 47,
+      "idNguoiDung": 1,
+      "noiDung": "Mình cũng gặp trường hợp tương tự, cần thêm dữ liệu mẫu để test rõ hơn.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-25 06:15:00",
+      "ngayCapNhat": "2026-05-25 06:15:00"
+    },
+    {
+      "idBinhLuan": 25,
+      "idCauHoi": 49,
+      "idNguoiDung": 3,
+      "noiDung": "Mình cũng gặp trường hợp tương tự, cần thêm dữ liệu mẫu để test rõ hơn.",
+      "trangThai": "DaDang",
+      "ngayTao": "2026-05-25 08:15:00",
+      "ngayCapNhat": "2026-05-25 08:15:00"
+    }
+  ],
+  "binhChon": [
+    {
+      "idBinhChon": 1,
+      "idNguoiDung": 4,
+      "idCauHoi": 1,
+      "loaiBinhChon": "DownVote",
+      "ngayTao": "2026-05-23 08:10:00"
+    },
+    {
+      "idBinhChon": 2,
+      "idNguoiDung": 1,
+      "idCauHoi": 2,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-23 09:10:00"
+    },
+    {
+      "idBinhChon": 3,
+      "idNguoiDung": 2,
+      "idCauHoi": 3,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-23 10:10:00"
+    },
+    {
+      "idBinhChon": 4,
+      "idNguoiDung": 3,
+      "idCauHoi": 4,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-23 11:10:00"
+    },
+    {
+      "idBinhChon": 5,
+      "idNguoiDung": 4,
+      "idCauHoi": 5,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-23 12:10:00"
+    },
+    {
+      "idBinhChon": 6,
+      "idNguoiDung": 1,
+      "idCauHoi": 6,
+      "loaiBinhChon": "DownVote",
+      "ngayTao": "2026-05-23 13:10:00"
+    },
+    {
+      "idBinhChon": 7,
+      "idNguoiDung": 2,
+      "idCauHoi": 7,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-23 14:10:00"
+    },
+    {
+      "idBinhChon": 8,
+      "idNguoiDung": 3,
+      "idCauHoi": 8,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-23 15:10:00"
+    },
+    {
+      "idBinhChon": 9,
+      "idNguoiDung": 4,
+      "idCauHoi": 9,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-23 16:10:00"
+    },
+    {
+      "idBinhChon": 10,
+      "idNguoiDung": 1,
+      "idCauHoi": 10,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-23 17:10:00"
+    },
+    {
+      "idBinhChon": 11,
+      "idNguoiDung": 2,
+      "idCauHoi": 11,
+      "loaiBinhChon": "DownVote",
+      "ngayTao": "2026-05-23 18:10:00"
+    },
+    {
+      "idBinhChon": 12,
+      "idNguoiDung": 3,
+      "idCauHoi": 12,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-23 19:10:00"
+    },
+    {
+      "idBinhChon": 13,
+      "idNguoiDung": 4,
+      "idCauHoi": 13,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-23 20:10:00"
+    },
+    {
+      "idBinhChon": 14,
+      "idNguoiDung": 1,
+      "idCauHoi": 14,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-23 21:10:00"
+    },
+    {
+      "idBinhChon": 15,
+      "idNguoiDung": 2,
+      "idCauHoi": 15,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-23 22:10:00"
+    },
+    {
+      "idBinhChon": 16,
+      "idNguoiDung": 3,
+      "idCauHoi": 16,
+      "loaiBinhChon": "DownVote",
+      "ngayTao": "2026-05-23 23:10:00"
+    },
+    {
+      "idBinhChon": 17,
+      "idNguoiDung": 4,
+      "idCauHoi": 17,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-24 00:10:00"
+    },
+    {
+      "idBinhChon": 18,
+      "idNguoiDung": 1,
+      "idCauHoi": 18,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-24 01:10:00"
+    },
+    {
+      "idBinhChon": 19,
+      "idNguoiDung": 2,
+      "idCauHoi": 19,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-24 02:10:00"
+    },
+    {
+      "idBinhChon": 20,
+      "idNguoiDung": 3,
+      "idCauHoi": 20,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-24 03:10:00"
+    },
+    {
+      "idBinhChon": 21,
+      "idNguoiDung": 4,
+      "idCauHoi": 21,
+      "loaiBinhChon": "DownVote",
+      "ngayTao": "2026-05-24 04:10:00"
+    },
+    {
+      "idBinhChon": 22,
+      "idNguoiDung": 1,
+      "idCauHoi": 22,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-24 05:10:00"
+    },
+    {
+      "idBinhChon": 23,
+      "idNguoiDung": 2,
+      "idCauHoi": 23,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-24 06:10:00"
+    },
+    {
+      "idBinhChon": 24,
+      "idNguoiDung": 3,
+      "idCauHoi": 24,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-24 07:10:00"
+    },
+    {
+      "idBinhChon": 25,
+      "idNguoiDung": 4,
+      "idCauHoi": 25,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-24 08:10:00"
+    },
+    {
+      "idBinhChon": 26,
+      "idNguoiDung": 1,
+      "idCauHoi": 26,
+      "loaiBinhChon": "DownVote",
+      "ngayTao": "2026-05-24 09:10:00"
+    },
+    {
+      "idBinhChon": 27,
+      "idNguoiDung": 2,
+      "idCauHoi": 27,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-24 10:10:00"
+    },
+    {
+      "idBinhChon": 28,
+      "idNguoiDung": 3,
+      "idCauHoi": 28,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-24 11:10:00"
+    },
+    {
+      "idBinhChon": 29,
+      "idNguoiDung": 4,
+      "idCauHoi": 29,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-24 12:10:00"
+    },
+    {
+      "idBinhChon": 30,
+      "idNguoiDung": 1,
+      "idCauHoi": 30,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-24 13:10:00"
+    },
+    {
+      "idBinhChon": 31,
+      "idNguoiDung": 2,
+      "idCauHoi": 31,
+      "loaiBinhChon": "DownVote",
+      "ngayTao": "2026-05-24 14:10:00"
+    },
+    {
+      "idBinhChon": 32,
+      "idNguoiDung": 3,
+      "idCauHoi": 32,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-24 15:10:00"
+    },
+    {
+      "idBinhChon": 33,
+      "idNguoiDung": 4,
+      "idCauHoi": 33,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-24 16:10:00"
+    },
+    {
+      "idBinhChon": 34,
+      "idNguoiDung": 1,
+      "idCauHoi": 34,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-24 17:10:00"
+    },
+    {
+      "idBinhChon": 35,
+      "idNguoiDung": 2,
+      "idCauHoi": 35,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-24 18:10:00"
+    },
+    {
+      "idBinhChon": 36,
+      "idNguoiDung": 3,
+      "idCauHoi": 36,
+      "loaiBinhChon": "DownVote",
+      "ngayTao": "2026-05-24 19:10:00"
+    },
+    {
+      "idBinhChon": 37,
+      "idNguoiDung": 4,
+      "idCauHoi": 37,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-24 20:10:00"
+    },
+    {
+      "idBinhChon": 38,
+      "idNguoiDung": 1,
+      "idCauHoi": 38,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-24 21:10:00"
+    },
+    {
+      "idBinhChon": 39,
+      "idNguoiDung": 2,
+      "idCauHoi": 39,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-24 22:10:00"
+    },
+    {
+      "idBinhChon": 40,
+      "idNguoiDung": 3,
+      "idCauHoi": 40,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-24 23:10:00"
+    },
+    {
+      "idBinhChon": 41,
+      "idNguoiDung": 4,
+      "idCauHoi": 41,
+      "loaiBinhChon": "DownVote",
+      "ngayTao": "2026-05-25 00:10:00"
+    },
+    {
+      "idBinhChon": 42,
+      "idNguoiDung": 1,
+      "idCauHoi": 42,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-25 01:10:00"
+    },
+    {
+      "idBinhChon": 43,
+      "idNguoiDung": 2,
+      "idCauHoi": 43,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-25 02:10:00"
+    },
+    {
+      "idBinhChon": 44,
+      "idNguoiDung": 3,
+      "idCauHoi": 44,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-25 03:10:00"
+    },
+    {
+      "idBinhChon": 45,
+      "idNguoiDung": 4,
+      "idCauHoi": 45,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-25 04:10:00"
+    },
+    {
+      "idBinhChon": 46,
+      "idNguoiDung": 1,
+      "idCauHoi": 46,
+      "loaiBinhChon": "DownVote",
+      "ngayTao": "2026-05-25 05:10:00"
+    },
+    {
+      "idBinhChon": 47,
+      "idNguoiDung": 2,
+      "idCauHoi": 47,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-25 06:10:00"
+    },
+    {
+      "idBinhChon": 48,
+      "idNguoiDung": 3,
+      "idCauHoi": 48,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-25 07:10:00"
+    },
+    {
+      "idBinhChon": 49,
+      "idNguoiDung": 4,
+      "idCauHoi": 49,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-25 08:10:00"
+    },
+    {
+      "idBinhChon": 50,
+      "idNguoiDung": 1,
+      "idCauHoi": 50,
+      "loaiBinhChon": "UpVote",
+      "ngayTao": "2026-05-25 09:10:00"
+    }
+  ],
+  "tepDinhKem": [
+    {
+      "idTepDinhKem": 1,
+      "idCauHoi": 1,
+      "idCauTraLoi": null,
+      "tenFile": "screenshot_question_1.png",
+      "duongDan": "/uploads/questions/screenshot_question_1.png",
+      "loaiFile": "image/png",
+      "kichThuoc": 125000
+    },
+    {
+      "idTepDinhKem": 2,
+      "idCauHoi": 11,
+      "idCauTraLoi": null,
+      "tenFile": "screenshot_question_11.png",
+      "duongDan": "/uploads/questions/screenshot_question_11.png",
+      "loaiFile": "image/png",
+      "kichThuoc": 135000
+    },
+    {
+      "idTepDinhKem": 3,
+      "idCauHoi": 21,
+      "idCauTraLoi": null,
+      "tenFile": "screenshot_question_21.png",
+      "duongDan": "/uploads/questions/screenshot_question_21.png",
+      "loaiFile": "image/png",
+      "kichThuoc": 145000
+    },
+    {
+      "idTepDinhKem": 4,
+      "idCauHoi": 31,
+      "idCauTraLoi": null,
+      "tenFile": "screenshot_question_31.png",
+      "duongDan": "/uploads/questions/screenshot_question_31.png",
+      "loaiFile": "image/png",
+      "kichThuoc": 155000
+    },
+    {
+      "idTepDinhKem": 5,
+      "idCauHoi": 41,
+      "idCauTraLoi": null,
+      "tenFile": "screenshot_question_41.png",
+      "duongDan": "/uploads/questions/screenshot_question_41.png",
+      "loaiFile": "image/png",
+      "kichThuoc": 165000
+    }
+  ],
+  "ghiChu": "Dữ liệu mẫu phục vụ test forum hỏi đáp chuyên ngành IT. Có thể sửa tên field cho khớp DTO/API của nhóm."
+}

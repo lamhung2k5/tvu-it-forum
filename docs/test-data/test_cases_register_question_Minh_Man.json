@@ -1,0 +1,150 @@
+[
+  {
+    "testCaseId": "TC_REG_001",
+    "title": "Đăng ký thành công",
+    "module": "Register",
+    "precondition": "Email chưa tồn tại",
+    "steps": [
+      "1. Mở trang đăng ký",
+      "2. Nhập họ tên, email hợp lệ, mật khẩu hợp lệ",
+      "3. Bấm Đăng ký"
+    ],
+    "expectedResult": "Tạo user mới thành công, hiện thông báo thành công hoặc chuyển sang đăng nhập",
+    "priority": "High",
+    "status": "Not Run",
+    "jiraTask": "SCRUM-21"
+  },
+  {
+    "testCaseId": "TC_REG_002",
+    "title": "Đăng ký với email trùng",
+    "module": "Register",
+    "precondition": "Email đã tồn tại trong DB",
+    "steps": [
+      "1. Mở trang đăng ký",
+      "2. Nhập email đã có",
+      "3. Bấm Đăng ký"
+    ],
+    "expectedResult": "Không tạo user mới, hiển thị lỗi email đã tồn tại",
+    "priority": "High",
+    "status": "Not Run",
+    "jiraTask": "SCRUM-22"
+  },
+  {
+    "testCaseId": "TC_REG_003",
+    "title": "Bỏ trống họ tên",
+    "module": "Register",
+    "precondition": "Không nhập họ tên",
+    "steps": [
+      "1. Mở trang đăng ký",
+      "2. Bỏ trống họ tên",
+      "3. Nhập các trường còn lại",
+      "4. Bấm Đăng ký"
+    ],
+    "expectedResult": "Form báo lỗi bắt buộc nhập họ tên",
+    "priority": "Medium",
+    "status": "Not Run",
+    "jiraTask": "SCRUM-22"
+  },
+  {
+    "testCaseId": "TC_REG_004",
+    "title": "Email sai định dạng",
+    "module": "Register",
+    "precondition": "Email không hợp lệ",
+    "steps": [
+      "1. Nhập email abc hoặc abc@",
+      "2. Bấm Đăng ký"
+    ],
+    "expectedResult": "Form báo lỗi email không hợp lệ",
+    "priority": "Medium",
+    "status": "Not Run",
+    "jiraTask": "SCRUM-22"
+  },
+  {
+    "testCaseId": "TC_REG_005",
+    "title": "Mật khẩu quá ngắn",
+    "module": "Register",
+    "precondition": "Password dưới 6 ký tự",
+    "steps": [
+      "1. Nhập mật khẩu 123",
+      "2. Bấm Đăng ký"
+    ],
+    "expectedResult": "Form/API báo mật khẩu không đạt yêu cầu",
+    "priority": "Medium",
+    "status": "Not Run",
+    "jiraTask": "SCRUM-22"
+  },
+  {
+    "testCaseId": "TC_REG_006",
+    "title": "Xác nhận mật khẩu không khớp",
+    "module": "Register",
+    "precondition": "Có trường confirm password",
+    "steps": [
+      "1. Nhập password 123456",
+      "2. Nhập confirm 1234567",
+      "3. Bấm Đăng ký"
+    ],
+    "expectedResult": "Form báo mật khẩu xác nhận không khớp",
+    "priority": "Medium",
+    "status": "Not Run",
+    "jiraTask": "SCRUM-22"
+  },
+  {
+    "testCaseId": "TC_Q_001",
+    "title": "Đăng câu hỏi thành công",
+    "module": "Question",
+    "precondition": "User đã đăng nhập",
+    "steps": [
+      "1. Mở tạo câu hỏi",
+      "2. Nhập tiêu đề, nội dung, chuyên mục, thẻ",
+      "3. Bấm Đăng"
+    ],
+    "expectedResult": "Câu hỏi được lưu và hiển thị trên danh sách",
+    "priority": "High",
+    "status": "Not Run",
+    "jiraTask": "Sprint 2/3"
+  },
+  {
+    "testCaseId": "TC_Q_002",
+    "title": "Đăng câu hỏi thiếu tiêu đề",
+    "module": "Question",
+    "precondition": "User đã đăng nhập",
+    "steps": [
+      "1. Mở tạo câu hỏi",
+      "2. Bỏ trống tiêu đề",
+      "3. Bấm Đăng"
+    ],
+    "expectedResult": "Form báo lỗi tiêu đề bắt buộc",
+    "priority": "Medium",
+    "status": "Not Run",
+    "jiraTask": "Sprint 2/3"
+  },
+  {
+    "testCaseId": "TC_ANS_001",
+    "title": "Trả lời câu hỏi thành công",
+    "module": "Answer",
+    "precondition": "Có câu hỏi đang hoạt động",
+    "steps": [
+      "1. Mở chi tiết câu hỏi",
+      "2. Nhập câu trả lời",
+      "3. Bấm Gửi"
+    ],
+    "expectedResult": "Câu trả lời xuất hiện dưới câu hỏi",
+    "priority": "High",
+    "status": "Not Run",
+    "jiraTask": "Sprint 2/3"
+  },
+  {
+    "testCaseId": "TC_UI_001",
+    "title": "Kiểm tra menu/chuyên mục hiển thị",
+    "module": "UI",
+    "precondition": "Frontend chạy được",
+    "steps": [
+      "1. Mở trang chủ",
+      "2. Kiểm tra danh sách chuyên mục"
+    ],
+    "expectedResult": "Hiển thị đủ chuyên mục và không vỡ giao diện",
+    "priority": "Low",
+    "status": "Not Run",
+    "jiraTask": "Sprint 2/3"
+  }
+]
