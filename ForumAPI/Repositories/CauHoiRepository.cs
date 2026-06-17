@@ -1,5 +1,5 @@
 using Dapper;
-using ForumAPI.Data; // Nơi chứa IDbConnectionFactory của bạn
+using ForumAPI.Data;
 using ForumAPI.DTOs.CauHoi;
 using ForumAPI.Models;
 
@@ -18,32 +18,87 @@ public class CauHoiRepository : ICauHoiRepository
     {
         using var connection = _connectionFactory.CreateConnection();
         
-        // Câu lệnh SQL viết hoa đúng tên bảng CAUHOI và các trường tiếng Việt
         var sql = @"
             INSERT INTO CAUHOI (ID_NguoiDung, ID_ChuyenMuc, TieuDe, NoiDung, TrangThai, LuotXem, NgayTao, IsDeleted)
             VALUES (@ID_NguoiDung, @ID_ChuyenMuc, @TieuDe, @NoiDung, @TrangThai, @LuotXem, CURRENT_TIMESTAMP, 0);
-            SELECT last_insert_rowid();"; // Câu lệnh SQLite để lấy ID vừa tự động tăng
+            SELECT last_insert_rowid();";
 
-        // Chạy lệnh và lấy về ID dạng số nguyên
-        var id = await connection.QuerySingleAsync<int>(sql, cauHoi);
-        return id;
+        return await connection.QuerySingleAsync<int>(sql, cauHoi);
     }
-    public async Task<IEnumerable<CauHoiResponse>> GetAllAsync()
+
+    public async Task<IEnumerable<CauHoiResponse>> GetAllAsync(string? keyword = null, string? tag = null, int? idChuyenMuc = null)
     {
         using var connection = _connectionFactory.CreateConnection();
 
-        // Nối bảng CAUHOI (c) với bảng CHUYENMUC (cm)
-        // Lấy ra các câu hỏi chưa bị xóa (IsDeleted = 0), sắp xếp mới nhất lên đầu (DESC)
         var sql = @"
-            SELECT 
-                c.ID_CauHoi, c.TieuDe, c.NoiDung, c.LuotXem, c.NgayTao,
-                cm.TenChuyenMuc
+            SELECT
+                c.ID_CauHoi,
+                c.ID_NguoiDung,
+                nd.HoTen,
+                c.ID_ChuyenMuc,
+                cm.TenChuyenMuc,
+                c.TieuDe,
+                c.NoiDung,
+                c.LuotXem,
+                c.NgayTao,
+                c.NgayCapNhat,
+                (SELECT COALESCE(SUM(bc.GiaTri), 0)
+                 FROM BINHCHON bc
+                 WHERE bc.LoaiDoiTuong = 'CAUHOI'
+                   AND bc.ID_DoiTuong = c.ID_CauHoi) AS DiemBinhChon,
+                (SELECT COUNT(1)
+                 FROM CAUTRALOI ctl
+                 WHERE ctl.ID_CauHoi = c.ID_CauHoi
+                   AND ctl.IsDeleted = 0) AS SoCauTraLoi,
+                (SELECT COUNT(1)
+                 FROM BINHLUAN bl
+                 WHERE bl.LoaiDoiTuong = 'CAUHOI'
+                   AND bl.ID_DoiTuong = c.ID_CauHoi
+                   AND bl.IsDeleted = 0) AS SoBinhLuan,
+                (SELECT GROUP_CONCAT(t.TenThe, ',')
+                 FROM CauHoi_The cht
+                 JOIN THE t ON cht.ID_The = t.ID_The
+                 WHERE cht.ID_CauHoi = c.ID_CauHoi
+                   AND t.TrangThai = 1) AS Tags
             FROM CAUHOI c
             JOIN CHUYENMUC cm ON c.ID_ChuyenMuc = cm.ID_ChuyenMuc
-            WHERE c.IsDeleted = 0
+            JOIN NGUOIDUNG nd ON c.ID_NguoiDung = nd.ID_NguoiDung
+            WHERE c.IsDeleted = 0";
+
+        var parameters = new DynamicParameters();
+
+        if (!string.IsNullOrWhiteSpace(keyword))
+        {
+            sql += @"
+              AND (c.TieuDe LIKE @Keyword OR c.NoiDung LIKE @Keyword)";
+            parameters.Add("Keyword", $"%{keyword.Trim()}%");
+        }
+
+        if (!string.IsNullOrWhiteSpace(tag))
+        {
+            sql += @"
+              AND EXISTS (
+                  SELECT 1
+                  FROM CauHoi_The chtFilter
+                  JOIN THE tFilter ON chtFilter.ID_The = tFilter.ID_The
+                  WHERE chtFilter.ID_CauHoi = c.ID_CauHoi
+                    AND LOWER(tFilter.TenThe) = LOWER(@Tag)
+                    AND tFilter.TrangThai = 1
+              )";
+            parameters.Add("Tag", tag.Trim());
+        }
+
+        if (idChuyenMuc.HasValue && idChuyenMuc.Value > 0)
+        {
+            sql += @"
+              AND c.ID_ChuyenMuc = @IdChuyenMuc";
+            parameters.Add("IdChuyenMuc", idChuyenMuc.Value);
+        }
+
+        sql += @"
             ORDER BY c.ID_CauHoi DESC;";
 
-        return await connection.QueryAsync<CauHoiResponse>(sql);
+        return await connection.QueryAsync<CauHoiResponse>(sql, parameters);
     }
 
     public async Task<CauHoiResponse?> GetByIdAsync(int id)
@@ -51,14 +106,41 @@ public class CauHoiRepository : ICauHoiRepository
         using var connection = _connectionFactory.CreateConnection();
 
         var sql = @"
-            SELECT 
-                c.ID_CauHoi, c.TieuDe, c.NoiDung, c.LuotXem, c.NgayTao,
-                cm.TenChuyenMuc
+            SELECT
+                c.ID_CauHoi,
+                c.ID_NguoiDung,
+                nd.HoTen,
+                c.ID_ChuyenMuc,
+                cm.TenChuyenMuc,
+                c.TieuDe,
+                c.NoiDung,
+                c.LuotXem,
+                c.NgayTao,
+                c.NgayCapNhat,
+                (SELECT COALESCE(SUM(bc.GiaTri), 0)
+                 FROM BINHCHON bc
+                 WHERE bc.LoaiDoiTuong = 'CAUHOI'
+                   AND bc.ID_DoiTuong = c.ID_CauHoi) AS DiemBinhChon,
+                (SELECT COUNT(1)
+                 FROM CAUTRALOI ctl
+                 WHERE ctl.ID_CauHoi = c.ID_CauHoi
+                   AND ctl.IsDeleted = 0) AS SoCauTraLoi,
+                (SELECT COUNT(1)
+                 FROM BINHLUAN bl
+                 WHERE bl.LoaiDoiTuong = 'CAUHOI'
+                   AND bl.ID_DoiTuong = c.ID_CauHoi
+                   AND bl.IsDeleted = 0) AS SoBinhLuan,
+                (SELECT GROUP_CONCAT(t.TenThe, ',')
+                 FROM CauHoi_The cht
+                 JOIN THE t ON cht.ID_The = t.ID_The
+                 WHERE cht.ID_CauHoi = c.ID_CauHoi
+                   AND t.TrangThai = 1) AS Tags
             FROM CAUHOI c
             JOIN CHUYENMUC cm ON c.ID_ChuyenMuc = cm.ID_ChuyenMuc
-            WHERE c.ID_CauHoi = @Id AND c.IsDeleted = 0;";
+            JOIN NGUOIDUNG nd ON c.ID_NguoiDung = nd.ID_NguoiDung
+            WHERE c.ID_CauHoi = @Id
+              AND c.IsDeleted = 0;";
 
-        // Dùng QueryFirstOrDefaultAsync để lấy đúng 1 dòng đầu tiên tìm thấy
         return await connection.QueryFirstOrDefaultAsync<CauHoiResponse>(sql, new { Id = id });
     }  
 
@@ -66,13 +148,12 @@ public class CauHoiRepository : ICauHoiRepository
     {
         using var connection = _connectionFactory.CreateConnection();
         
-        // Cú pháp thần thánh: Vừa UPDATE vừa kiểm tra WHERE ID_NguoiDung = @UserId
-        // Nếu không phải bài của user này, câu lệnh sẽ không tìm thấy dòng nào để sửa!
         var sql = @"
             UPDATE CAUHOI 
             SET TieuDe = @TieuDe, 
                 NoiDung = @NoiDung, 
-                ID_ChuyenMuc = @IdChuyenMuc
+                ID_ChuyenMuc = @IdChuyenMuc,
+                NgayCapNhat = CURRENT_TIMESTAMP
             WHERE ID_CauHoi = @Id 
               AND ID_NguoiDung = @UserId 
               AND IsDeleted = 0;";
@@ -86,23 +167,90 @@ public class CauHoiRepository : ICauHoiRepository
             NoiDung = noiDung 
         });
 
-        return rowsAffected > 0; // Trả về true nếu có dòng được sửa
+        return rowsAffected > 0;
     }
 
     public async Task<bool> DeleteAsync(int id, int userId)
     {
         using var connection = _connectionFactory.CreateConnection();
         
-        // Cập nhật IsDeleted = 1 thay vì xóa thật. Vẫn phải check ID_NguoiDung!
         var sql = @"
             UPDATE CAUHOI 
-            SET IsDeleted = 1 
+            SET IsDeleted = 1,
+                NgayCapNhat = CURRENT_TIMESTAMP
             WHERE ID_CauHoi = @Id 
               AND ID_NguoiDung = @UserId 
               AND IsDeleted = 0;";
 
         var rowsAffected = await connection.ExecuteAsync(sql, new { Id = id, UserId = userId });
-
         return rowsAffected > 0;
+    }
+
+    public async Task<bool> ChuyenMucExistsAsync(int idChuyenMuc)
+    {
+        using var connection = _connectionFactory.CreateConnection();
+
+        var sql = @"
+            SELECT COUNT(1)
+            FROM CHUYENMUC
+            WHERE ID_ChuyenMuc = @IdChuyenMuc
+              AND TrangThai = 1;";
+
+        var count = await connection.ExecuteScalarAsync<int>(sql, new { IdChuyenMuc = idChuyenMuc });
+        return count > 0;
+    }
+
+    public async Task SyncTagsAsync(int cauHoiId, string? theRaw)
+    {
+        if (theRaw == null)
+        {
+            return;
+        }
+
+        var tags = theRaw
+            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Where(t => !string.IsNullOrWhiteSpace(t))
+            .Select(t => t.Trim().ToLowerInvariant())
+            .Distinct()
+            .Take(10)
+            .ToList();
+
+        using var connection = _connectionFactory.CreateConnection();
+        connection.Open();
+        using var transaction = connection.BeginTransaction();
+
+        try
+        {
+            var deleteSql = @"
+                DELETE FROM CauHoi_The
+                WHERE ID_CauHoi = @CauHoiId;";
+            await connection.ExecuteAsync(deleteSql, new { CauHoiId = cauHoiId }, transaction);
+
+            foreach (var tag in tags)
+            {
+                var insertTagSql = @"
+                    INSERT OR IGNORE INTO THE (TenThe, TrangThai)
+                    VALUES (@TenThe, 1);";
+                await connection.ExecuteAsync(insertTagSql, new { TenThe = tag }, transaction);
+
+                var getTagIdSql = @"
+                    SELECT ID_The
+                    FROM THE
+                    WHERE TenThe = @TenThe;";
+                var tagId = await connection.ExecuteScalarAsync<int>(getTagIdSql, new { TenThe = tag }, transaction);
+
+                var insertLinkSql = @"
+                    INSERT OR IGNORE INTO CauHoi_The (ID_CauHoi, ID_The)
+                    VALUES (@CauHoiId, @TagId);";
+                await connection.ExecuteAsync(insertLinkSql, new { CauHoiId = cauHoiId, TagId = tagId }, transaction);
+            }
+
+            transaction.Commit();
+        }
+        catch
+        {
+            transaction.Rollback();
+            throw;
+        }
     }
 }

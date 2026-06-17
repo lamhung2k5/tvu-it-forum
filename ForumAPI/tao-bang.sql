@@ -51,3 +51,51 @@ INSERT INTO CHUYENMUC (TenChuyenMuc, MoTa) VALUES ('Lập trình Web', 'Thảo l
 INSERT INTO CHUYENMUC (TenChuyenMuc, MoTa) VALUES ('Cơ sở dữ liệu', 'Các vấn đề liên quan đến SQL Server, SQLite, MongoDB...');
 INSERT INTO CHUYENMUC (TenChuyenMuc, MoTa) VALUES ('Chia sẻ kinh nghiệm', 'Kinh nghiệm học tập, thực tập và định hướng nghề nghiệp IT.');
 SELECT * FROM CHUYENMUC;
+-- 5. Tạo bảng CAUTRALOI cho Sprint 3
+CREATE TABLE IF NOT EXISTS CAUTRALOI (
+    ID_CauTraLoi INTEGER PRIMARY KEY AUTOINCREMENT,
+    ID_CauHoi INTEGER NOT NULL,
+    ID_NguoiDung INTEGER NOT NULL,
+    NoiDung TEXT NOT NULL,
+    DaChapNhan INTEGER NOT NULL DEFAULT 0,
+    IsDeleted INTEGER NOT NULL DEFAULT 0,
+    NgayTao TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    NgayCapNhat TEXT NULL,
+    FOREIGN KEY (ID_CauHoi) REFERENCES CAUHOI(ID_CauHoi),
+    FOREIGN KEY (ID_NguoiDung) REFERENCES NGUOIDUNG(ID_NguoiDung)
+);
+
+-- 6. Tạo bảng BINHCHON cho Sprint 4
+CREATE TABLE IF NOT EXISTS BINHCHON (
+    ID_BinhChon INTEGER PRIMARY KEY AUTOINCREMENT,
+    ID_NguoiDung INTEGER NOT NULL,
+    LoaiDoiTuong TEXT NOT NULL,
+    ID_DoiTuong INTEGER NOT NULL,
+    GiaTri INTEGER NOT NULL,
+    NgayTao TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    NgayCapNhat TEXT NULL,
+    FOREIGN KEY (ID_NguoiDung) REFERENCES NGUOIDUNG(ID_NguoiDung),
+    CHECK (LoaiDoiTuong IN ('CAUHOI', 'CAUTRALOI')),
+    CHECK (GiaTri IN (1, -1)),
+    UNIQUE (ID_NguoiDung, LoaiDoiTuong, ID_DoiTuong)
+);
+
+
+-- 7. Tạo bảng BINHLUAN cho Sprint 5
+CREATE TABLE IF NOT EXISTS BINHLUAN (
+    ID_BinhLuan INTEGER PRIMARY KEY AUTOINCREMENT,
+    ID_NguoiDung INTEGER NOT NULL,
+    LoaiDoiTuong TEXT NOT NULL,
+    ID_DoiTuong INTEGER NOT NULL,
+    NoiDung TEXT NOT NULL,
+    IsDeleted INTEGER NOT NULL DEFAULT 0,
+    NgayTao TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    NgayCapNhat TEXT NULL,
+    FOREIGN KEY (ID_NguoiDung) REFERENCES NGUOIDUNG(ID_NguoiDung),
+    CHECK (LoaiDoiTuong IN ('CAUHOI', 'CAUTRALOI'))
+);
+
+-- 8. Sprint 6 - Admin không cần tạo bảng riêng.
+-- Admin được quản lý bằng vai trò trong bảng NGUOIDUNG.
+-- Sau khi đăng ký tài khoản test, có thể đổi tài khoản đó thành Admin bằng lệnh sau:
+-- UPDATE NGUOIDUNG SET VaiTro = 'Admin' WHERE Email = 'admin@test.com';

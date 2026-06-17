@@ -13,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 // --- 1. ĐĂNG KÝ DEPENDENCY INJECTION (DI) ---
 builder.Services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
 builder.Services.AddTransient<DatabaseInitializer>();
+builder.Services.AddTransient<DatabaseSeeder>();    
 builder.Services.AddScoped<INguoiDungRepository, NguoiDungRepository>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -20,6 +21,37 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 // Đăng ký cho khối Câu hỏi (Sprint 2)
 builder.Services.AddScoped<ICauHoiRepository, CauHoiRepository>();
 builder.Services.AddScoped<ICauHoiService, CauHoiService>();
+
+// Đăng ký cho khối Câu trả lời (Sprint 3)
+builder.Services.AddScoped<ICauTraLoiRepository, CauTraLoiRepository>();
+builder.Services.AddScoped<ICauTraLoiService, CauTraLoiService>();
+
+// Đăng ký cho khối Bình chọn (Sprint 4)
+builder.Services.AddScoped<IBinhChonRepository, BinhChonRepository>();
+builder.Services.AddScoped<IBinhChonService, BinhChonService>();
+
+// Đăng ký cho khối Bình luận (Sprint 5)
+builder.Services.AddScoped<IBinhLuanRepository, BinhLuanRepository>();
+builder.Services.AddScoped<IBinhLuanService, BinhLuanService>();
+
+// Đăng ký cho khối Admin (Sprint 6)
+builder.Services.AddScoped<IAdminRepository, AdminRepository>();
+builder.Services.AddScoped<IAdminService, AdminService>();
+
+// Đăng ký cho khối Profile/Dashboard người dùng (Sprint 7 mở rộng)
+builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+builder.Services.AddScoped<IUserProfileService, UserProfileService>();
+
+// Cấu hình CORS để frontend Vue có thể gọi API khi chạy khác port
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowForumWeb", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 // Cấu hình Swagger/OpenAPI (Giao diện cực tiện để test API)
 builder.Services.AddEndpointsApiExplorer();
@@ -79,6 +111,9 @@ using (var scope = app.Services.CreateScope())
 {
     var dbInitializer = scope.ServiceProvider.GetRequiredService<DatabaseInitializer>();
     dbInitializer.Initialize();
+
+    var dbSeeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
+    dbSeeder.Seed();
 }
 
 // --- 4. CẤU HÌNH MIDDLEWARE ---
@@ -90,6 +125,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors("AllowForumWeb");
+
 app.UseAuthentication(); // Bắt buộc phải gọi trước UseAuthorization
 app.UseAuthorization();
 
@@ -97,5 +134,15 @@ app.UseAuthorization();
 app.MapAuthEndpoints();
 
 app.MapCauHoiEndpoints();
+
+app.MapCauTraLoiEndpoints();
+
+app.MapBinhChonEndpoints();
+
+app.MapBinhLuanEndpoints();
+
+app.MapAdminEndpoints();
+
+app.MapUserEndpoints();
 
 app.Run();

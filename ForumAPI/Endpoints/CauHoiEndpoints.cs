@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using ForumAPI.DTOs.CauHoi;
 using ForumAPI.Services;
@@ -19,29 +20,37 @@ public static class CauHoiEndpoints
             ICauHoiService cauHoiService,
             ClaimsPrincipal user) =>
         {
-            // Lấy ID người dùng từ JWT Token
-            var userIdString = user.FindFirst(ClaimTypes.NameIdentifier)?.Value 
-                               ?? user.FindFirst("id")?.Value;
-                               
-            if (!int.TryParse(userIdString, out int userId))
+            if (!TryGetUserId(user, out var userId))
             {
-                return Results.Unauthorized(); 
+                return Results.Unauthorized();
             }
 
-            // Gọi Service để lưu vào DB
-            var newId = await cauHoiService.CreateCauHoiAsync(request, userId);
+            try
+            {
+                // Gọi Service để lưu vào DB
+                var newId = await cauHoiService.CreateCauHoiAsync(request, userId);
 
-            return Results.Ok(new 
-            { 
-                Message = "Đăng câu hỏi thành công!", 
-                CauHoiId = newId 
-            });
+                return Results.Ok(new 
+                { 
+                    Message = "Đăng câu hỏi thành công!", 
+                    CauHoiId = newId 
+                });
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.BadRequest(new { Message = ex.Message });
+            }
         }); // <--- Đóng ngoặc API POST ở đây
 
-        // 2. API GET: Lấy danh sách toàn bộ câu hỏi (Nằm ĐỘC LẬP bên ngoài POST)
-        group.MapGet("/", async (ICauHoiService cauHoiService) =>
+        // 2. API GET: Lấy danh sách câu hỏi, có hỗ trợ tìm kiếm và lọc
+        // Ví dụ: /api/cauhoi?keyword=dapper&tag=sqlite&idChuyenMuc=1
+        group.MapGet("/", async (
+            [FromQuery] string? keyword,
+            [FromQuery] string? tag,
+            [FromQuery] int? idChuyenMuc,
+            ICauHoiService cauHoiService) =>
         {
-            var danhSach = await cauHoiService.GetAllCauHoiAsync();
+            var danhSach = await cauHoiService.GetAllCauHoiAsync(keyword, tag, idChuyenMuc);
             return Results.Ok(danhSach);
         });
 
@@ -66,20 +75,27 @@ public static class CauHoiEndpoints
             ICauHoiService cauHoiService,
             ClaimsPrincipal user) =>
         {
-            // Lấy ID người dùng từ Token
-            var userIdString = user.FindFirst(ClaimTypes.NameIdentifier)?.Value 
-                               ?? user.FindFirst("id")?.Value;
-            if (!int.TryParse(userIdString, out int userId)) return Results.Unauthorized();
-
-            // Gọi Service sửa bài
-            var isSuccess = await cauHoiService.UpdateCauHoiAsync(id, userId, request);
-
-            if (!isSuccess)
+            if (!TryGetUserId(user, out var userId))
             {
-                return Results.BadRequest(new { Message = "Sửa thất bại! Câu hỏi không tồn tại hoặc bạn không có quyền sửa bài của người khác." });
+                return Results.Unauthorized();
             }
 
-            return Results.Ok(new { Message = "Chỉnh sửa câu hỏi thành công!" });
+            try
+            {
+                // Gọi Service sửa bài
+                var isSuccess = await cauHoiService.UpdateCauHoiAsync(id, userId, request);
+
+                if (!isSuccess)
+                {
+                    return Results.BadRequest(new { Message = "Sửa thất bại! Câu hỏi không tồn tại hoặc bạn không có quyền sửa bài của người khác." });
+                }
+
+                return Results.Ok(new { Message = "Chỉnh sửa câu hỏi thành công!" });
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.BadRequest(new { Message = ex.Message });
+            }
         });
 
         // 5. API DELETE: Xóa câu hỏi (Xóa mềm - Cần đăng nhập)
@@ -88,9 +104,10 @@ public static class CauHoiEndpoints
             ICauHoiService cauHoiService,
             ClaimsPrincipal user) =>
         {
-            var userIdString = user.FindFirst(ClaimTypes.NameIdentifier)?.Value 
-                               ?? user.FindFirst("id")?.Value;
-            if (!int.TryParse(userIdString, out int userId)) return Results.Unauthorized();
+            if (!TryGetUserId(user, out var userId))
+            {
+                return Results.Unauthorized();
+            }
 
             // Gọi Service xóa bài
             var isSuccess = await cauHoiService.DeleteCauHoiAsync(id, userId);
@@ -102,5 +119,15 @@ public static class CauHoiEndpoints
 
             return Results.Ok(new { Message = "Đã xóa câu hỏi thành công!" });
         });
+    }
+
+    private static bool TryGetUserId(ClaimsPrincipal user, out int userId)
+    {
+        var userIdString = user.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                           ?? user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value
+                           ?? user.FindFirst("sub")?.Value
+                           ?? user.FindFirst("id")?.Value;
+
+        return int.TryParse(userIdString, out userId);
     }
 }
