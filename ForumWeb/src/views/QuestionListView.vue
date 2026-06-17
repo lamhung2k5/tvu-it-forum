@@ -1,13 +1,40 @@
 <template>
   <div class="page-container">
     <section class="home-hero">
-      <div>
-        <el-tag type="warning" effect="light">Diễn đàn hỏi đáp IT</el-tag>
+      <div class="hero-overlay"></div>
+
+      <div class="hero-content">
+        <el-tag class="hero-badge">
+          Diễn đàn hỏi đáp IT
+        </el-tag>
+
         <h1>Hỏi đáp lập trình, cơ sở dữ liệu và công nghệ</h1>
-        <p>Chia sẻ vấn đề bạn đang gặp, nhận câu trả lời từ cộng đồng và lưu lại tri thức cho sinh viên CNTT.</p>
+
+        <p>
+          Chia sẻ vấn đề bạn đang gặp, nhận câu trả lời từ cộng đồng
+          và lưu lại tri thức cho sinh viên CNTT.
+        </p>
       </div>
-      <el-button v-if="isLoggedIn" type="primary" size="large" @click="$router.push('/questions/create')">Đặt câu hỏi</el-button>
-      <el-button v-else size="large" @click="$router.push('/login')">Đăng nhập để hỏi</el-button>
+
+      <div class="hero-actions">
+        <el-button
+          v-if="isLoggedIn"
+          type="primary"
+          class="btn-accent"
+          size="large"
+          @click="$router.push('/questions/create')"
+        >
+          Đặt câu hỏi
+        </el-button>
+
+        <el-button
+          v-else
+          size="large"
+          @click="$router.push('/login')"
+        >
+          Đăng nhập để hỏi
+        </el-button>
+      </div>
     </section>
 
     <el-card shadow="never" class="filter-card">
@@ -22,7 +49,13 @@
 
     <section v-loading="loading">
       <EmptyState v-if="!loading && questions.length === 0" description="Chưa có câu hỏi phù hợp.">
-        <el-button type="primary" @click="$router.push('/questions/create')">Đặt câu hỏi đầu tiên</el-button>
+      <el-button
+        type="primary"
+        class="btn-accent"
+        @click="$router.push('/questions/create')"
+      >
+        Đặt câu hỏi đầu tiên
+      </el-button>
       </EmptyState>
 
       <QuestionCard v-for="question in questions" :key="question.id" :question="question" />
@@ -87,18 +120,81 @@ function resetFilters() {
 
 <style scoped>
 .home-hero {
+  position: relative;
+  overflow: hidden;
+
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 18px;
+  gap: 24px;
+
+  min-height: 190px;
   margin-bottom: 18px;
-  padding: 24px;
-  background: linear-gradient(135deg, #fff4ec, #ffffff);
+  padding: 30px 32px;
+
   border: 1px solid var(--forum-border);
-  border-radius: 16px;
+  border-radius: 18px;
+
+  background-image: url('/images/tvu-hero.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
-.home-hero h1 { margin: 12px 0 8px; font-size: 30px; }
-.home-hero p { margin: 0; color: var(--forum-muted); max-width: 720px; line-height: 1.65; }
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+
+  /*
+    Vì ảnh của bạn đã tối sẵn nên overlay chỉ cần nhẹ.
+    Nếu dùng ảnh gốc chưa chỉnh tối, tăng opacity lên 0.55 - 0.7.
+  */
+  background: linear-gradient(
+    90deg,
+    rgba(15, 23, 42, 0.22) 0%,
+    rgba(30, 58, 138, 0.22) 55%,
+    rgba(30, 58, 138, 0.12) 100%
+  );
+}
+
+.hero-content,
+.hero-actions {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-content {
+  max-width: 780px;
+}
+
+.home-hero h1 {
+  margin: 14px 0 10px;
+  font-size: 32px;
+  line-height: 1.25;
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+}
+
+.home-hero p {
+  margin: 0;
+  max-width: 760px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 16px;
+  line-height: 1.65;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.22);
+}
+
+.hero-badge {
+  background: rgba(255, 255, 255, 0.92) !important;
+  color: var(--forum-primary) !important;
+  border-color: transparent !important;
+  font-weight: 600;
+}
+
+.hero-actions {
+  flex-shrink: 0;
+  padding-top: 2px;
+}
 .filter-card { margin-bottom: 18px; border-radius: 14px; }
 .filter-card :deep(.el-card__body) {
   display: grid;
@@ -106,7 +202,35 @@ function resetFilters() {
   gap: 12px;
 }
 @media (max-width: 980px) {
-  .home-hero { flex-direction: column; }
-  .filter-card :deep(.el-card__body) { grid-template-columns: 1fr; }
+  .home-hero {
+    flex-direction: column;
+    min-height: 220px;
+    padding: 26px 24px;
+  }
+
+  .hero-actions {
+    padding-top: 4px;
+  }
+
+  .filter-card :deep(.el-card__body) {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .home-hero {
+    min-height: 230px;
+    padding: 22px 18px;
+    border-radius: 16px;
+    background-position: center;
+  }
+
+  .home-hero h1 {
+    font-size: 24px;
+  }
+
+  .home-hero p {
+    font-size: 14px;
+  }
 }
 </style>

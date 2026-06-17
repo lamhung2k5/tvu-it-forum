@@ -112,3 +112,27 @@ export function initials(name = '') {
 export function isMine(ownerId, currentUser) {
   return Number(ownerId) > 0 && Number(ownerId) === Number(currentUser?.id_NguoiDung || currentUser?.id || 0)
 }
+
+export function formatRelativeTime(value) {
+  if (!value) return 'chưa rõ thời gian'
+
+  const date = new Date(String(value).replace(' ', 'T'))
+  if (Number.isNaN(date.getTime())) return value
+
+  const now = new Date()
+  const diffMs = now - date
+  const diffSeconds = Math.floor(diffMs / 1000)
+  const diffMinutes = Math.floor(diffSeconds / 60)
+  const diffHours = Math.floor(diffMinutes / 60)
+  const diffDays = Math.floor(diffHours / 24)
+  const diffMonths = Math.floor(diffDays / 30)
+  const diffYears = Math.floor(diffDays / 365)
+
+  if (diffSeconds < 60) return 'vừa xong'
+  if (diffMinutes < 60) return `${diffMinutes} phút trước`
+  if (diffHours < 24) return `${diffHours} giờ trước`
+  if (diffDays < 30) return `${diffDays} ngày trước`
+  if (diffMonths < 12) return `${diffMonths} tháng trước`
+
+  return `${diffYears} năm trước`
+}

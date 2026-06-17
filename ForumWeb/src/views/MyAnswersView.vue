@@ -9,25 +9,17 @@
 
     <el-card shadow="never" class="answer-list-card" v-loading="loading">
       <EmptyState v-if="!loading && answers.length === 0" description="Bạn chưa có câu trả lời nào." />
-      <div v-for="answer in answers" :key="answer.id" class="answer-row">
-        <div>
-          <router-link :to="`/questions/${answer.cauHoiId}`" class="answer-title">{{ answer.tieuDeCauHoi }}</router-link>
-          <p>{{ answer.noiDung }}</p>
-          <div class="answer-meta">
-            <el-tag v-if="answer.daChapNhan === 1" type="success">Được chấp nhận</el-tag>
-            <el-tag v-if="answer.isDeleted === 1" type="danger">Đã xóa mềm</el-tag>
-            <span>{{ answer.diemBinhChon }} điểm</span>
-            <span>{{ answer.soBinhLuan }} bình luận</span>
-            <span>{{ formatDate(answer.ngayTao) }}</span>
-          </div>
-        </div>
-        <el-button @click="$router.push(`/questions/${answer.cauHoiId}`)">Xem câu hỏi</el-button>
-      </div>
+      <AnswerCard
+        v-for="answer in answers"
+        :key="answer.id"
+        :answer="answer"
+      />
     </el-card>
   </div>
 </template>
 
 <script setup>
+import AnswerCard from '../components/AnswerCard.vue'
 import { onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { getMyAnswers } from '../api/userApi'
@@ -54,7 +46,15 @@ async function load() {
 .answer-list-card { border-radius: 14px; }
 .answer-row { display: flex; justify-content: space-between; gap: 18px; border-bottom: 1px solid var(--forum-border); padding: 16px 0; }
 .answer-row:last-child { border-bottom: none; }
-.answer-title { color: #0c65a5; font-weight: 700; font-size: 17px; }
+.answer-title {
+  color: var(--forum-link);
+  font-weight: 700;
+  font-size: 17px;
+}
+
+.answer-title:hover {
+  color: var(--forum-primary-dark);
+}
 .answer-row p { color: var(--forum-muted); line-height: 1.6; }
 .answer-meta { display: flex; gap: 8px; flex-wrap: wrap; color: var(--forum-muted); font-size: 13px; }
 @media (max-width: 760px) { .answer-row { flex-direction: column; } }

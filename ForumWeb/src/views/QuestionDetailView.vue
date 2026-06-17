@@ -22,7 +22,13 @@
 
             <p class="content-text">{{ question.noiDung }}</p>
             <div class="tag-list" v-if="question.tags.length">
-              <el-tag v-for="tag in question.tags" :key="tag" type="warning" effect="light">{{ tag }}</el-tag>
+              <el-tag
+                v-for="tag in question.tags"
+                :key="tag"
+                class="forum-tag"
+              >
+                {{ tag }}
+              </el-tag>
             </div>
           </div>
         </div>

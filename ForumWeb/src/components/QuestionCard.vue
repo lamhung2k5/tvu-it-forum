@@ -2,23 +2,58 @@
   <el-card shadow="hover" class="question-card">
     <div class="question-layout">
       <div class="question-stats">
-        <div><strong>{{ question.diemBinhChon }}</strong><span>vote</span></div>
-        <div><strong>{{ question.soCauTraLoi }}</strong><span>trả lời</span></div>
-        <div><strong>{{ question.soBinhLuan }}</strong><span>bình luận</span></div>
+        <div class="stat-item">
+          <span class="stat-number">{{ question.diemBinhChon }}</span>
+          <span class="stat-label">vote</span>
+        </div>
+
+        <div
+          class="stat-item answer-stat"
+          :class="{ 'has-answer': question.soCauTraLoi > 0 }"
+        >
+          <span class="stat-number">{{ question.soCauTraLoi }}</span>
+          <span class="stat-label">trả lời</span>
+        </div>
+
+        <div class="stat-item">
+          <span class="stat-number">{{ question.luotXem || 0 }}</span>
+          <span class="stat-label">lượt xem</span>
+        </div>
       </div>
 
       <div class="question-main">
-        <router-link :to="`/questions/${question.id}`" class="question-title">{{ question.tieuDe }}</router-link>
-        <p class="question-excerpt">{{ shortText(question.noiDung, 190) }}</p>
-        <div class="question-meta">
+        <router-link
+          :to="`/questions/${question.id}`"
+          class="question-title"
+        >
+          {{ question.tieuDe }}
+        </router-link>
+
+        <p class="question-excerpt">
+          {{ shortText(question.noiDung, 210) }}
+        </p>
+
+        <div class="question-bottom">
           <div class="tag-list">
-            <el-tag v-for="tag in question.tags" :key="tag" type="warning" effect="light" size="small">{{ tag }}</el-tag>
+            <el-tag
+              v-for="tag in question.tags || []"
+              :key="tag"
+              class="forum-tag"
+              size="small"
+            >
+              {{ tag }}
+            </el-tag>
           </div>
+
           <div class="author">
-            <UserAvatar :name="question.hoTen" :size="28" />
-            <span>{{ question.hoTen }}</span>
-            <span>·</span>
-            <span>{{ formatDate(question.ngayTao) }}</span>
+            <UserAvatar :name="question.hoTen" :size="30" />
+
+            <div class="author-info">
+              <span class="author-name">{{ question.hoTen }}</span>
+              <span class="author-time">
+                đã hỏi {{ formatRelativeTime(question.ngayTao) }}
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -27,82 +62,196 @@
 </template>
 
 <script setup>
-import { shortText, formatDate } from '../utils/format'
+import { shortText, formatRelativeTime } from '../utils/format'
 import UserAvatar from './UserAvatar.vue'
 
-defineProps({ question: { type: Object, required: true } })
+defineProps({
+  question: { type: Object, required: true }
+})
 </script>
 
 <style scoped>
 .question-card {
-  border-radius: 14px;
-  margin-bottom: 14px;
+  border-radius: 16px;
+  margin-bottom: 16px;
+  border: 1px solid var(--forum-border);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.question-card:hover {
+  transform: translateY(-1px);
 }
 
 .question-layout {
-  display: flex;
+  display: grid;
+  grid-template-columns: 105px 1fr;
   gap: 18px;
+  align-items: flex-start;
 }
 
 .question-stats {
-  width: 86px;
-  display: grid;
-  gap: 8px;
-  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 9px;
+  padding-top: 3px;
   color: var(--forum-muted);
-  text-align: center;
+  text-align: right;
+  flex-shrink: 0;
 }
 
-.question-stats div {
-  border: 1px solid var(--forum-border);
-  border-radius: 10px;
-  padding: 8px 6px;
-  background: #fbfbfc;
+.stat-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 4px;
+
+  min-height: 22px;
+  padding: 0;
+  white-space: nowrap;
+
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--forum-muted);
 }
 
-.question-stats strong {
-  display: block;
-  color: var(--forum-text);
-  font-size: 18px;
+.stat-number,
+.stat-label {
+  font-size: 14px;
+  font-weight: 400;
+  color: inherit;
 }
 
-.question-stats span { font-size: 12px; }
+.answer-stat.has-answer {
+  color: #15803d;
+  font-weight: 500;
+}
 
-.question-main { min-width: 0; flex: 1; }
+.question-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 130px;
+}
 
 .question-title {
+  width: fit-content;
   font-size: 20px;
   font-weight: 700;
-  color: #0c65a5;
+  color: var(--forum-primary);
   line-height: 1.35;
+  text-decoration: none;
 }
 
-.question-title:hover { color: var(--forum-primary); }
+.question-title:hover {
+  color: var(--forum-primary-dark);
+  text-decoration: underline;
+}
 
 .question-excerpt {
   margin: 9px 0 14px;
-  color: var(--forum-muted);
+  color: #4b5563;
   line-height: 1.55;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.question-meta {
+.question-bottom {
+  margin-top: auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.tag-list {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
   flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
 }
 
 .author {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
+  flex-shrink: 0;
   color: var(--forum-muted);
-  font-size: 13px;
 }
 
-@media (max-width: 640px) {
-  .question-layout { flex-direction: column; gap: 12px; }
-  .question-stats { width: 100%; grid-template-columns: repeat(3, 1fr); }
+.author-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1.2;
+}
+
+.author-name {
+  color: var(--forum-text);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.author-time {
+  color: var(--forum-muted);
+  font-size: 12px;
+}
+
+/* Tablet / màn hình nhỏ */
+@media (max-width: 760px) {
+  .question-layout {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .question-stats {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
+    text-align: left;
+  }
+
+  .stat-item {
+    justify-content: flex-start;
+  }
+
+  .question-main {
+    min-height: auto;
+  }
+
+  .question-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .author {
+    align-self: flex-end;
+  }
+}
+
+/* Điện thoại nhỏ */
+@media (max-width: 480px) {
+  .question-title {
+    font-size: 18px;
+  }
+
+  .question-excerpt {
+    font-size: 14px;
+  }
+
+  .question-stats {
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .stat-number,
+  .stat-label {
+    font-size: 13px;
+  }
 }
 </style>

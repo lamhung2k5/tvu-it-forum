@@ -1,19 +1,29 @@
 <template>
-  <RouterView v-if="isAuthLayout" />
-
-  <div v-else class="forum-app">
+  <div class="forum-app">
+    <AppTopBar />
     <AppHeader :user="currentUser" />
-    <div class="forum-body">
+
+    <div
+      class="forum-body"
+      :class="{ 'auth-body': isAuthLayout }"
+    >
       <ForumSidebar
+        v-if="!isAuthLayout"
         :is-logged-in="isLoggedIn"
         :is-admin="isUserAdmin"
         @select-category="handleCategory"
         @select-tag="handleTag"
       />
-      <main class="forum-content">
+
+      <main
+        class="forum-content"
+        :class="{ 'auth-content': isAuthLayout }"
+      >
         <RouterView />
       </main>
     </div>
+
+    <AppFooter />
   </div>
 </template>
 
@@ -23,6 +33,8 @@ import { useRoute, useRouter } from 'vue-router'
 import { getCurrentUser, isAuthenticated, isAdmin } from './utils/auth'
 import AppHeader from './components/AppHeader.vue'
 import ForumSidebar from './components/ForumSidebar.vue'
+import AppFooter from './components/AppFooter.vue'
+import AppTopBar from './components/AppTopBar.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -64,9 +76,13 @@ onUnmounted(() => window.removeEventListener('auth-changed', refreshAuth))
 <style scoped>
 .forum-app {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--forum-bg);
 }
 
 .forum-body {
+  flex: 1;
   display: flex;
   align-items: stretch;
 }
@@ -74,11 +90,19 @@ onUnmounted(() => window.removeEventListener('auth-changed', refreshAuth))
 .forum-content {
   flex: 1;
   min-width: 0;
-  padding: 24px;
+  padding: 18px;
 }
 
-@media (max-width: 980px) {
-  .forum-body { flex-direction: column; }
-  .forum-content { padding: 16px; }
+/* Layout riêng cho trang login/register */
+.auth-body {
+  display: block;
+  background:
+    radial-gradient(circle at top left, rgba(30, 58, 138, 0.08), transparent 34%),
+    linear-gradient(135deg, #f8fafc 0%, #ffffff 55%, #f3f4f6 100%);
+}
+
+.auth-content {
+  padding: 0;
+  min-height: 620px;
 }
 </style>

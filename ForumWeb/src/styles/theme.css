@@ -1,21 +1,36 @@
 :root {
-  --el-color-primary: #f48024;
-  --el-color-primary-light-3: #f7a15d;
-  --el-color-primary-light-5: #f9bf91;
-  --el-color-primary-light-7: #fbdcc5;
-  --el-color-primary-light-8: #fde8d8;
-  --el-color-primary-light-9: #fff4ec;
-  --el-color-primary-dark-2: #c95f09;
+  /* Màu chủ đạo: xanh học thuật / công nghệ */
+  --el-color-primary: #1E3A8A;
+  --el-color-primary-light-3: #4b62a1;
+  --el-color-primary-light-5: #7889b9;
+  --el-color-primary-light-7: #b4bdd8;
+  --el-color-primary-light-8: #d2d8e8;
+  --el-color-primary-light-9: #e8ebf3;
+  --el-color-primary-dark-2: #172f72;
 
-  --forum-primary: #f48024;
-  --forum-primary-dark: #c95f09;
-  --forum-primary-soft: #fff4ec;
-  --forum-bg: #f7f8fa;
+  --forum-primary: #1E3A8A;
+  --forum-primary-dark: #172f72;
+  --forum-primary-soft: #e8ebf3;
+
+  /* Màu nhấn: chỉ dùng cho CTA quan trọng */
+  --forum-accent: #f48024;
+  --forum-accent-hover: #e06d12;
+  --forum-accent-soft: #fff4ec;
+
+  /* Màu giao diện chung */
+  --forum-bg: #f3f4f6;
   --forum-surface: #ffffff;
-  --forum-border: #e4e7ed;
-  --forum-text: #2f3337;
-  --forum-muted: #6a737c;
+  --forum-border: #e5e7eb;
+  --forum-text: #1f2937;
+  --forum-muted: #6b7280;
   --forum-sidebar: #fbfbfc;
+  --forum-topbar: #1E3A8A;
+
+  /* Link và tag */
+  --forum-link: #1E3A8A;
+  --forum-tag-bg: #f3f4f6;
+  --forum-tag-text: #4b5563;
+  --forum-tag-hover-bg: #e8ebf3;
 }
 
 * { box-sizing: border-box; }
@@ -29,6 +44,33 @@ body {
 }
 
 a { color: inherit; text-decoration: none; }
+
+.el-button.btn-accent {
+  --el-button-bg-color: var(--forum-accent);
+  --el-button-border-color: var(--forum-accent);
+  --el-button-text-color: #ffffff;
+
+  --el-button-hover-bg-color: var(--forum-accent-hover);
+  --el-button-hover-border-color: var(--forum-accent-hover);
+  --el-button-hover-text-color: #ffffff;
+
+  --el-button-active-bg-color: var(--forum-accent-hover);
+  --el-button-active-border-color: var(--forum-accent-hover);
+  --el-button-active-text-color: #ffffff;
+}
+
+.el-tag.forum-tag {
+  background-color: var(--forum-tag-bg) !important;
+  color: var(--forum-tag-text) !important;
+  border-color: transparent !important;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.el-tag.forum-tag:hover {
+  background-color: var(--forum-tag-hover-bg) !important;
+  color: var(--forum-primary) !important;
+}
 
 .page-container {
   width: 100%;
@@ -84,8 +126,9 @@ a { color: inherit; text-decoration: none; }
   font-weight: 600;
 }
 
-.orange-link:hover { color: var(--forum-primary-dark); }
-
+.orange-link:hover {
+  color: var(--forum-primary-dark);
+}
 .auth-page {
   min-height: 100vh;
   display: grid;

@@ -5,18 +5,34 @@
         <h1 class="page-title">Dashboard của tôi</h1>
         <p class="page-subtitle">Theo dõi hoạt động cá nhân trong diễn đàn.</p>
       </div>
-      <el-button type="primary" @click="$router.push('/questions/create')">Đặt câu hỏi</el-button>
+
+      <el-button
+        type="primary"
+        class="btn-accent"
+        @click="$router.push('/questions/create')"
+      >
+        Đặt câu hỏi
+      </el-button>
     </div>
 
     <el-skeleton v-if="loading" :rows="8" animated />
+
     <template v-else>
       <el-card shadow="never" class="profile-summary" v-if="profile">
-        <UserAvatar :name="profile.hoTen" :src="profile.anhDaiDien" :size="64" />
+        <UserAvatar
+          :name="profile.hoTen"
+          :src="profile.anhDaiDien"
+          :size="64"
+        />
+
         <div>
           <h2>Xin chào, {{ profile.hoTen }}</h2>
           <p>{{ profile.email }} · {{ profile.vaiTro }}</p>
         </div>
-        <el-button @click="$router.push('/profile')">Xem hồ sơ</el-button>
+
+        <el-button @click="$router.push('/profile')">
+          Xem hồ sơ
+        </el-button>
       </el-card>
 
       <div class="stat-grid">
@@ -29,23 +45,46 @@
       <div class="dashboard-grid">
         <el-card shadow="never" class="section-card">
           <template #header>
-            <div class="section-head"><span>Câu hỏi gần đây</span><el-button link @click="$router.push('/my-questions')">Xem tất cả</el-button></div>
+            <div class="section-head">
+              <span>Câu hỏi gần đây</span>
+              <el-button link @click="$router.push('/my-questions')">
+                Xem tất cả
+              </el-button>
+            </div>
           </template>
-          <EmptyState v-if="questions.length === 0" description="Bạn chưa đăng câu hỏi nào." />
-          <QuestionCard v-for="q in questions" :key="q.id" :question="q" />
+
+          <EmptyState
+            v-if="questions.length === 0"
+            description="Bạn chưa đăng câu hỏi nào."
+          />
+
+          <QuestionCard
+            v-for="q in questions"
+            :key="q.id"
+            :question="q"
+          />
         </el-card>
 
         <el-card shadow="never" class="section-card">
           <template #header>
-            <div class="section-head"><span>Câu trả lời gần đây</span><el-button link @click="$router.push('/my-answers')">Xem tất cả</el-button></div>
+            <div class="section-head">
+              <span>Câu trả lời gần đây</span>
+              <el-button link @click="$router.push('/my-answers')">
+                Xem tất cả
+              </el-button>
+            </div>
           </template>
-          <EmptyState v-if="answers.length === 0" description="Bạn chưa có câu trả lời nào." />
-          <div v-for="a in answers" :key="a.id" class="answer-row" @click="$router.push(`/questions/${a.cauHoiId}`)">
-            <el-tag v-if="a.daChapNhan === 1" type="success" size="small">Được chấp nhận</el-tag>
-            <strong>{{ a.tieuDeCauHoi }}</strong>
-            <p>{{ a.noiDung }}</p>
-            <small>{{ a.diemBinhChon }} điểm · {{ formatDate(a.ngayTao) }}</small>
-          </div>
+
+          <EmptyState
+            v-if="answers.length === 0"
+            description="Bạn chưa có câu trả lời nào."
+          />
+
+          <AnswerCard
+            v-for="a in answers"
+            :key="a.id"
+            :answer="a"
+          />
         </el-card>
       </div>
     </template>
@@ -56,10 +95,11 @@
 import { onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { getMyDashboard } from '../api/userApi'
-import { normalizeProfile, normalizeQuestion, normalizeAnswer, pick, formatDate } from '../utils/format'
+import { normalizeProfile, normalizeQuestion, normalizeAnswer, pick } from '../utils/format'
 import UserAvatar from '../components/UserAvatar.vue'
 import MetricCard from '../components/MetricCard.vue'
 import QuestionCard from '../components/QuestionCard.vue'
+import AnswerCard from '../components/AnswerCard.vue'
 import EmptyState from '../components/EmptyState.vue'
 
 const loading = ref(false)
@@ -71,11 +111,17 @@ onMounted(loadDashboard)
 
 async function loadDashboard() {
   loading.value = true
+
   try {
     const data = await getMyDashboard()
+
     profile.value = normalizeProfile(pick(data, ['profile', 'Profile'], {}))
-    questions.value = (pick(data, ['cauHoiGanDay', 'CauHoiGanDay'], []) || []).map(normalizeQuestion)
-    answers.value = (pick(data, ['cauTraLoiGanDay', 'CauTraLoiGanDay'], []) || []).map(normalizeAnswer)
+
+    questions.value = (pick(data, ['cauHoiGanDay', 'CauHoiGanDay'], []) || [])
+      .map(normalizeQuestion)
+
+    answers.value = (pick(data, ['cauTraLoiGanDay', 'CauTraLoiGanDay'], []) || [])
+      .map(normalizeAnswer)
   } catch (error) {
     ElMessage.error(error.message || 'Không tải được dashboard.')
   } finally {
@@ -89,17 +135,54 @@ async function loadDashboard() {
   border-radius: 14px;
   margin-bottom: 14px;
 }
-.profile-summary :deep(.el-card__body) { display: flex; align-items: center; gap: 16px; }
-.profile-summary h2 { margin: 0 0 4px; }
-.profile-summary p { margin: 0; color: var(--forum-muted); }
-.profile-summary .el-button { margin-left: auto; }
-.dashboard-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 16px; margin-top: 16px; }
-.section-card { border-radius: 14px; }
-.section-head { display: flex; justify-content: space-between; align-items: center; }
-.answer-row { border-bottom: 1px solid var(--forum-border); padding: 12px 0; cursor: pointer; }
-.answer-row:last-child { border-bottom: none; }
-.answer-row strong { display: block; margin: 6px 0; color: #0c65a5; }
-.answer-row p { margin: 0 0 6px; color: var(--forum-muted); line-height: 1.5; }
-.answer-row small { color: var(--forum-muted); }
-@media (max-width: 980px) { .dashboard-grid { grid-template-columns: 1fr; } .profile-summary :deep(.el-card__body) { flex-wrap: wrap; } .profile-summary .el-button { margin-left: 0; } }
+
+.profile-summary :deep(.el-card__body) {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.profile-summary h2 {
+  margin: 0 0 4px;
+}
+
+.profile-summary p {
+  margin: 0;
+  color: var(--forum-muted);
+}
+
+.profile-summary .el-button {
+  margin-left: auto;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.section-card {
+  border-radius: 14px;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (max-width: 980px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-summary :deep(.el-card__body) {
+    flex-wrap: wrap;
+  }
+
+  .profile-summary .el-button {
+    margin-left: 0;
+  }
+}
 </style>
