@@ -35,7 +35,17 @@
             </span>
 
             <span class="answer-author-time">
-              <strong>{{ answerAuthor }}</strong>
+              <router-link
+                v-if="answerUserId"
+                :to="`/users/${answerUserId}`"
+                class="answer-author-link"
+                @click.stop
+              >
+                {{ answerAuthor }}
+              </router-link>
+
+              <strong v-else>{{ answerAuthor }}</strong>
+
               · đã trả lời {{ formatRelativeTime(answer.ngayTao) }}
             </span>
           </div>
@@ -163,6 +173,16 @@ const answerAuthor = computed(() => {
     || 'Người dùng'
 })
 
+const answerUserId = computed(() => {
+  const id = props.answer.userId
+    || props.answer.UserId
+    || props.answer.idNguoiDung
+    || props.answer.ID_NguoiDung
+    || props.answer.id_NguoiDung
+
+  return id ? Number(id) : null
+})
+
 function handleCardClick() {
   if (props.detailMode) return
 
@@ -277,9 +297,16 @@ function handleCardClick() {
   font-size: 13px;
 }
 
-.answer-author-time strong {
+.answer-author-time strong,
+.answer-author-link {
   color: var(--forum-text);
   font-weight: 600;
+  text-decoration: none;
+}
+
+.answer-author-link:hover {
+  color: var(--forum-primary);
+  text-decoration: underline;
 }
 
 .accepted-tag {

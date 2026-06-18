@@ -11,4 +11,7 @@ public interface IUserProfileService
     Task<IEnumerable<UserQuestionResponse>> GetMyQuestionsAsync(int userId);
     Task<IEnumerable<UserAnswerResponse>> GetMyAnswersAsync(int userId);
     Task<IEnumerable<UserCommentResponse>> GetMyCommentsAsync(int userId);
+
+    Task<IEnumerable<UserQuestionResponse>> GetPublicQuestionsAsync(int userId);
+    Task<IEnumerable<UserAnswerResponse>> GetPublicAnswersAsync(int userId);
 }

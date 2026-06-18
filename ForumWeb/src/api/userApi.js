@@ -30,3 +30,11 @@ export function getMyComments() {
 export function getPublicProfile(id) {
   return request(`/api/users/${id}/profile`)
 }
+
+export function getPublicUserQuestions(id) {
+  return request(`/api/users/${id}/questions`)
+}
+
+export function getPublicUserAnswers(id) {
+  return request(`/api/users/${id}/answers`)
+}

@@ -86,10 +86,15 @@ public class UserProfileRepository : IUserProfileRepository
         return rowsAffected > 0;
     }
 
-    public async Task<IEnumerable<UserQuestionResponse>> GetMyQuestionsAsync(int userId, int limit = 0)
+    public async Task<IEnumerable<UserQuestionResponse>> GetMyQuestionsAsync(int userId, int limit = 0, bool includeDeleted = true)
     {
         using var connection = _connectionFactory.CreateConnection();
+
         var limitClause = limit > 0 ? " LIMIT @Limit" : string.Empty;
+        var deletedFilter = includeDeleted ? string.Empty : " AND c.IsDeleted = 0";
+        var orderClause = includeDeleted
+            ? "ORDER BY c.IsDeleted ASC, c.ID_CauHoi DESC"
+            : "ORDER BY c.ID_CauHoi DESC";
 
         var sql = $@"
             SELECT
@@ -102,23 +107,23 @@ public class UserProfileRepository : IUserProfileRepository
                 c.NoiDung,
                 c.LuotXem,
                 (SELECT COALESCE(SUM(bc.GiaTri), 0)
-                 FROM BINHCHON bc
-                 WHERE bc.LoaiDoiTuong = 'CAUHOI'
-                   AND bc.ID_DoiTuong = c.ID_CauHoi) AS DiemBinhChon,
+                FROM BINHCHON bc
+                WHERE bc.LoaiDoiTuong = 'CAUHOI'
+                AND bc.ID_DoiTuong = c.ID_CauHoi) AS DiemBinhChon,
                 (SELECT COUNT(1)
-                 FROM CAUTRALOI ctl
-                 WHERE ctl.ID_CauHoi = c.ID_CauHoi
-                   AND ctl.IsDeleted = 0) AS SoCauTraLoi,
+                FROM CAUTRALOI ctl
+                WHERE ctl.ID_CauHoi = c.ID_CauHoi
+                AND ctl.IsDeleted = 0) AS SoCauTraLoi,
                 (SELECT COUNT(1)
-                 FROM BINHLUAN bl
-                 WHERE bl.LoaiDoiTuong = 'CAUHOI'
-                   AND bl.ID_DoiTuong = c.ID_CauHoi
-                   AND bl.IsDeleted = 0) AS SoBinhLuan,
+                FROM BINHLUAN bl
+                WHERE bl.LoaiDoiTuong = 'CAUHOI'
+                AND bl.ID_DoiTuong = c.ID_CauHoi
+                AND bl.IsDeleted = 0) AS SoBinhLuan,
                 (SELECT GROUP_CONCAT(t.TenThe, ',')
-                 FROM CauHoi_The cht
-                 JOIN THE t ON cht.ID_The = t.ID_The
-                 WHERE cht.ID_CauHoi = c.ID_CauHoi
-                   AND t.TrangThai = 1) AS Tags,
+                FROM CauHoi_The cht
+                JOIN THE t ON cht.ID_The = t.ID_The
+                WHERE cht.ID_CauHoi = c.ID_CauHoi
+                AND t.TrangThai = 1) AS Tags,
                 c.IsDeleted,
                 c.NgayTao,
                 c.NgayCapNhat
@@ -126,15 +131,108 @@ public class UserProfileRepository : IUserProfileRepository
             JOIN CHUYENMUC cm ON c.ID_ChuyenMuc = cm.ID_ChuyenMuc
             JOIN NGUOIDUNG nd ON c.ID_NguoiDung = nd.ID_NguoiDung
             WHERE c.ID_NguoiDung = @UserId
-            ORDER BY c.IsDeleted ASC, c.ID_CauHoi DESC{limitClause};";
+            {deletedFilter}
+            {orderClause}{limitClause};";
 
-        return await connection.QueryAsync<UserQuestionResponse>(sql, new { UserId = userId, Limit = limit });
+        return await connection.QueryAsync<UserQuestionResponse>(sql, new
+        {
+            UserId = userId,
+            Limit = limit
+        });
     }
 
-    public async Task<IEnumerable<UserAnswerResponse>> GetMyAnswersAsync(int userId, int limit = 0)
+    public async Task<IEnumerable<UserQuestionResponse>> GetPublicQuestionsAsync(int userId)
     {
         using var connection = _connectionFactory.CreateConnection();
+
+        var sql = @"
+            SELECT
+                c.ID_CauHoi,
+                c.ID_NguoiDung,
+                nd.HoTen,
+                c.ID_ChuyenMuc,
+                cm.TenChuyenMuc,
+                c.TieuDe,
+                c.NoiDung,
+                c.LuotXem,
+                (SELECT COALESCE(SUM(bc.GiaTri), 0)
+                FROM BINHCHON bc
+                WHERE bc.LoaiDoiTuong = 'CAUHOI'
+                AND bc.ID_DoiTuong = c.ID_CauHoi) AS DiemBinhChon,
+                (SELECT COUNT(1)
+                FROM CAUTRALOI ctl
+                WHERE ctl.ID_CauHoi = c.ID_CauHoi
+                AND ctl.IsDeleted = 0) AS SoCauTraLoi,
+                (SELECT COUNT(1)
+                FROM BINHLUAN bl
+                WHERE bl.LoaiDoiTuong = 'CAUHOI'
+                AND bl.ID_DoiTuong = c.ID_CauHoi
+                AND bl.IsDeleted = 0) AS SoBinhLuan,
+                (SELECT GROUP_CONCAT(t.TenThe, ',')
+                FROM CauHoi_The cht
+                JOIN THE t ON cht.ID_The = t.ID_The
+                WHERE cht.ID_CauHoi = c.ID_CauHoi
+                AND t.TrangThai = 1) AS Tags,
+                c.IsDeleted,
+                c.NgayTao,
+                c.NgayCapNhat
+            FROM CAUHOI c
+            JOIN CHUYENMUC cm ON c.ID_ChuyenMuc = cm.ID_ChuyenMuc
+            JOIN NGUOIDUNG nd ON c.ID_NguoiDung = nd.ID_NguoiDung
+            WHERE c.ID_NguoiDung = @UserId
+            AND c.IsDeleted = 0
+            AND nd.TrangThai = 1
+            ORDER BY c.ID_CauHoi DESC;";
+
+        return await connection.QueryAsync<UserQuestionResponse>(sql, new { UserId = userId });
+    }
+
+    public async Task<IEnumerable<UserAnswerResponse>> GetPublicAnswersAsync(int userId)
+    {
+        using var connection = _connectionFactory.CreateConnection();
+
+        var sql = @"
+            SELECT
+                ctl.ID_CauTraLoi,
+                ctl.ID_CauHoi,
+                ch.TieuDe AS TieuDeCauHoi,
+                ctl.ID_NguoiDung,
+                nd.HoTen,
+                ctl.NoiDung,
+                ctl.DaChapNhan,
+                (SELECT COALESCE(SUM(bc.GiaTri), 0)
+                FROM BINHCHON bc
+                WHERE bc.LoaiDoiTuong = 'CAUTRALOI'
+                AND bc.ID_DoiTuong = ctl.ID_CauTraLoi) AS DiemBinhChon,
+                (SELECT COUNT(1)
+                FROM BINHLUAN bl
+                WHERE bl.LoaiDoiTuong = 'CAUTRALOI'
+                AND bl.ID_DoiTuong = ctl.ID_CauTraLoi
+                AND bl.IsDeleted = 0) AS SoBinhLuan,
+                ctl.IsDeleted,
+                ctl.NgayTao,
+                ctl.NgayCapNhat
+            FROM CAUTRALOI ctl
+            JOIN CAUHOI ch ON ctl.ID_CauHoi = ch.ID_CauHoi
+            JOIN NGUOIDUNG nd ON ctl.ID_NguoiDung = nd.ID_NguoiDung
+            WHERE ctl.ID_NguoiDung = @UserId
+            AND ctl.IsDeleted = 0
+            AND ch.IsDeleted = 0
+            AND nd.TrangThai = 1
+            ORDER BY ctl.ID_CauTraLoi DESC;";
+
+        return await connection.QueryAsync<UserAnswerResponse>(sql, new { UserId = userId });
+    }
+
+    public async Task<IEnumerable<UserAnswerResponse>> GetMyAnswersAsync(int userId, int limit = 0, bool includeDeleted = true)
+    {
+        using var connection = _connectionFactory.CreateConnection();
+
         var limitClause = limit > 0 ? " LIMIT @Limit" : string.Empty;
+        var deletedFilter = includeDeleted ? string.Empty : " AND ctl.IsDeleted = 0 AND ch.IsDeleted = 0";
+        var orderClause = includeDeleted
+            ? "ORDER BY ctl.IsDeleted ASC, ctl.ID_CauTraLoi DESC"
+            : "ORDER BY ctl.ID_CauTraLoi DESC";
 
         var sql = $@"
             SELECT
@@ -146,14 +244,14 @@ public class UserProfileRepository : IUserProfileRepository
                 ctl.NoiDung,
                 ctl.DaChapNhan,
                 (SELECT COALESCE(SUM(bc.GiaTri), 0)
-                 FROM BINHCHON bc
-                 WHERE bc.LoaiDoiTuong = 'CAUTRALOI'
-                   AND bc.ID_DoiTuong = ctl.ID_CauTraLoi) AS DiemBinhChon,
+                FROM BINHCHON bc
+                WHERE bc.LoaiDoiTuong = 'CAUTRALOI'
+                AND bc.ID_DoiTuong = ctl.ID_CauTraLoi) AS DiemBinhChon,
                 (SELECT COUNT(1)
-                 FROM BINHLUAN bl
-                 WHERE bl.LoaiDoiTuong = 'CAUTRALOI'
-                   AND bl.ID_DoiTuong = ctl.ID_CauTraLoi
-                   AND bl.IsDeleted = 0) AS SoBinhLuan,
+                FROM BINHLUAN bl
+                WHERE bl.LoaiDoiTuong = 'CAUTRALOI'
+                AND bl.ID_DoiTuong = ctl.ID_CauTraLoi
+                AND bl.IsDeleted = 0) AS SoBinhLuan,
                 ctl.IsDeleted,
                 ctl.NgayTao,
                 ctl.NgayCapNhat
@@ -161,9 +259,14 @@ public class UserProfileRepository : IUserProfileRepository
             JOIN CAUHOI ch ON ctl.ID_CauHoi = ch.ID_CauHoi
             JOIN NGUOIDUNG nd ON ctl.ID_NguoiDung = nd.ID_NguoiDung
             WHERE ctl.ID_NguoiDung = @UserId
-            ORDER BY ctl.IsDeleted ASC, ctl.ID_CauTraLoi DESC{limitClause};";
+            {deletedFilter}
+            {orderClause}{limitClause};";
 
-        return await connection.QueryAsync<UserAnswerResponse>(sql, new { UserId = userId, Limit = limit });
+        return await connection.QueryAsync<UserAnswerResponse>(sql, new
+        {
+            UserId = userId,
+            Limit = limit
+        });
     }
 
     public async Task<IEnumerable<UserCommentResponse>> GetMyCommentsAsync(int userId, int limit = 0)

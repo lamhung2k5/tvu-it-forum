@@ -15,8 +15,23 @@
             <div class="detail-head">
               <div>
                 <h1 class="page-title">{{ question.tieuDe }}</h1>
+
                 <p class="page-subtitle">
-                  {{ question.tenChuyenMuc }} · {{ question.hoTen }} · {{ formatDate(question.ngayTao) }}
+                  {{ question.tenChuyenMuc }} ·
+
+                  <router-link
+                    v-if="question.userId"
+                    :to="`/users/${question.userId}`"
+                    class="profile-link"
+                  >
+                    {{ question.hoTen }}
+                  </router-link>
+
+                  <span v-else>
+                    {{ question.hoTen }}
+                  </span>
+
+                  · {{ formatDate(question.ngayTao) }}
                 </p>
               </div>
 
@@ -68,7 +83,22 @@
           class="comment-item"
         >
           <p>{{ comment.noiDung }}</p>
-          <small>{{ comment.hoTen }} · {{ formatDate(comment.ngayTao) }}</small>
+
+          <small>
+            <router-link
+              v-if="comment.userId"
+              :to="`/users/${comment.userId}`"
+              class="comment-author-link"
+            >
+              {{ comment.hoTen }}
+            </router-link>
+
+            <span v-else>
+              {{ comment.hoTen }}
+            </span>
+
+            · {{ formatDate(comment.ngayTao) }}
+          </small>
 
           <span v-if="isOwner(comment)" class="inline-actions">
             <el-button link size="small" @click="editComment(comment)">
@@ -128,7 +158,7 @@
           :answer="answer"
           detail-mode
           :is-owner="isOwner(answer)"
-          :can-accept="isQuestionOwner && Number(answer.daChapNhan) !== 1"
+          :can-accept="isQuestionOwner && !isOwner(answer) && Number(answer.daChapNhan) !== 1"
           :can-unaccept="isQuestionOwner && Number(answer.daChapNhan) === 1"
           :can-interact="isLoggedIn"
           @vote="voteAnswerHandler(answer, $event)"
@@ -146,7 +176,23 @@
               class="comment-item mini"
             >
               <p>{{ comment.noiDung }}</p>
-              <small>{{ comment.hoTen }} · {{ formatDate(comment.ngayTao) }}</small>
+
+              <small>
+                <router-link
+                  v-if="comment.userId"
+                  :to="`/users/${comment.userId}`"
+                  class="comment-author-link"
+                  @click.stop
+                >
+                  {{ comment.hoTen }}
+                </router-link>
+
+                <span v-else>
+                  {{ comment.hoTen }}
+                </span>
+
+                · {{ formatDate(comment.ngayTao) }}
+              </small>
 
               <span v-if="isOwner(comment)" class="inline-actions">
                 <el-button link size="small" @click="editComment(comment)">
@@ -625,6 +671,17 @@ async function deleteQuestionHandler() {
   gap: 8px;
 }
 
+.profile-link {
+  color: var(--forum-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.profile-link:hover {
+  color: var(--forum-primary-dark);
+  text-decoration: underline;
+}
+
 .content-text {
   white-space: pre-wrap;
   line-height: 1.75;
@@ -668,6 +725,17 @@ async function deleteQuestionHandler() {
 
 .comment-item small {
   color: var(--forum-muted);
+}
+
+.comment-author-link {
+  color: var(--forum-text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.comment-author-link:hover {
+  color: var(--forum-primary);
+  text-decoration: underline;
 }
 
 .inline-actions {

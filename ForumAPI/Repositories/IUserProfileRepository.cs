@@ -6,7 +6,10 @@ public interface IUserProfileRepository
 {
     Task<UserProfileResponse?> GetProfileAsync(int userId, bool includeEmail);
     Task<bool> UpdateProfileAsync(int userId, string hoTen);
-    Task<IEnumerable<UserQuestionResponse>> GetMyQuestionsAsync(int userId, int limit = 0);
-    Task<IEnumerable<UserAnswerResponse>> GetMyAnswersAsync(int userId, int limit = 0);
+    Task<IEnumerable<UserQuestionResponse>> GetMyQuestionsAsync(int userId, int limit = 0, bool includeDeleted = true);
+    Task<IEnumerable<UserAnswerResponse>> GetMyAnswersAsync(int userId, int limit = 0, bool includeDeleted = true);
     Task<IEnumerable<UserCommentResponse>> GetMyCommentsAsync(int userId, int limit = 0);
+
+    Task<IEnumerable<UserQuestionResponse>> GetPublicQuestionsAsync(int userId);
+    Task<IEnumerable<UserAnswerResponse>> GetPublicAnswersAsync(int userId);
 }

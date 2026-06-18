@@ -112,6 +112,30 @@ public static class UserEndpoints
                 ? Results.NotFound(new { Message = "Không tìm thấy hồ sơ người dùng." })
                 : Results.Ok(profile);
         });
+
+        group.MapGet("/{id}/questions", async (int id, IUserProfileService userProfileService) =>
+        {
+            var profile = await userProfileService.GetPublicProfileAsync(id);
+            if (profile == null)
+            {
+                return Results.NotFound(new { Message = "Không tìm thấy hồ sơ người dùng." });
+            }
+
+            var questions = await userProfileService.GetPublicQuestionsAsync(id);
+            return Results.Ok(questions);
+        });
+
+        group.MapGet("/{id}/answers", async (int id, IUserProfileService userProfileService) =>
+        {
+            var profile = await userProfileService.GetPublicProfileAsync(id);
+            if (profile == null)
+            {
+                return Results.NotFound(new { Message = "Không tìm thấy hồ sơ người dùng." });
+            }
+
+            var answers = await userProfileService.GetPublicAnswersAsync(id);
+            return Results.Ok(answers);
+        });
     }
 
     private static bool TryGetUserId(ClaimsPrincipal user, out int userId)

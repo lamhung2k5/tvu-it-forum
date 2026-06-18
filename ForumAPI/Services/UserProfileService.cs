@@ -46,8 +46,17 @@ public class UserProfileService : IUserProfileService
             return null;
         }
 
-        var questions = await _userProfileRepository.GetMyQuestionsAsync(userId, limit: 5);
-        var answers = await _userProfileRepository.GetMyAnswersAsync(userId, limit: 5);
+        var questions = await _userProfileRepository.GetMyQuestionsAsync(
+            userId,
+            limit: 5,
+            includeDeleted: false
+        );
+
+        var answers = await _userProfileRepository.GetMyAnswersAsync(
+            userId,
+            limit: 5,
+            includeDeleted: false
+        );
 
         return new UserDashboardResponse
         {
@@ -70,5 +79,15 @@ public class UserProfileService : IUserProfileService
     public async Task<IEnumerable<UserCommentResponse>> GetMyCommentsAsync(int userId)
     {
         return await _userProfileRepository.GetMyCommentsAsync(userId);
+    }
+
+    public async Task<IEnumerable<UserQuestionResponse>> GetPublicQuestionsAsync(int userId)
+    {
+        return await _userProfileRepository.GetPublicQuestionsAsync(userId);
+    }
+
+    public async Task<IEnumerable<UserAnswerResponse>> GetPublicAnswersAsync(int userId)
+    {
+        return await _userProfileRepository.GetPublicAnswersAsync(userId);
     }
 }

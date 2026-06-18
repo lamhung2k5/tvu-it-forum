@@ -49,7 +49,22 @@
             <UserAvatar :name="question.hoTen" :size="30" />
 
             <div class="author-info">
-              <span class="author-name">{{ question.hoTen }}</span>
+              <router-link
+                v-if="question.userId"
+                :to="`/users/${question.userId}`"
+                class="author-name"
+                @click.stop
+              >
+                {{ question.hoTen }}
+              </router-link>
+
+              <span
+                v-else
+                class="author-name"
+              >
+                {{ question.hoTen }}
+              </span>
+
               <span class="author-time">
                 đã hỏi {{ formatRelativeTime(question.ngayTao) }}
               </span>
@@ -191,9 +206,16 @@ defineProps({
 }
 
 .author-name {
+  width: fit-content;
   color: var(--forum-text);
   font-size: 13px;
   font-weight: 600;
+  text-decoration: none;
+}
+
+.author-name:hover {
+  color: var(--forum-primary);
+  text-decoration: underline;
 }
 
 .author-time {

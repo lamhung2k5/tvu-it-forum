@@ -136,7 +136,10 @@ public static class CauTraLoiEndpoints
             var isSuccess = await cauTraLoiService.AcceptCauTraLoiAsync(id, userId);
             if (!isSuccess)
             {
-                return Results.BadRequest(new { Message = "Chọn câu trả lời thất bại! Câu trả lời không tồn tại hoặc bạn không phải chủ câu hỏi." });
+                return Results.BadRequest(new
+                {
+                    Message = "Chọn câu trả lời thất bại! Câu trả lời không tồn tại, bạn không phải chủ câu hỏi hoặc không được tự chấp nhận câu trả lời của mình."
+                });
             }
 
             return Results.Ok(new { Message = "Đã chọn câu trả lời được chấp nhận!" });

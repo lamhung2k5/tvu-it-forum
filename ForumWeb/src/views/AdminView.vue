@@ -76,31 +76,31 @@
         </div>
 
         <el-table
-          :data="users"
+          :data="pagedUsers"
           v-loading="loading"
           border
           stripe
           class="responsive-table"
         >
-          <el-table-column label="ID" width="80">
+          <el-table-column label="ID" width="70">
             <template #default="s">
               {{ pick(s.row, ['iD_NguoiDung', 'ID_NguoiDung']) }}
             </template>
           </el-table-column>
 
-          <el-table-column label="Họ tên" min-width="180" show-overflow-tooltip>
+          <el-table-column label="Họ tên" min-width="170" show-overflow-tooltip>
             <template #default="s">
               {{ pick(s.row, ['hoTen', 'HoTen']) }}
             </template>
           </el-table-column>
 
-          <el-table-column label="Email" min-width="240" show-overflow-tooltip>
+          <el-table-column label="Email" min-width="220" show-overflow-tooltip>
             <template #default="s">
               {{ pick(s.row, ['email', 'Email']) }}
             </template>
           </el-table-column>
 
-          <el-table-column label="Vai trò" width="120" align="center">
+          <el-table-column label="Vai trò" width="110" align="center">
             <template #default="s">
               <el-tag :type="isAdminRole(s.row) ? 'warning' : 'info'">
                 {{ pick(s.row, ['vaiTro', 'VaiTro']) }}
@@ -108,7 +108,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="Trạng thái" width="130" align="center">
+          <el-table-column label="Trạng thái" width="120" align="center">
             <template #default="s">
               <el-tag :type="isActiveUser(s.row) ? 'success' : 'danger'">
                 {{ isActiveUser(s.row) ? 'Hoạt động' : 'Bị khóa' }}
@@ -118,7 +118,7 @@
 
           <el-table-column
             label="Ngày tạo"
-            width="160"
+            width="140"
             sortable
             :sort-method="sortByNgayTao"
           >
@@ -127,7 +127,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="Thao tác" width="250" align="center">
+          <el-table-column label="Thao tác" width="230" align="center">
             <template #default="s">
               <el-button
                 v-if="isActiveUser(s.row)"
@@ -171,6 +171,14 @@
             </template>
           </el-table-column>
         </el-table>
+
+        <ForumPagination
+          :total="users.length"
+          :page="pagination.users.page"
+          :page-size="pagination.users.pageSize"
+          @page-change="page => handlePageChange('users', page)"
+          @page-size-change="pageSize => handlePageSizeChange('users', pageSize)"
+        />
       </el-tab-pane>
 
       <el-tab-pane label="Câu hỏi" name="questions">
@@ -198,54 +206,67 @@
         </div>
 
         <el-table
-          :data="questions"
+          :data="pagedQuestions"
           v-loading="loading"
           border
           stripe
           class="responsive-table"
         >
-          <el-table-column label="ID" width="80">
+          <el-table-column label="ID" width="70">
             <template #default="s">
               {{ idOf(s.row, 'question') }}
             </template>
           </el-table-column>
 
-          <el-table-column label="Tiêu đề" min-width="260" show-overflow-tooltip>
+          <el-table-column label="Câu hỏi" min-width="360">
             <template #default="s">
-              {{ pick(s.row, ['tieuDe', 'TieuDe']) }}
+              <div class="admin-title-block">
+                <div class="admin-main-text">
+                  {{ pick(s.row, ['tieuDe', 'TieuDe']) }}
+                </div>
+
+                <div class="admin-sub-text">
+                  Chuyên mục:
+                  {{ pick(s.row, ['tenChuyenMuc', 'TenChuyenMuc'], 'Chưa phân loại') }}
+                </div>
+              </div>
             </template>
           </el-table-column>
 
-          <el-table-column label="Chuyên mục" min-width="150" show-overflow-tooltip>
-            <template #default="s">
-              {{ pick(s.row, ['tenChuyenMuc', 'TenChuyenMuc'], 'Chưa phân loại') }}
-            </template>
-          </el-table-column>
-
-          <el-table-column label="Người đăng" min-width="160" show-overflow-tooltip>
+          <el-table-column label="Người đăng" min-width="140" show-overflow-tooltip>
             <template #default="s">
               {{ pick(s.row, ['hoTen', 'HoTen']) }}
             </template>
           </el-table-column>
 
-          <el-table-column label="Vote" width="90" align="center">
+          <el-table-column label="Vote" width="80" align="center">
             <template #default="s">
               {{ num(s.row, ['diemBinhChon', 'DiemBinhChon']) }}
             </template>
           </el-table-column>
 
           <el-table-column
-            label="Ngày tạo"
-            width="160"
+            label="Thời gian"
+            width="155"
             sortable
             :sort-method="sortByNgayTao"
           >
             <template #default="s">
-              {{ displayDate(s.row) }}
+              <div class="time-cell">
+                <div>
+                  <span class="time-label">Tạo:</span>
+                  {{ displayDate(s.row) }}
+                </div>
+
+                <div>
+                  <span class="time-label">Sửa:</span>
+                  {{ displayUpdatedDate(s.row) }}
+                </div>
+              </div>
             </template>
           </el-table-column>
 
-          <el-table-column label="Trạng thái" width="130" align="center">
+          <el-table-column label="Trạng thái" width="110" align="center">
             <template #default="s">
               <el-tag :type="isDeleted(s.row) ? 'danger' : 'success'">
                 {{ isDeleted(s.row) ? 'Đã xóa' : 'Hiện' }}
@@ -253,7 +274,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="Thao tác" width="150" align="center">
+          <el-table-column label="Thao tác" width="120" align="center">
             <template #default="s">
               <el-button
                 v-if="!isDeleted(s.row)"
@@ -277,6 +298,14 @@
             </template>
           </el-table-column>
         </el-table>
+
+        <ForumPagination
+          :total="questions.length"
+          :page="pagination.questions.page"
+          :page-size="pagination.questions.pageSize"
+          @page-change="page => handlePageChange('questions', page)"
+          @page-size-change="pageSize => handlePageSizeChange('questions', pageSize)"
+        />
       </el-tab-pane>
 
       <el-tab-pane label="Câu trả lời" name="answers">
@@ -304,48 +333,61 @@
         </div>
 
         <el-table
-          :data="filteredAnswers"
+          :data="pagedAnswers"
           v-loading="loading"
           border
           stripe
           class="responsive-table"
         >
-          <el-table-column label="ID" width="80">
+          <el-table-column label="ID" width="70">
             <template #default="s">
               {{ idOf(s.row, 'answer') }}
             </template>
           </el-table-column>
 
-          <el-table-column label="Câu hỏi" min-width="230" show-overflow-tooltip>
+          <el-table-column label="Câu trả lời" min-width="430">
             <template #default="s">
-              {{ pick(s.row, ['tieuDeCauHoi', 'TieuDeCauHoi']) }}
+              <div class="admin-title-block">
+                <div class="admin-main-text">
+                  {{ pick(s.row, ['noiDung', 'NoiDung']) }}
+                </div>
+
+                <div class="admin-sub-text">
+                  Trong câu hỏi:
+                  {{ pick(s.row, ['tieuDeCauHoi', 'TieuDeCauHoi'], '—') }}
+                </div>
+              </div>
             </template>
           </el-table-column>
 
-          <el-table-column label="Nội dung" min-width="300" show-overflow-tooltip>
-            <template #default="s">
-              {{ pick(s.row, ['noiDung', 'NoiDung']) }}
-            </template>
-          </el-table-column>
-
-          <el-table-column label="Người trả lời" min-width="160" show-overflow-tooltip>
+          <el-table-column label="Người trả lời" min-width="140" show-overflow-tooltip>
             <template #default="s">
               {{ pick(s.row, ['hoTen', 'HoTen']) }}
             </template>
           </el-table-column>
 
           <el-table-column
-            label="Ngày tạo"
-            width="160"
+            label="Thời gian"
+            width="155"
             sortable
             :sort-method="sortByNgayTao"
           >
             <template #default="s">
-              {{ displayDate(s.row) }}
+              <div class="time-cell">
+                <div>
+                  <span class="time-label">Tạo:</span>
+                  {{ displayDate(s.row) }}
+                </div>
+
+                <div>
+                  <span class="time-label">Sửa:</span>
+                  {{ displayUpdatedDate(s.row) }}
+                </div>
+              </div>
             </template>
           </el-table-column>
 
-          <el-table-column label="Trạng thái" width="130" align="center">
+          <el-table-column label="Trạng thái" width="110" align="center">
             <template #default="s">
               <el-tag :type="isDeleted(s.row) ? 'danger' : 'success'">
                 {{ isDeleted(s.row) ? 'Đã xóa' : 'Hiện' }}
@@ -353,7 +395,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="Thao tác" width="150" align="center">
+          <el-table-column label="Thao tác" width="120" align="center">
             <template #default="s">
               <el-button
                 v-if="!isDeleted(s.row)"
@@ -377,6 +419,14 @@
             </template>
           </el-table-column>
         </el-table>
+
+        <ForumPagination
+          :total="filteredAnswers.length"
+          :page="pagination.answers.page"
+          :page-size="pagination.answers.pageSize"
+          @page-change="page => handlePageChange('answers', page)"
+          @page-size-change="pageSize => handlePageSizeChange('answers', pageSize)"
+        />
       </el-tab-pane>
 
       <el-tab-pane label="Bình luận" name="comments">
@@ -413,54 +463,62 @@
         </div>
 
         <el-table
-          :data="filteredComments"
+          :data="pagedComments"
           v-loading="loading"
           border
           stripe
           class="responsive-table"
         >
-          <el-table-column label="ID" width="80">
+          <el-table-column label="ID" width="70">
             <template #default="s">
               {{ idOf(s.row, 'comment') }}
             </template>
           </el-table-column>
 
-          <el-table-column label="Loại" width="130" show-overflow-tooltip>
+          <el-table-column label="Bình luận" min-width="450">
             <template #default="s">
-              {{ pick(s.row, ['loaiDoiTuong', 'LoaiDoiTuong']) }}
+              <div class="admin-title-block">
+                <div class="admin-main-text">
+                  {{ pick(s.row, ['noiDung', 'NoiDung']) }}
+                </div>
+
+                <div class="admin-sub-text">
+                  {{ pick(s.row, ['loaiDoiTuong', 'LoaiDoiTuong'], '—') }}
+                  · Thuộc:
+                  {{ pick(s.row, ['tieuDeDoiTuong', 'TieuDeDoiTuong', 'tieuDeCauHoi', 'TieuDeCauHoi'], '—') }}
+                </div>
+              </div>
             </template>
           </el-table-column>
 
-          <el-table-column label="Thuộc nội dung" min-width="220" show-overflow-tooltip>
-            <template #default="s">
-              {{ pick(s.row, ['tieuDeDoiTuong', 'TieuDeDoiTuong', 'tieuDeCauHoi', 'TieuDeCauHoi'], '—') }}
-            </template>
-          </el-table-column>
-
-          <el-table-column label="Nội dung" min-width="300" show-overflow-tooltip>
-            <template #default="s">
-              {{ pick(s.row, ['noiDung', 'NoiDung']) }}
-            </template>
-          </el-table-column>
-
-          <el-table-column label="Người bình luận" min-width="160" show-overflow-tooltip>
+          <el-table-column label="Người bình luận" min-width="140" show-overflow-tooltip>
             <template #default="s">
               {{ pick(s.row, ['hoTen', 'HoTen']) }}
             </template>
           </el-table-column>
 
           <el-table-column
-            label="Ngày tạo"
-            width="160"
+            label="Thời gian"
+            width="155"
             sortable
             :sort-method="sortByNgayTao"
           >
             <template #default="s">
-              {{ displayDate(s.row) }}
+              <div class="time-cell">
+                <div>
+                  <span class="time-label">Tạo:</span>
+                  {{ displayDate(s.row) }}
+                </div>
+
+                <div>
+                  <span class="time-label">Sửa:</span>
+                  {{ displayUpdatedDate(s.row) }}
+                </div>
+              </div>
             </template>
           </el-table-column>
 
-          <el-table-column label="Trạng thái" width="130" align="center">
+          <el-table-column label="Trạng thái" width="110" align="center">
             <template #default="s">
               <el-tag :type="isDeleted(s.row) ? 'danger' : 'success'">
                 {{ isDeleted(s.row) ? 'Đã xóa' : 'Hiện' }}
@@ -468,7 +526,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="Thao tác" width="150" align="center">
+          <el-table-column label="Thao tác" width="120" align="center">
             <template #default="s">
               <el-button
                 v-if="!isDeleted(s.row)"
@@ -492,13 +550,21 @@
             </template>
           </el-table-column>
         </el-table>
+
+        <ForumPagination
+          :total="filteredComments.length"
+          :page="pagination.comments.page"
+          :page-size="pagination.comments.pageSize"
+          @page-change="page => handlePageChange('comments', page)"
+          @page-size-change="pageSize => handlePageSizeChange('comments', pageSize)"
+        />
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {
   getAdminDashboard,
@@ -519,6 +585,7 @@ import {
 import { pick, idOf, formatDate } from '../utils/format'
 import MetricCard from '../components/MetricCard.vue'
 import SimpleBarChart from '../components/SimpleBarChart.vue'
+import ForumPagination from '../components/ForumPagination.vue'
 
 const activeTab = ref('overview')
 const loading = ref(false)
@@ -529,6 +596,25 @@ const users = ref([])
 const questions = ref([])
 const answers = ref([])
 const comments = ref([])
+
+const pagination = reactive({
+  users: {
+    page: 1,
+    pageSize: 5
+  },
+  questions: {
+    page: 1,
+    pageSize: 5
+  },
+  answers: {
+    page: 1,
+    pageSize: 5
+  },
+  comments: {
+    page: 1,
+    pageSize: 5
+  }
+})
 
 const filters = reactive({
   users: { keyword: '' },
@@ -567,7 +653,55 @@ const filteredComments = computed(() => {
   })
 })
 
+const pagedUsers = computed(() => {
+  return paginate(users.value, pagination.users)
+})
+
+const pagedQuestions = computed(() => {
+  return paginate(questions.value, pagination.questions)
+})
+
+const pagedAnswers = computed(() => {
+  return paginate(filteredAnswers.value, pagination.answers)
+})
+
+const pagedComments = computed(() => {
+  return paginate(filteredComments.value, pagination.comments)
+})
+
 onMounted(loadAll)
+
+watch(
+  () => filters.users.keyword,
+  () => {
+    pagination.users.page = 1
+  }
+)
+
+watch(
+  () => [filters.questions.keyword, filters.questions.isDeleted],
+  () => {
+    pagination.questions.page = 1
+  }
+)
+
+watch(
+  () => [filters.answers.keyword, filters.answers.isDeleted],
+  () => {
+    pagination.answers.page = 1
+  }
+)
+
+watch(
+  () => [
+    filters.comments.keyword,
+    filters.comments.loaiDoiTuong,
+    filters.comments.isDeleted
+  ],
+  () => {
+    pagination.comments.page = 1
+  }
+)
 
 function num(obj, keys) {
   return Number(pick(obj, keys, 0)) || 0
@@ -599,15 +733,40 @@ function includesKeyword(row, keyword, keyGroups) {
   })
 }
 
-function dateValue(row) {
-  const value = pick(row, ['ngayTao', 'NgayTao'], '')
+function paginate(list, config) {
+  const start = (config.page - 1) * config.pageSize
+  const end = start + config.pageSize
+
+  return list.slice(start, end)
+}
+
+function handlePageChange(type, page) {
+  pagination[type].page = page
+}
+
+function handlePageSizeChange(type, pageSize) {
+  pagination[type].pageSize = pageSize
+  pagination[type].page = 1
+}
+
+function parseDateValue(value) {
+  if (!value) return 0
+
   const date = new Date(String(value).replace(' ', 'T'))
 
   return Number.isNaN(date.getTime()) ? 0 : date.getTime()
 }
 
+function createdDateValue(row) {
+  return parseDateValue(pick(row, ['ngayTao', 'NgayTao'], ''))
+}
+
+function updatedDateValue(row) {
+  return parseDateValue(pick(row, ['ngayCapNhat', 'NgayCapNhat'], ''))
+}
+
 function sortByNgayTao(a, b) {
-  return dateValue(a) - dateValue(b)
+  return createdDateValue(a) - createdDateValue(b)
 }
 
 function displayDate(row) {
@@ -616,6 +775,23 @@ function displayDate(row) {
   if (!value) return '—'
 
   return formatDate(value)
+}
+
+function displayUpdatedDate(row) {
+  const updatedValue = pick(row, ['ngayCapNhat', 'NgayCapNhat'], '')
+
+  if (!updatedValue) return '—'
+
+  const createdTime = createdDateValue(row)
+  const updatedTime = parseDateValue(updatedValue)
+
+  if (!updatedTime) return '—'
+
+  if (createdTime && createdTime === updatedTime) {
+    return '—'
+  }
+
+  return formatDate(updatedValue)
 }
 
 function userId(row) {
@@ -699,6 +875,8 @@ async function loadUsers() {
     users.value = await getUsers({
       keyword: filters.users.keyword
     })
+
+    pagination.users.page = 1
   })
 }
 
@@ -708,6 +886,8 @@ async function loadQuestions() {
       keyword: filters.questions.keyword,
       isDeleted: filters.questions.isDeleted
     })
+
+    pagination.questions.page = 1
   })
 }
 
@@ -716,6 +896,8 @@ async function loadAnswers() {
     answers.value = await getAdminAnswers({
       isDeleted: filters.answers.isDeleted
     })
+
+    pagination.answers.page = 1
   })
 }
 
@@ -725,6 +907,8 @@ async function loadComments() {
       loaiDoiTuong: filters.comments.loaiDoiTuong,
       isDeleted: filters.comments.isDeleted
     })
+
+    pagination.comments.page = 1
   })
 }
 
@@ -845,11 +1029,12 @@ function restoreComment(row) {
 
 .responsive-table :deep(.el-table__cell) {
   vertical-align: middle;
+  padding: 8px 0;
 }
 
 .responsive-table :deep(.el-table__header th) {
   color: var(--forum-text);
-  font-weight: 700;
+  font-weight: 600;
   background: #fbfcff;
 }
 
@@ -857,6 +1042,39 @@ function restoreComment(row) {
 .responsive-table :deep(.el-table__fixed-right::before),
 .responsive-table :deep(.el-table__fixed-right-patch) {
   box-shadow: none;
+}
+
+.admin-title-block {
+  min-width: 0;
+}
+
+.admin-main-text {
+  color: var(--forum-text);
+  font-weight: 400;
+  line-height: 1.45;
+  white-space: normal;
+  overflow: visible;
+}
+
+.admin-sub-text {
+  margin-top: 4px;
+  color: var(--forum-muted);
+  font-size: 12px;
+  line-height: 1.35;
+  white-space: normal;
+  overflow: visible;
+}
+
+.time-cell {
+  color: var(--forum-muted);
+  font-size: 12px;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+
+.time-label {
+  color: var(--forum-muted);
+  font-weight: 400;
 }
 
 @media (max-width: 980px) {

@@ -150,12 +150,13 @@ public class CauTraLoiRepository : ICauTraLoiRepository
             SELECT
                 ctl.ID_CauTraLoi,
                 ctl.ID_CauHoi,
+                ctl.ID_NguoiDung AS ID_NguoiTraLoi,
                 ch.ID_NguoiDung AS ID_ChuCauHoi
             FROM CAUTRALOI ctl
             JOIN CAUHOI ch ON ctl.ID_CauHoi = ch.ID_CauHoi
             WHERE ctl.ID_CauTraLoi = @Id
-              AND ctl.IsDeleted = 0
-              AND ch.IsDeleted = 0;";
+            AND ctl.IsDeleted = 0
+            AND ch.IsDeleted = 0;";
 
         var target = await connection.QueryFirstOrDefaultAsync(checkSql, new { Id = id });
 
@@ -166,8 +167,16 @@ public class CauTraLoiRepository : ICauTraLoiRepository
 
         int idCauHoi = Convert.ToInt32(target.ID_CauHoi);
         int idChuCauHoi = Convert.ToInt32(target.ID_ChuCauHoi);
+        int idNguoiTraLoi = Convert.ToInt32(target.ID_NguoiTraLoi);
 
+        // Chỉ chủ câu hỏi mới được chấp nhận câu trả lời
         if (idChuCauHoi != userId)
+        {
+            return false;
+        }
+
+        // Không cho chủ câu hỏi tự chấp nhận câu trả lời của chính mình
+        if (idNguoiTraLoi == userId)
         {
             return false;
         }
@@ -187,7 +196,7 @@ public class CauTraLoiRepository : ICauTraLoiRepository
                 SET DaChapNhan = 1,
                     NgayCapNhat = CURRENT_TIMESTAMP
                 WHERE ID_CauTraLoi = @Id
-                  AND IsDeleted = 0;";
+                AND IsDeleted = 0;";
 
             await connection.ExecuteAsync(clearSql, new { IdCauHoi = idCauHoi }, transaction);
             var rowsAffected = await connection.ExecuteAsync(acceptSql, new { Id = id }, transaction);
