@@ -71,4 +71,14 @@ public class CauTraLoiService : ICauTraLoiService
     {
         return await _cauTraLoiRepository.AcceptAsync(id, userId);
     }
+
+    public async Task<bool> UnacceptAnswerAsync(int id, int userId)
+    {
+        if (id <= 0)
+        {
+            throw new Exception("Câu trả lời không hợp lệ.");
+        }
+
+        return await _cauTraLoiRepository.UnacceptAsync(id, userId);
+    }
 }

@@ -8,7 +8,13 @@
 
         <el-form :model="form" label-position="top" class="auth-form" @keyup.enter="submit">
           <el-form-item label="Email">
-            <el-input v-model="form.email" placeholder="you@example.com" size="large" clearable />
+            <el-input
+              v-model="form.email"
+              type="email"
+              placeholder="you@example.com"
+              size="large"
+              clearable
+            />
           </el-form-item>
 
           <el-form-item label="Mật khẩu">
@@ -50,7 +56,7 @@ import { reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { login } from '../api/authApi'
-import { setAuth } from '../utils/auth'
+import { setAuth, isValidEmail, normalizeEmailValue } from '../utils/auth'
 
 const router = useRouter()
 const route = useRoute()
@@ -63,9 +69,24 @@ async function submit() {
     return
   }
 
+  const email = normalizeEmailValue(form.email)
+
+  if (!isValidEmail(email)) {
+    ElMessage.warning('Email không đúng định dạng.')
+    return
+  }
+
+  if (!isValidEmail(form.email)) {
+    ElMessage.warning('Email không đúng định dạng.')
+    return
+  }
+
   loading.value = true
   try {
-    const result = await login({ email: form.email.trim(), password: form.password })
+    const result = await login({
+      email,
+      password: form.password
+    })
     const token = result.accessToken || result.AccessToken
     const user = result.user || result.User
 

@@ -12,4 +12,5 @@ public interface ICauTraLoiRepository
     Task<bool> UpdateAsync(int id, int userId, string noiDung);
     Task<bool> DeleteAsync(int id, int userId);
     Task<bool> AcceptAsync(int id, int userId);
+    Task<bool> UnacceptAsync(int id, int userId);
 }

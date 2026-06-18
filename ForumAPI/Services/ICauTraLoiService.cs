@@ -10,4 +10,5 @@ public interface ICauTraLoiService
     Task<bool> UpdateCauTraLoiAsync(int id, int userId, UpdateCauTraLoiRequest request);
     Task<bool> DeleteCauTraLoiAsync(int id, int userId);
     Task<bool> AcceptCauTraLoiAsync(int id, int userId);
+    Task<bool> UnacceptAnswerAsync(int id, int userId);
 }

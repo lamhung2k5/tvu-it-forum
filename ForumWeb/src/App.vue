@@ -30,11 +30,12 @@
 <script setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { getCurrentUser, isAuthenticated, isAdmin } from './utils/auth'
+import { getCurrentUser, isAuthenticated, isAdmin, clearAuth } from './utils/auth'
 import AppHeader from './components/AppHeader.vue'
 import ForumSidebar from './components/ForumSidebar.vue'
 import AppFooter from './components/AppFooter.vue'
 import AppTopBar from './components/AppTopBar.vue'
+import { getMyProfile } from './api/userApi'
 
 const route = useRoute()
 const router = useRouter()
@@ -42,6 +43,16 @@ const authVersion = ref(0)
 
 const refreshAuth = () => {
   authVersion.value += 1
+}
+
+async function validateSession() {
+  if (!isAuthenticated()) return
+
+  try {
+    await getMyProfile()
+  } catch {
+    clearAuth()
+  }
 }
 
 const currentUser = computed(() => {
@@ -69,7 +80,10 @@ function handleTag(tag) {
   router.push({ name: 'questions', query: { tag } })
 }
 
-onMounted(() => window.addEventListener('auth-changed', refreshAuth))
+onMounted(() => {
+  window.addEventListener('auth-changed', refreshAuth)
+  validateSession()
+})
 onUnmounted(() => window.removeEventListener('auth-changed', refreshAuth))
 </script>
 

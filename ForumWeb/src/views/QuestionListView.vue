@@ -38,27 +38,77 @@
     </section>
 
     <el-card shadow="never" class="filter-card">
-      <el-input v-model="filters.keyword" placeholder="Tìm theo tiêu đề hoặc nội dung..." clearable @keyup.enter="loadQuestions" />
-      <el-input v-model="filters.tag" placeholder="Lọc theo tag, ví dụ: sqlite" clearable @keyup.enter="loadQuestions" />
-      <el-select v-model="filters.idChuyenMuc" placeholder="Chuyên mục" clearable>
-        <el-option v-for="item in chuyenMuc" :key="item.id" :label="item.name" :value="item.id" />
+      <el-input
+        v-model="filters.keyword"
+        placeholder="Tìm theo tiêu đề hoặc nội dung..."
+        clearable
+        @keyup.enter="searchQuestions"
+      />
+
+      <el-input
+        v-model="filters.tag"
+        placeholder="Lọc theo tag, ví dụ: sqlite"
+        clearable
+        @keyup.enter="searchQuestions"
+      />
+
+      <el-select
+        v-model="filters.idChuyenMuc"
+        placeholder="Chuyên mục"
+        clearable
+      >
+        <el-option
+          v-for="item in chuyenMuc"
+          :key="item.id"
+          :label="item.name"
+          :value="item.id"
+        />
       </el-select>
-      <el-button type="primary" @click="loadQuestions">Tìm kiếm</el-button>
-      <el-button @click="resetFilters">Xóa lọc</el-button>
+
+      <el-button type="primary" @click="searchQuestions">
+        Tìm kiếm
+      </el-button>
+
+      <el-button @click="resetFilters">
+        Xóa lọc
+      </el-button>
     </el-card>
 
     <section v-loading="loading">
-      <EmptyState v-if="!loading && questions.length === 0" description="Chưa có câu hỏi phù hợp.">
-      <el-button
-        type="primary"
-        class="btn-accent"
-        @click="$router.push('/questions/create')"
+      <EmptyState
+        v-if="!loading && questions.length === 0"
+        description="Chưa có câu hỏi phù hợp."
       >
-        Đặt câu hỏi đầu tiên
-      </el-button>
+        <el-button
+          type="primary"
+          class="btn-accent"
+          @click="$router.push('/questions/create')"
+        >
+          Đặt câu hỏi đầu tiên
+        </el-button>
       </EmptyState>
 
-      <QuestionCard v-for="question in questions" :key="question.id" :question="question" />
+      <QuestionCard
+        v-for="question in pagedQuestions"
+        :key="question.id"
+        :question="question"
+      />
+
+      <div
+        v-if="!loading && questions.length > 0"
+        class="pagination-wrap"
+      >
+        <el-pagination
+          v-model:current-page="pagination.page"
+          v-model:page-size="pagination.pageSize"
+          :total="questions.length"
+          :page-sizes="[5, 10, 20]"
+          layout="sizes, prev, pager, next, jumper"
+          background
+          @current-change="handlePageChange"
+          @size-change="handlePageSizeChange"
+        />
+      </div>
     </section>
   </div>
 </template>
@@ -76,13 +126,32 @@ import EmptyState from '../components/EmptyState.vue'
 const route = useRoute()
 const loading = ref(false)
 const questions = ref([])
-const filters = reactive({ keyword: '', tag: '', idChuyenMuc: '' })
+
+const filters = reactive({
+  keyword: '',
+  tag: '',
+  idChuyenMuc: ''
+})
+
+const pagination = reactive({
+  page: 1,
+  pageSize: 5
+})
+
 const chuyenMuc = [
   { id: 1, name: 'Lập trình Web' },
   { id: 2, name: 'Cơ sở dữ liệu' },
   { id: 3, name: 'Chia sẻ kinh nghiệm' }
 ]
+
 const isLoggedIn = computed(() => isAuthenticated())
+
+const pagedQuestions = computed(() => {
+  const start = (pagination.page - 1) * pagination.pageSize
+  const end = start + pagination.pageSize
+
+  return questions.value.slice(start, end)
+})
 
 onMounted(syncFromRoute)
 watch(() => route.query, syncFromRoute)
@@ -90,19 +159,29 @@ watch(() => route.query, syncFromRoute)
 function syncFromRoute() {
   filters.keyword = route.query.keyword || ''
   filters.tag = route.query.tag || ''
-  filters.idChuyenMuc = route.query.idChuyenMuc ? Number(route.query.idChuyenMuc) : ''
+  filters.idChuyenMuc = route.query.idChuyenMuc
+    ? Number(route.query.idChuyenMuc)
+    : ''
+
+  pagination.page = 1
   loadQuestions()
 }
 
 async function loadQuestions() {
   loading.value = true
+
   try {
     const data = await getQuestions({
       keyword: String(filters.keyword || '').trim(),
       tag: String(filters.tag || '').trim(),
       idChuyenMuc: filters.idChuyenMuc
     })
+
     questions.value = (data || []).map(normalizeQuestion)
+
+    if ((pagination.page - 1) * pagination.pageSize >= questions.value.length) {
+      pagination.page = 1
+    }
   } catch (error) {
     ElMessage.error(error.message || 'Không tải được danh sách câu hỏi.')
   } finally {
@@ -110,10 +189,25 @@ async function loadQuestions() {
   }
 }
 
+function searchQuestions() {
+  pagination.page = 1
+  loadQuestions()
+}
+
+function handlePageChange(page) {
+  pagination.page = page
+}
+
+function handlePageSizeChange(pageSize) {
+  pagination.pageSize = pageSize
+  pagination.page = 1
+}
+
 function resetFilters() {
   filters.keyword = ''
   filters.tag = ''
   filters.idChuyenMuc = ''
+  pagination.page = 1
   loadQuestions()
 }
 </script>
@@ -145,10 +239,6 @@ function resetFilters() {
   position: absolute;
   inset: 0;
 
-  /*
-    Vì ảnh của bạn đã tối sẵn nên overlay chỉ cần nhẹ.
-    Nếu dùng ảnh gốc chưa chỉnh tối, tăng opacity lên 0.55 - 0.7.
-  */
   background: linear-gradient(
     90deg,
     rgba(15, 23, 42, 0.22) 0%,
@@ -195,12 +285,24 @@ function resetFilters() {
   flex-shrink: 0;
   padding-top: 2px;
 }
-.filter-card { margin-bottom: 18px; border-radius: 14px; }
+
+.filter-card {
+  margin-bottom: 18px;
+  border-radius: 14px;
+}
+
 .filter-card :deep(.el-card__body) {
   display: grid;
   grid-template-columns: minmax(220px, 1.5fr) minmax(160px, 1fr) minmax(160px, 0.8fr) auto auto;
   gap: 12px;
 }
+
+.pagination-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0 6px;
+}
+
 @media (max-width: 980px) {
   .home-hero {
     flex-direction: column;

@@ -44,10 +44,15 @@ public class CauHoiService : ICauHoiService
         return await _cauHoiRepository.GetAllAsync(keyword, tag, idChuyenMuc);
     }
 
-    public async Task<CauHoiResponse?> GetCauHoiByIdAsync(int id)
+    public async Task<CauHoiResponse?> GetCauHoiByIdAsync(int id, bool tangLuotXem = false)
     {
+        if (tangLuotXem)
+        {
+            await _cauHoiRepository.IncreaseViewAsync(id);
+        }
+
         return await _cauHoiRepository.GetByIdAsync(id);
-    } 
+    }
 
     public async Task<bool> UpdateCauHoiAsync(int id, int userId, UpdateCauHoiRequest request)
     {

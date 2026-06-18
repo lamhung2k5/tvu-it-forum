@@ -4,8 +4,8 @@ export function getQuestions(params = {}) {
   return request(`/api/cauhoi${buildQuery(params)}`)
 }
 
-export function getQuestionById(id) {
-  return request(`/api/cauhoi/${id}`)
+export function getQuestionById(id, params = {}) {
+  return request(`/api/cauhoi/${id}${buildQuery(params)}`)
 }
 
 export function createQuestion(payload) {

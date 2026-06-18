@@ -201,4 +201,31 @@ public class CauTraLoiRepository : ICauTraLoiRepository
             throw;
         }
     }
+
+    public async Task<bool> UnacceptAsync(int id, int userId)
+    {
+        using var connection = _connectionFactory.CreateConnection();
+
+        var sql = @"
+            UPDATE CAUTRALOI
+            SET DaChapNhan = 0,
+                NgayCapNhat = CURRENT_TIMESTAMP
+            WHERE ID_CauTraLoi = @Id
+            AND IsDeleted = 0
+            AND DaChapNhan = 1
+            AND ID_CauHoi IN (
+                SELECT ID_CauHoi
+                FROM CAUHOI
+                WHERE ID_NguoiDung = @UserId
+                    AND IsDeleted = 0
+            );";
+
+        var rowsAffected = await connection.ExecuteAsync(sql, new
+        {
+            Id = id,
+            UserId = userId
+        });
+
+        return rowsAffected > 0;
+    }
 }

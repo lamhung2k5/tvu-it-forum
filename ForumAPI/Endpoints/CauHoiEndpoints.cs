@@ -55,11 +55,13 @@ public static class CauHoiEndpoints
         });
 
         // 3. API GET: Lấy chi tiết 1 câu hỏi theo ID
-        group.MapGet("/{id}", async (int id, ICauHoiService cauHoiService) =>
+        group.MapGet("/{id}", async (
+            int id,
+            [FromQuery] bool tangLuotXem,
+            ICauHoiService cauHoiService) =>
         {
-            var cauHoi = await cauHoiService.GetCauHoiByIdAsync(id);
+            var cauHoi = await cauHoiService.GetCauHoiByIdAsync(id, tangLuotXem);
             
-            // Nếu không tìm thấy (do nhập sai ID hoặc câu hỏi đã bị xóa)
             if (cauHoi == null)
             {
                 return Results.NotFound(new { Message = "Không tìm thấy câu hỏi này!" });

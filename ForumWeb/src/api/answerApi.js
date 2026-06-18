@@ -33,3 +33,9 @@ export function acceptAnswer(id) {
     method: 'PATCH'
   })
 }
+
+export function unacceptAnswer(id) {
+  return request(`/api/cautraloi/${id}/bo-chap-nhan`, {
+    method: 'PATCH'
+  })
+}

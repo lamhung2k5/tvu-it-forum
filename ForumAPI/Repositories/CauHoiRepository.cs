@@ -144,6 +144,21 @@ public class CauHoiRepository : ICauHoiRepository
         return await connection.QueryFirstOrDefaultAsync<CauHoiResponse>(sql, new { Id = id });
     }  
 
+    public async Task<bool> IncreaseViewAsync(int id)
+    {
+        using var connection = _connectionFactory.CreateConnection();
+
+        var sql = @"
+            UPDATE CAUHOI
+            SET LuotXem = COALESCE(LuotXem, 0) + 1
+            WHERE ID_CauHoi = @Id
+            AND IsDeleted = 0;";
+
+        var rowsAffected = await connection.ExecuteAsync(sql, new { Id = id });
+
+        return rowsAffected > 0;
+    }
+
     public async Task<bool> UpdateAsync(int id, int userId, int idChuyenMuc, string tieuDe, string noiDung)
     {
         using var connection = _connectionFactory.CreateConnection();

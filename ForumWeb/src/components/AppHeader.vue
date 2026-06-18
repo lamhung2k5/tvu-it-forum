@@ -28,17 +28,32 @@
     </div>
 
     <div class="header-actions">
-      <el-button type="primary" plain @click="$router.push('/')">
-        Câu hỏi
-      </el-button>
+      <div class="nav-search">
+        <el-input
+          v-model="navKeyword"
+          placeholder="Tìm kiếm câu hỏi..."
+          clearable
+          @keyup.enter="searchFromHeader"
+        >
+          <template #prefix>
+            <el-icon
+              class="nav-search-icon"
+              title="Tìm kiếm"
+              @click.stop="searchFromHeader"
+            >
+              <Search />
+            </el-icon>
+          </template>
+        </el-input>
+      </div>
 
       <el-button
-        v-if="isLoggedIn"
         type="primary"
-        class="btn-accent"
-        @click="$router.push('/questions/create')"
+        plain
+        class="question-link-btn"
+        @click="$router.push('/')"
       >
-        Đặt câu hỏi
+        Câu hỏi
       </el-button>
 
       <template v-if="isLoggedIn">
@@ -49,6 +64,7 @@
         <el-button plain @click="$router.push('/login')">
           Đăng nhập
         </el-button>
+
         <el-button type="primary" @click="$router.push('/register')">
           Đăng ký
         </el-button>
@@ -58,25 +74,59 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { Search } from '@element-plus/icons-vue'
 import UserDropdown from './UserDropdown.vue'
 
 const props = defineProps({
   user: { type: Object, default: null }
 })
 
+const router = useRouter()
+const route = useRoute()
+
+const navKeyword = ref('')
+
 const isLoggedIn = computed(() => Boolean(props.user))
+
+watch(
+  () => route.query.keyword,
+  value => {
+    navKeyword.value = value || ''
+  },
+  { immediate: true }
+)
+
+function searchFromHeader() {
+  const keyword = navKeyword.value.trim()
+
+  if (!keyword) {
+    router.push('/')
+    return
+  }
+
+  router.push({
+    path: '/',
+    query: {
+      keyword
+    }
+  })
+}
 </script>
 
 <style scoped>
 .forum-header {
   height: 72px;
-  background: white;
+  background: #ffffff;
   border-bottom: 1px solid var(--forum-border);
+
   display: flex;
   align-items: center;
   gap: 24px;
+
   padding: 0 24px;
+
   position: sticky;
   top: 0;
   z-index: 20;
@@ -85,7 +135,7 @@ const isLoggedIn = computed(() => Boolean(props.user))
 .header-left {
   display: flex;
   align-items: center;
-  gap: 42px;
+  gap: 34px;
   min-width: 0;
   flex: 1;
 }
@@ -103,9 +153,11 @@ const isLoggedIn = computed(() => Boolean(props.user))
   height: 48px;
   overflow: hidden;
   background: #ffffff;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   flex-shrink: 0;
 }
 
@@ -120,6 +172,7 @@ const isLoggedIn = computed(() => Boolean(props.user))
   margin: 0;
   font-size: 20px;
   line-height: 1.05;
+  color: var(--forum-text);
 }
 
 .brand p {
@@ -131,12 +184,18 @@ const isLoggedIn = computed(() => Boolean(props.user))
 .main-nav {
   display: flex;
   align-items: center;
-  gap: 18 px;
+  gap: 6px;
   flex-shrink: 0;
 }
 
 .main-nav :deep(.el-button) {
+  margin-left: 0 !important;
+  padding: 8px 10px;
   font-size: 15px;
+}
+
+.main-nav :deep(.el-button + .el-button) {
+  margin-left: 0 !important;
 }
 
 .main-nav :deep(.el-button.is-text) {
@@ -152,11 +211,52 @@ const isLoggedIn = computed(() => Boolean(props.user))
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 12px;
+  gap: 14px;
   flex-shrink: 0;
 }
 
-.header-actions :deep(.el-button) {
+.nav-search {
+  width: 360px;
+  flex-shrink: 0;
+}
+
+.nav-search :deep(.el-input__wrapper) {
+  height: 38px;
+  border-radius: 999px;
+  background: #f8fafc;
+  box-shadow: 0 0 0 1px var(--forum-border) inset;
+  transition: all 0.2s ease;
+}
+
+.nav-search :deep(.el-input__wrapper:hover) {
+  background: #ffffff;
+  box-shadow: 0 0 0 1px rgba(30, 64, 175, 0.35) inset;
+}
+
+.nav-search :deep(.el-input__wrapper.is-focus) {
+  background: #ffffff;
+  box-shadow: 0 0 0 1px var(--forum-primary) inset;
+}
+
+.nav-search :deep(.el-input__inner) {
+  font-size: 14px;
+}
+
+.nav-search-icon {
+  cursor: pointer;
+  color: var(--forum-muted);
+  font-size: 16px;
+  transition: color 0.2s ease;
+}
+
+.nav-search-icon:hover {
+  color: var(--forum-primary);
+}
+
+.question-link-btn {
+  height: 38px;
+  border-radius: 8px;
+  font-weight: 600;
 }
 
 .header-actions :deep(.el-button.is-text) {
@@ -168,28 +268,37 @@ const isLoggedIn = computed(() => Boolean(props.user))
   background: var(--forum-primary-soft);
 }
 
-/* Màn hình vừa: giảm khoảng cách để không bị chật */
-@media (max-width: 1100px) {
+/* Màn hình vừa */
+@media (max-width: 1220px) {
   .forum-header {
     gap: 16px;
   }
 
   .header-left {
-    gap: 24px;
+    gap: 22px;
   }
 
   .main-nav {
-    gap: 10px;
+    gap: 4px;
+  }
+
+  .main-nav :deep(.el-button) {
+    padding: 8px 8px;
+  }
+
+  .nav-search {
+    width: 280px;
   }
 
   .header-actions {
-    gap: 8px;
+    gap: 10px;
   }
 }
 
-/* Tablet nhỏ: ẩn bớt menu phụ */
-@media (max-width: 900px) {
-  .main-nav {
+/* Tablet nhỏ */
+@media (max-width: 980px) {
+  .main-nav,
+  .nav-search {
     display: none;
   }
 
@@ -211,7 +320,7 @@ const isLoggedIn = computed(() => Boolean(props.user))
   }
 }
 
-/* Điện thoại: giữ gọn header */
+/* Điện thoại */
 @media (max-width: 640px) {
   .forum-header {
     height: auto;
@@ -257,9 +366,9 @@ const isLoggedIn = computed(() => Boolean(props.user))
   }
 }
 
-/* Điện thoại rất nhỏ: ẩn nút Câu hỏi, chỉ giữ Đặt câu hỏi + User */
+/* Điện thoại rất nhỏ: ẩn nút Câu hỏi */
 @media (max-width: 480px) {
-  .header-actions :deep(.el-button:first-child) {
+  .question-link-btn {
     display: none;
   }
 }

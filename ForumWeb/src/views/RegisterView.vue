@@ -12,7 +12,13 @@
           </el-form-item>
 
           <el-form-item label="Email">
-            <el-input v-model="form.email" placeholder="you@example.com" size="large" clearable />
+            <el-input
+              v-model="form.email"
+              type="email"
+              placeholder="1101230015@st.tvu.edu.vn"
+              size="large"
+              clearable
+            />
           </el-form-item>
 
           <el-form-item label="Mật khẩu">
@@ -58,6 +64,8 @@ import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { register } from '../api/authApi'
+import { isValidTvuStudentEmail, normalizeEmailValue } from '../utils/auth'
+import { isValidEmail } from '../utils/auth'
 
 const router = useRouter()
 const loading = ref(false)
@@ -66,6 +74,18 @@ const form = reactive({ hoTen: '', email: '', password: '', confirmPassword: '' 
 async function submit() {
   if (!form.hoTen.trim() || !form.email.trim() || !form.password.trim()) {
     ElMessage.warning('Vui lòng nhập đầy đủ thông tin.')
+    return
+  }
+
+  const email = normalizeEmailValue(form.email)
+
+  if (!isValidTvuStudentEmail(email)) {
+    ElMessage.warning('Email sinh viên không hợp lệ. Định dạng đúng: 1101230015@st.tvu.edu.vn')
+    return
+  }
+
+  if (!isValidEmail(form.email)) {
+    ElMessage.warning('Email không đúng định dạng. Ví dụ đúng: sinhvien@st.tvu.edu.vn')
     return
   }
 
@@ -81,7 +101,11 @@ async function submit() {
 
   loading.value = true
   try {
-    await register({ hoTen: form.hoTen.trim(), email: form.email.trim(), password: form.password })
+    await register({
+      hoTen: form.hoTen.trim(),
+      email,
+      password: form.password
+    })
     ElMessage.success('Đăng ký thành công. Vui lòng đăng nhập.')
     router.push('/login')
   } catch (error) {

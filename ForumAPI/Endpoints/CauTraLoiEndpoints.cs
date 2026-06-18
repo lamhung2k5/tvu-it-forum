@@ -141,6 +141,33 @@ public static class CauTraLoiEndpoints
 
             return Results.Ok(new { Message = "Đã chọn câu trả lời được chấp nhận!" });
         });
+
+        // 7. API PATCH: Chủ câu hỏi bỏ chấp nhận câu trả lời
+        group.MapPatch("/cautraloi/{id}/bo-chap-nhan", [Authorize] async (
+            int id,
+            ICauTraLoiService cauTraLoiService,
+            ClaimsPrincipal user) =>
+        {
+            if (!TryGetUserId(user, out var userId))
+            {
+                return Results.Unauthorized();
+            }
+
+            var isSuccess = await cauTraLoiService.UnacceptAnswerAsync(id, userId);
+
+            if (!isSuccess)
+            {
+                return Results.BadRequest(new
+                {
+                    Message = "Thu hồi thất bại! Câu trả lời không tồn tại, chưa được chấp nhận hoặc bạn không phải chủ câu hỏi."
+                });
+            }
+
+            return Results.Ok(new
+            {
+                Message = "Đã thu hồi câu trả lời được chấp nhận."
+            });
+        });
     }
 
     private static bool TryGetUserId(ClaimsPrincipal user, out int userId)
