@@ -374,4 +374,72 @@ public class AdminRepository : IAdminRepository
         var rowsAffected = await connection.ExecuteAsync(sql, new { Id = id });
         return rowsAffected > 0;
     }
+
+    public async Task<bool> CapNhatTrangThaiNguoiDungAsync(int idNguoiDung, int trangThai)
+    {
+        const string sql = @"
+            UPDATE NGUOIDUNG
+            SET TrangThai = @TrangThai
+            WHERE ID_NguoiDung = @ID_NguoiDung";
+
+        using var connection = _connectionFactory.CreateConnection();
+
+        var affectedRows = await connection.ExecuteAsync(sql, new
+        {
+            ID_NguoiDung = idNguoiDung,
+            TrangThai = trangThai
+        });
+
+        return affectedRows > 0;
+    }
+
+    public async Task<bool> CapNhatVaiTroNguoiDungAsync(int idNguoiDung, string vaiTro)
+    {
+        const string sql = @"
+            UPDATE NGUOIDUNG
+            SET VaiTro = @VaiTro
+            WHERE ID_NguoiDung = @ID_NguoiDung";
+
+        using var connection = _connectionFactory.CreateConnection();
+
+        var affectedRows = await connection.ExecuteAsync(sql, new
+        {
+            ID_NguoiDung = idNguoiDung,
+            VaiTro = vaiTro
+        });
+
+        return affectedRows > 0;
+    }
+
+    public async Task<bool> LaAdminDangHoatDongAsync(int idNguoiDung)
+    {
+        const string sql = @"
+            SELECT COUNT(1)
+            FROM NGUOIDUNG
+            WHERE ID_NguoiDung = @ID_NguoiDung
+            AND VaiTro = 'Admin'
+            AND TrangThai = 1";
+
+        using var connection = _connectionFactory.CreateConnection();
+
+        var count = await connection.ExecuteScalarAsync<int>(sql, new
+        {
+            ID_NguoiDung = idNguoiDung
+        });
+
+        return count > 0;
+    }
+
+    public async Task<int> DemAdminDangHoatDongAsync()
+    {
+        const string sql = @"
+            SELECT COUNT(1)
+            FROM NGUOIDUNG
+            WHERE VaiTro = 'Admin'
+            AND TrangThai = 1";
+
+        using var connection = _connectionFactory.CreateConnection();
+
+        return await connection.ExecuteScalarAsync<int>(sql);
+    }
 }

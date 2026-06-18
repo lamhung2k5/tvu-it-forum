@@ -5,19 +5,19 @@
         <div class="footer-logo-box">
           <img
             src="/images/logo-khoa.png"
-            alt="TVU ITerFORUM"
+            alt="CET FORIT"
             class="footer-logo"
           />
         </div>
 
         <div class="footer-brand-text">
-          <h3>TVU ITerFORUM</h3>
+          <h3>CET FORIT</h3>
           <p>Diễn đàn hỏi đáp công nghệ thông tin dành cho sinh viên.</p>
         </div>
       </div>
 
       <div class="footer-section footer-links">
-        <h4>Liên kết</h4>
+        <h4>LIÊN KẾT</h4>
         <RouterLink to="/">Trang chủ</RouterLink>
         <RouterLink to="/">Câu hỏi</RouterLink>
         <RouterLink to="/questions/create">Đặt câu hỏi</RouterLink>
@@ -25,10 +25,10 @@
       </div>
 
       <div class="footer-section footer-info">
-        <h4>Thông tin</h4>
+        <h4>THÔNG TIN</h4>
         <p>Trường Kỹ thuật và Công nghệ</p>
         <p>Khoa Công nghệ thông tin</p>
-        <p>© {{ currentYear }} TVU ITerFORUM</p>
+        <p>© {{ currentYear }} CET FORIT</p>
 
         <div class="footer-socials">
           <a href="#" aria-label="Facebook" title="Facebook">

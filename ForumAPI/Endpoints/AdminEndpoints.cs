@@ -1,6 +1,8 @@
 using ForumAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using ForumAPI.DTOs.Admin;
 
 namespace ForumAPI.Endpoints;
 
@@ -151,5 +153,81 @@ public static class AdminEndpoints
 
             return Results.Ok(new { Message = "Admin đã khôi phục bình luận thành công." });
         });
+
+        group.MapPatch("/users/{id:int}/lock", async (
+            int id,
+            ClaimsPrincipal user,
+            IAdminService adminService) =>
+        {
+            try
+            {
+                var currentUserId = GetCurrentUserId(user);
+                await adminService.KhoaNguoiDungAsync(id, currentUserId);
+
+                return Results.Ok(new { message = "Đã khóa tài khoản người dùng." });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Results.BadRequest(new { message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return Results.NotFound(new { message = ex.Message });
+            }
+        });
+
+        group.MapPatch("/users/{id:int}/unlock", async (
+            int id,
+            IAdminService adminService) =>
+        {
+            try
+            {
+                await adminService.MoKhoaNguoiDungAsync(id);
+
+                return Results.Ok(new { message = "Đã mở khóa tài khoản người dùng." });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return Results.NotFound(new { message = ex.Message });
+            }
+        });
+
+        group.MapPatch("/users/{id:int}/role", async (
+            int id,
+            CapNhatVaiTroRequest request,
+            ClaimsPrincipal user,
+            IAdminService adminService) =>
+        {
+            try
+            {
+                var currentUserId = GetCurrentUserId(user);
+                await adminService.CapNhatVaiTroNguoiDungAsync(id, request.VaiTro, currentUserId);
+
+                return Results.Ok(new { message = "Đã cập nhật vai trò người dùng." });
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.BadRequest(new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Results.BadRequest(new { message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return Results.NotFound(new { message = ex.Message });
+            }
+        });
+
+        static int? GetCurrentUserId(ClaimsPrincipal user)
+        {
+            var rawId =
+                user.FindFirstValue(ClaimTypes.NameIdentifier)
+                ?? user.FindFirstValue("ID_NguoiDung")
+                ?? user.FindFirstValue("idNguoiDung")
+                ?? user.FindFirstValue("sub");
+
+            return int.TryParse(rawId, out var id) ? id : null;
+        }
     }
 }

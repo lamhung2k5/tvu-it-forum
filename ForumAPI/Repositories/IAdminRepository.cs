@@ -18,4 +18,11 @@ public interface IAdminRepository
     Task<IEnumerable<AdminBinhLuanResponse>> GetBinhLuanAsync(string? loaiDoiTuong = null, int? isDeleted = null);
     Task<bool> AdminDeleteBinhLuanAsync(int id);
     Task<bool> AdminRestoreBinhLuanAsync(int id);
+    Task<bool> CapNhatTrangThaiNguoiDungAsync(int idNguoiDung, int trangThai);
+
+    Task<bool> CapNhatVaiTroNguoiDungAsync(int idNguoiDung, string vaiTro);
+
+    Task<bool> LaAdminDangHoatDongAsync(int idNguoiDung);
+
+    Task<int> DemAdminDangHoatDongAsync();
 }

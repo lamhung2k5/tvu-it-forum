@@ -23,6 +23,7 @@ namespace ForumAPI.Services
 
             var claims = new[]
             {
+                new Claim(ClaimTypes.NameIdentifier, user.ID_NguoiDung.ToString()),
                 new Claim(JwtRegisteredClaimNames.Sub, user.ID_NguoiDung.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim("HoTen", user.HoTen),

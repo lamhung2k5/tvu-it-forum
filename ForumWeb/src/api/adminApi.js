@@ -43,3 +43,22 @@ export function deleteAdminComment(id) {
 export function restoreAdminComment(id) {
   return request(`/api/admin/binhluan/${id}/khoiphuc`, { method: 'PATCH' })
 }
+
+export function lockAdminUser(id) {
+  return request(`/api/admin/users/${id}/lock`, {
+    method: 'PATCH'
+  })
+}
+
+export function unlockAdminUser(id) {
+  return request(`/api/admin/users/${id}/unlock`, {
+    method: 'PATCH'
+  })
+}
+
+export function updateAdminUserRole(id, vaiTro) {
+  return request(`/api/admin/users/${id}/role`, {
+    method: 'PATCH',
+    body: JSON.stringify({ vaiTro })
+  })
+}

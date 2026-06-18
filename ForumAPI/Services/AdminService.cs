@@ -86,4 +86,85 @@ public class AdminService : IAdminService
 
         return isDeleted.Value == 1 ? 1 : 0;
     }
+    public async Task KhoaNguoiDungAsync(int idNguoiDung, int? currentUserId)
+    {
+        if (currentUserId.HasValue && currentUserId.Value == idNguoiDung)
+        {
+            throw new InvalidOperationException("Không thể tự khóa tài khoản của chính mình.");
+        }
+
+        var laAdminDangHoatDong = await _adminRepository.LaAdminDangHoatDongAsync(idNguoiDung);
+
+        if (laAdminDangHoatDong)
+        {
+            var soAdminDangHoatDong = await _adminRepository.DemAdminDangHoatDongAsync();
+
+            if (soAdminDangHoatDong <= 1)
+            {
+                throw new InvalidOperationException("Không thể khóa admin đang hoạt động cuối cùng.");
+            }
+        }
+
+        var success = await _adminRepository.CapNhatTrangThaiNguoiDungAsync(idNguoiDung, 0);
+
+        if (!success)
+        {
+            throw new KeyNotFoundException("Không tìm thấy người dùng cần khóa.");
+        }
+    }
+
+    public async Task MoKhoaNguoiDungAsync(int idNguoiDung)
+    {
+        var success = await _adminRepository.CapNhatTrangThaiNguoiDungAsync(idNguoiDung, 1);
+
+        if (!success)
+        {
+            throw new KeyNotFoundException("Không tìm thấy người dùng cần mở khóa.");
+        }
+    }
+
+    public async Task CapNhatVaiTroNguoiDungAsync(int idNguoiDung, string vaiTro, int? currentUserId)
+    {
+        vaiTro = (vaiTro ?? string.Empty).Trim();
+
+        if (vaiTro.Equals("Admin", StringComparison.OrdinalIgnoreCase))
+        {
+            vaiTro = "Admin";
+        }
+        else if (vaiTro.Equals("User", StringComparison.OrdinalIgnoreCase))
+        {
+            vaiTro = "User";
+        }
+        else
+        {
+            throw new ArgumentException("Vai trò không hợp lệ. Chỉ chấp nhận Admin hoặc User.");
+        }
+
+        if (currentUserId.HasValue && currentUserId.Value == idNguoiDung && vaiTro == "User")
+        {
+            throw new InvalidOperationException("Không thể tự hạ quyền tài khoản của chính mình.");
+        }
+
+        if (vaiTro == "User")
+        {
+            var laAdminDangHoatDong = await _adminRepository.LaAdminDangHoatDongAsync(idNguoiDung);
+
+            if (laAdminDangHoatDong)
+            {
+                var soAdminDangHoatDong = await _adminRepository.DemAdminDangHoatDongAsync();
+
+                if (soAdminDangHoatDong <= 1)
+                {
+                    throw new InvalidOperationException("Không thể hạ quyền admin đang hoạt động cuối cùng.");
+                }
+            }
+        }
+
+        var success = await _adminRepository.CapNhatVaiTroNguoiDungAsync(idNguoiDung, vaiTro);
+
+        if (!success)
+        {
+            throw new KeyNotFoundException("Không tìm thấy người dùng cần cập nhật vai trò.");
+        }
+    }
 }

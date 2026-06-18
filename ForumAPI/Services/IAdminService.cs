@@ -18,4 +18,9 @@ public interface IAdminService
     Task<IEnumerable<AdminBinhLuanResponse>> GetBinhLuanAsync(string? loaiDoiTuong = null, int? isDeleted = null);
     Task<bool> DeleteBinhLuanAsync(int id);
     Task<bool> RestoreBinhLuanAsync(int id);
+    Task KhoaNguoiDungAsync(int idNguoiDung, int? currentUserId);
+
+    Task MoKhoaNguoiDungAsync(int idNguoiDung);
+
+    Task CapNhatVaiTroNguoiDungAsync(int idNguoiDung, string vaiTro, int? currentUserId);
 }

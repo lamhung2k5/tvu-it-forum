@@ -11,7 +11,7 @@
         </div>
 
         <div class="brand-text">
-          <h1>TVU ITerFORUM</h1>
+          <h1>CET FORIT</h1>
           <p>Hỏi đáp công nghệ thông tin</p>
         </div>
       </div>
@@ -131,7 +131,7 @@ const isLoggedIn = computed(() => Boolean(props.user))
 .main-nav {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 18 px;
   flex-shrink: 0;
 }
 
