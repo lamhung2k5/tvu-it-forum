@@ -20,9 +20,11 @@ public class CauTraLoiRepository : ICauTraLoiRepository
 
         var sql = @"
             SELECT COUNT(1)
-            FROM CAUHOI
-            WHERE ID_CauHoi = @CauHoiId
-              AND IsDeleted = 0;";
+            FROM CAUHOI ch
+            JOIN NGUOIDUNG nd ON ch.ID_NguoiDung = nd.ID_NguoiDung
+            WHERE ch.ID_CauHoi = @CauHoiId
+              AND ch.IsDeleted = 0
+              AND nd.TrangThai = 1;";
 
         var count = await connection.ExecuteScalarAsync<int>(sql, new { CauHoiId = cauHoiId });
         return count > 0;
@@ -53,20 +55,30 @@ public class CauTraLoiRepository : ICauTraLoiRepository
                 nd.AnhDaiDien,
                 ctl.NoiDung,
                 ctl.DaChapNhan,
-                COALESCE(SUM(bc.GiaTri), 0) AS DiemBinhChon,
+                (SELECT COALESCE(SUM(bc.GiaTri), 0)
+                 FROM BINHCHON bc
+                 JOIN NGUOIDUNG ndVote ON bc.ID_NguoiDung = ndVote.ID_NguoiDung
+                 WHERE bc.LoaiDoiTuong = 'CAUTRALOI'
+                   AND bc.ID_DoiTuong = ctl.ID_CauTraLoi
+                   AND ndVote.TrangThai = 1) AS DiemBinhChon,
                 (SELECT COUNT(1)
                  FROM BINHLUAN bl
+                 JOIN NGUOIDUNG ndBl ON bl.ID_NguoiDung = ndBl.ID_NguoiDung
                  WHERE bl.LoaiDoiTuong = 'CAUTRALOI'
                    AND bl.ID_DoiTuong = ctl.ID_CauTraLoi
-                   AND bl.IsDeleted = 0) AS SoBinhLuan,
+                   AND bl.IsDeleted = 0
+                   AND ndBl.TrangThai = 1) AS SoBinhLuan,
                 ctl.NgayTao,
                 ctl.NgayCapNhat
             FROM CAUTRALOI ctl
             JOIN NGUOIDUNG nd ON ctl.ID_NguoiDung = nd.ID_NguoiDung
-            LEFT JOIN BINHCHON bc ON bc.LoaiDoiTuong = 'CAUTRALOI' AND bc.ID_DoiTuong = ctl.ID_CauTraLoi
+            JOIN CAUHOI ch ON ctl.ID_CauHoi = ch.ID_CauHoi
+            JOIN NGUOIDUNG ndCh ON ch.ID_NguoiDung = ndCh.ID_NguoiDung
             WHERE ctl.ID_CauHoi = @CauHoiId
               AND ctl.IsDeleted = 0
-            GROUP BY ctl.ID_CauTraLoi, ctl.ID_CauHoi, ctl.ID_NguoiDung, nd.HoTen, nd.AnhDaiDien, ctl.NoiDung, ctl.DaChapNhan, ctl.NgayTao, ctl.NgayCapNhat
+              AND ch.IsDeleted = 0
+              AND nd.TrangThai = 1
+              AND ndCh.TrangThai = 1
             ORDER BY ctl.DaChapNhan DESC, DiemBinhChon DESC, ctl.ID_CauTraLoi ASC;";
 
         return await connection.QueryAsync<CauTraLoiResponse>(sql, new { CauHoiId = cauHoiId });
@@ -85,20 +97,30 @@ public class CauTraLoiRepository : ICauTraLoiRepository
                 nd.AnhDaiDien,
                 ctl.NoiDung,
                 ctl.DaChapNhan,
-                COALESCE(SUM(bc.GiaTri), 0) AS DiemBinhChon,
+                (SELECT COALESCE(SUM(bc.GiaTri), 0)
+                 FROM BINHCHON bc
+                 JOIN NGUOIDUNG ndVote ON bc.ID_NguoiDung = ndVote.ID_NguoiDung
+                 WHERE bc.LoaiDoiTuong = 'CAUTRALOI'
+                   AND bc.ID_DoiTuong = ctl.ID_CauTraLoi
+                   AND ndVote.TrangThai = 1) AS DiemBinhChon,
                 (SELECT COUNT(1)
                  FROM BINHLUAN bl
+                 JOIN NGUOIDUNG ndBl ON bl.ID_NguoiDung = ndBl.ID_NguoiDung
                  WHERE bl.LoaiDoiTuong = 'CAUTRALOI'
                    AND bl.ID_DoiTuong = ctl.ID_CauTraLoi
-                   AND bl.IsDeleted = 0) AS SoBinhLuan,
+                   AND bl.IsDeleted = 0
+                   AND ndBl.TrangThai = 1) AS SoBinhLuan,
                 ctl.NgayTao,
                 ctl.NgayCapNhat
             FROM CAUTRALOI ctl
             JOIN NGUOIDUNG nd ON ctl.ID_NguoiDung = nd.ID_NguoiDung
-            LEFT JOIN BINHCHON bc ON bc.LoaiDoiTuong = 'CAUTRALOI' AND bc.ID_DoiTuong = ctl.ID_CauTraLoi
+            JOIN CAUHOI ch ON ctl.ID_CauHoi = ch.ID_CauHoi
+            JOIN NGUOIDUNG ndCh ON ch.ID_NguoiDung = ndCh.ID_NguoiDung
             WHERE ctl.ID_CauTraLoi = @Id
               AND ctl.IsDeleted = 0
-            GROUP BY ctl.ID_CauTraLoi, ctl.ID_CauHoi, ctl.ID_NguoiDung, nd.HoTen, nd.AnhDaiDien, ctl.NoiDung, ctl.DaChapNhan, ctl.NgayTao, ctl.NgayCapNhat;";
+              AND ch.IsDeleted = 0
+              AND nd.TrangThai = 1
+              AND ndCh.TrangThai = 1;";
 
         return await connection.QueryFirstOrDefaultAsync<CauTraLoiResponse>(sql, new { Id = id });
     }
@@ -154,9 +176,13 @@ public class CauTraLoiRepository : ICauTraLoiRepository
                 ch.ID_NguoiDung AS ID_ChuCauHoi
             FROM CAUTRALOI ctl
             JOIN CAUHOI ch ON ctl.ID_CauHoi = ch.ID_CauHoi
+            JOIN NGUOIDUNG ndCtl ON ctl.ID_NguoiDung = ndCtl.ID_NguoiDung
+            JOIN NGUOIDUNG ndCh ON ch.ID_NguoiDung = ndCh.ID_NguoiDung
             WHERE ctl.ID_CauTraLoi = @Id
-            AND ctl.IsDeleted = 0
-            AND ch.IsDeleted = 0;";
+              AND ctl.IsDeleted = 0
+              AND ch.IsDeleted = 0
+              AND ndCtl.TrangThai = 1
+              AND ndCh.TrangThai = 1;";
 
         var target = await connection.QueryFirstOrDefaultAsync(checkSql, new { Id = id });
 
@@ -169,13 +195,11 @@ public class CauTraLoiRepository : ICauTraLoiRepository
         int idChuCauHoi = Convert.ToInt32(target.ID_ChuCauHoi);
         int idNguoiTraLoi = Convert.ToInt32(target.ID_NguoiTraLoi);
 
-        // Chỉ chủ câu hỏi mới được chấp nhận câu trả lời
         if (idChuCauHoi != userId)
         {
             return false;
         }
 
-        // Không cho chủ câu hỏi tự chấp nhận câu trả lời của chính mình
         if (idNguoiTraLoi == userId)
         {
             return false;
@@ -196,7 +220,7 @@ public class CauTraLoiRepository : ICauTraLoiRepository
                 SET DaChapNhan = 1,
                     NgayCapNhat = CURRENT_TIMESTAMP
                 WHERE ID_CauTraLoi = @Id
-                AND IsDeleted = 0;";
+                  AND IsDeleted = 0;";
 
             await connection.ExecuteAsync(clearSql, new { IdCauHoi = idCauHoi }, transaction);
             var rowsAffected = await connection.ExecuteAsync(acceptSql, new { Id = id }, transaction);
@@ -220,14 +244,16 @@ public class CauTraLoiRepository : ICauTraLoiRepository
             SET DaChapNhan = 0,
                 NgayCapNhat = CURRENT_TIMESTAMP
             WHERE ID_CauTraLoi = @Id
-            AND IsDeleted = 0
-            AND DaChapNhan = 1
-            AND ID_CauHoi IN (
-                SELECT ID_CauHoi
-                FROM CAUHOI
-                WHERE ID_NguoiDung = @UserId
-                    AND IsDeleted = 0
-            );";
+              AND IsDeleted = 0
+              AND DaChapNhan = 1
+              AND ID_CauHoi IN (
+                  SELECT ch.ID_CauHoi
+                  FROM CAUHOI ch
+                  JOIN NGUOIDUNG nd ON ch.ID_NguoiDung = nd.ID_NguoiDung
+                  WHERE ch.ID_NguoiDung = @UserId
+                    AND ch.IsDeleted = 0
+                    AND nd.TrangThai = 1
+              );";
 
         var rowsAffected = await connection.ExecuteAsync(sql, new
         {

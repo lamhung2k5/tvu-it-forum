@@ -23,19 +23,25 @@ public class BinhChonRepository : IBinhChonRepository
         {
             sql = @"
                 SELECT COUNT(1)
-                FROM CAUHOI
-                WHERE ID_CauHoi = @DoiTuongId
-                  AND IsDeleted = 0;";
+                FROM CAUHOI ch
+                JOIN NGUOIDUNG nd ON ch.ID_NguoiDung = nd.ID_NguoiDung
+                WHERE ch.ID_CauHoi = @DoiTuongId
+                  AND ch.IsDeleted = 0
+                  AND nd.TrangThai = 1;";
         }
         else if (loaiDoiTuong == "CAUTRALOI")
         {
             sql = @"
                 SELECT COUNT(1)
                 FROM CAUTRALOI ctl
+                JOIN NGUOIDUNG ndCtl ON ctl.ID_NguoiDung = ndCtl.ID_NguoiDung
                 JOIN CAUHOI ch ON ctl.ID_CauHoi = ch.ID_CauHoi
+                JOIN NGUOIDUNG ndCh ON ch.ID_NguoiDung = ndCh.ID_NguoiDung
                 WHERE ctl.ID_CauTraLoi = @DoiTuongId
                   AND ctl.IsDeleted = 0
-                  AND ch.IsDeleted = 0;";
+                  AND ch.IsDeleted = 0
+                  AND ndCtl.TrangThai = 1
+                  AND ndCh.TrangThai = 1;";
         }
         else
         {
@@ -105,10 +111,12 @@ public class BinhChonRepository : IBinhChonRepository
         using var connection = _connectionFactory.CreateConnection();
 
         var sql = @"
-            SELECT COALESCE(SUM(GiaTri), 0)
-            FROM BINHCHON
-            WHERE LoaiDoiTuong = @LoaiDoiTuong
-              AND ID_DoiTuong = @DoiTuongId;";
+            SELECT COALESCE(SUM(bc.GiaTri), 0)
+            FROM BINHCHON bc
+            JOIN NGUOIDUNG nd ON bc.ID_NguoiDung = nd.ID_NguoiDung
+            WHERE bc.LoaiDoiTuong = @LoaiDoiTuong
+              AND bc.ID_DoiTuong = @DoiTuongId
+              AND nd.TrangThai = 1;";
 
         return await connection.ExecuteScalarAsync<int>(sql, new
         {

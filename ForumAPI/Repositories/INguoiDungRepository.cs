@@ -7,5 +7,6 @@ namespace ForumAPI.Repositories
         Task<NguoiDung?> GetByEmailAsync(string email);
         Task<bool> EmailExistsAsync(string email);
         Task<int> CreateAsync(NguoiDung user);
+        Task<bool> IsActiveAsync(int userId);   
     }
 }

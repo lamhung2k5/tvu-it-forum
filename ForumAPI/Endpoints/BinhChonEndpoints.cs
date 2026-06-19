@@ -36,7 +36,7 @@ public static class BinhChonEndpoints
             }
             catch (InvalidOperationException ex)
             {
-                return Results.NotFound(new { Message = ex.Message });
+                return Results.BadRequest(new { Message = ex.Message });
             }
         });
 
@@ -63,7 +63,7 @@ public static class BinhChonEndpoints
             }
             catch (InvalidOperationException ex)
             {
-                return Results.NotFound(new { Message = ex.Message });
+                return Results.BadRequest(new { Message = ex.Message });
             }
         });
     }

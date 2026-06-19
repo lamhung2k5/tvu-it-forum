@@ -40,7 +40,7 @@ public static class BinhLuanEndpoints
             }
             catch (InvalidOperationException ex)
             {
-                return Results.NotFound(new { Message = ex.Message });
+                return Results.BadRequest(new { Message = ex.Message });
             }
         });
 
@@ -87,7 +87,7 @@ public static class BinhLuanEndpoints
             }
             catch (InvalidOperationException ex)
             {
-                return Results.NotFound(new { Message = ex.Message });
+                return Results.BadRequest(new { Message = ex.Message });
             }
         });
 
@@ -147,6 +147,10 @@ public static class BinhLuanEndpoints
             {
                 return Results.BadRequest(new { Message = ex.Message });
             }
+            catch (InvalidOperationException ex)
+            {
+                return Results.BadRequest(new { Message = ex.Message });
+            }
         });
 
         // 7. Xóa mềm bình luận của chính mình
@@ -160,13 +164,20 @@ public static class BinhLuanEndpoints
                 return Results.Unauthorized();
             }
 
-            var isSuccess = await binhLuanService.DeleteBinhLuanAsync(id, userId);
-            if (!isSuccess)
+            try
             {
-                return Results.BadRequest(new { Message = "Xóa thất bại! Bình luận không tồn tại, đã bị xóa từ trước hoặc bạn không có quyền xóa." });
-            }
+                var isSuccess = await binhLuanService.DeleteBinhLuanAsync(id, userId);
+                if (!isSuccess)
+                {
+                    return Results.BadRequest(new { Message = "Xóa thất bại! Bình luận không tồn tại, đã bị xóa từ trước hoặc bạn không có quyền xóa." });
+                }
 
-            return Results.Ok(new { Message = "Đã xóa bình luận thành công!" });
+                return Results.Ok(new { Message = "Đã xóa bình luận thành công!" });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Results.BadRequest(new { Message = ex.Message });
+            }
         });
     }
 

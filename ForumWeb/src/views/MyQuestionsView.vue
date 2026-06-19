@@ -25,11 +25,7 @@
         <QuestionCard :question="question" />
 
         <div class="my-actions">
-          <el-tag v-if="question.isDeleted === 1" type="danger">
-            Đã xóa mềm
-          </el-tag>
-
-          <el-tag v-else type="success">
+          <el-tag type="success">
             Đang hiển thị
           </el-tag>
 
@@ -49,21 +45,14 @@
         </div>
       </div>
 
-      <div
+      <ForumPagination
         v-if="!loading && questions.length > 0"
-        class="pagination-wrap"
-      >
-        <el-pagination
-          v-model:current-page="pagination.page"
-          v-model:page-size="pagination.pageSize"
-          :total="questions.length"
-          :page-sizes="[5, 10, 20]"
-          layout="sizes, prev, pager, next, jumper"
-          background
-          @current-change="handlePageChange"
-          @size-change="handlePageSizeChange"
-        />
-      </div>
+        :total="questions.length"
+        :page="pagination.page"
+        :page-size="pagination.pageSize"
+        @page-change="handlePageChange"
+        @page-size-change="handlePageSizeChange"
+      />
     </section>
   </div>
 </template>
@@ -75,6 +64,7 @@ import { getMyQuestions } from '../api/userApi'
 import { normalizeQuestion } from '../utils/format'
 import QuestionCard from '../components/QuestionCard.vue'
 import EmptyState from '../components/EmptyState.vue'
+import ForumPagination from '../components/ForumPagination.vue'
 
 const loading = ref(false)
 const questions = ref([])
@@ -97,7 +87,9 @@ async function load() {
   loading.value = true
 
   try {
-    questions.value = (await getMyQuestions() || []).map(normalizeQuestion)
+    questions.value = (await getMyQuestions() || [])
+      .map(normalizeQuestion)
+      .filter(question => Number(question.isDeleted || question.IsDeleted || 0) === 0)
 
     if ((pagination.page - 1) * pagination.pageSize >= questions.value.length) {
       pagination.page = 1
@@ -130,11 +122,5 @@ function handlePageSizeChange(pageSize) {
   align-items: center;
   gap: 8px;
   margin: -6px 0 14px;
-}
-
-.pagination-wrap {
-  display: flex;
-  justify-content: center;
-  margin: 24px 0 6px;
 }
 </style>

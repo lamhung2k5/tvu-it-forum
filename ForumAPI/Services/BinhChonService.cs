@@ -7,10 +7,13 @@ namespace ForumAPI.Services;
 public class BinhChonService : IBinhChonService
 {
     private readonly IBinhChonRepository _binhChonRepository;
+    private readonly INguoiDungRepository _nguoiDungRepository;
 
-    public BinhChonService(IBinhChonRepository binhChonRepository)
+    public BinhChonService(IBinhChonRepository binhChonRepository,INguoiDungRepository nguoiDungRepository
+    )
     {
         _binhChonRepository = binhChonRepository;
+        _nguoiDungRepository = nguoiDungRepository;
     }
 
     public async Task<BinhChonResponse> BinhChonCauHoiAsync(int cauHoiId, int userId, BinhChonRequest request)
@@ -25,6 +28,7 @@ public class BinhChonService : IBinhChonService
 
     private async Task<BinhChonResponse> XuLyBinhChonAsync(string loaiDoiTuong, int doiTuongId, int userId, BinhChonRequest request)
     {
+        await EnsureUserActiveAsync(userId);
         if (request.GiaTri != 1 && request.GiaTri != -1)
         {
             throw new ArgumentException("Giá trị bình chọn chỉ được là 1 hoặc -1.");
@@ -72,5 +76,13 @@ public class BinhChonService : IBinhChonService
             BinhChonCuaToi = binhChonCuaToi,
             Message = message
         };
+    }
+
+    private async Task EnsureUserActiveAsync(int userId)
+    {
+        if (!await _nguoiDungRepository.IsActiveAsync(userId))
+        {
+            throw new InvalidOperationException("Tài khoản của bạn đã bị khóa, không thể thực hiện thao tác này.");
+        }
     }
 }

@@ -86,7 +86,7 @@ public class UserProfileRepository : IUserProfileRepository
         return rowsAffected > 0;
     }
 
-    public async Task<IEnumerable<UserQuestionResponse>> GetMyQuestionsAsync(int userId, int limit = 0, bool includeDeleted = true)
+    public async Task<IEnumerable<UserQuestionResponse>> GetMyQuestionsAsync(int userId, int limit = 0, bool includeDeleted = false)
     {
         using var connection = _connectionFactory.CreateConnection();
 
@@ -224,7 +224,7 @@ public class UserProfileRepository : IUserProfileRepository
         return await connection.QueryAsync<UserAnswerResponse>(sql, new { UserId = userId });
     }
 
-    public async Task<IEnumerable<UserAnswerResponse>> GetMyAnswersAsync(int userId, int limit = 0, bool includeDeleted = true)
+    public async Task<IEnumerable<UserAnswerResponse>> GetMyAnswersAsync(int userId, int limit = 0, bool includeDeleted = false)
     {
         using var connection = _connectionFactory.CreateConnection();
 

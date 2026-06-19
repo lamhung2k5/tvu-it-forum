@@ -17,7 +17,7 @@ public class CauHoiRepository : ICauHoiRepository
     public async Task<int> CreateAsync(CauHoi cauHoi)
     {
         using var connection = _connectionFactory.CreateConnection();
-        
+
         var sql = @"
             INSERT INTO CAUHOI (ID_NguoiDung, ID_ChuyenMuc, TieuDe, NoiDung, TrangThai, LuotXem, NgayTao, IsDeleted)
             VALUES (@ID_NguoiDung, @ID_ChuyenMuc, @TieuDe, @NoiDung, @TrangThai, @LuotXem, CURRENT_TIMESTAMP, 0);
@@ -44,17 +44,23 @@ public class CauHoiRepository : ICauHoiRepository
                 c.NgayCapNhat,
                 (SELECT COALESCE(SUM(bc.GiaTri), 0)
                  FROM BINHCHON bc
+                 JOIN NGUOIDUNG ndVote ON bc.ID_NguoiDung = ndVote.ID_NguoiDung
                  WHERE bc.LoaiDoiTuong = 'CAUHOI'
-                   AND bc.ID_DoiTuong = c.ID_CauHoi) AS DiemBinhChon,
+                   AND bc.ID_DoiTuong = c.ID_CauHoi
+                   AND ndVote.TrangThai = 1) AS DiemBinhChon,
                 (SELECT COUNT(1)
                  FROM CAUTRALOI ctl
+                 JOIN NGUOIDUNG ndCtl ON ctl.ID_NguoiDung = ndCtl.ID_NguoiDung
                  WHERE ctl.ID_CauHoi = c.ID_CauHoi
-                   AND ctl.IsDeleted = 0) AS SoCauTraLoi,
+                   AND ctl.IsDeleted = 0
+                   AND ndCtl.TrangThai = 1) AS SoCauTraLoi,
                 (SELECT COUNT(1)
                  FROM BINHLUAN bl
+                 JOIN NGUOIDUNG ndBl ON bl.ID_NguoiDung = ndBl.ID_NguoiDung
                  WHERE bl.LoaiDoiTuong = 'CAUHOI'
                    AND bl.ID_DoiTuong = c.ID_CauHoi
-                   AND bl.IsDeleted = 0) AS SoBinhLuan,
+                   AND bl.IsDeleted = 0
+                   AND ndBl.TrangThai = 1) AS SoBinhLuan,
                 (SELECT GROUP_CONCAT(t.TenThe, ',')
                  FROM CauHoi_The cht
                  JOIN THE t ON cht.ID_The = t.ID_The
@@ -63,7 +69,8 @@ public class CauHoiRepository : ICauHoiRepository
             FROM CAUHOI c
             JOIN CHUYENMUC cm ON c.ID_ChuyenMuc = cm.ID_ChuyenMuc
             JOIN NGUOIDUNG nd ON c.ID_NguoiDung = nd.ID_NguoiDung
-            WHERE c.IsDeleted = 0";
+            WHERE c.IsDeleted = 0
+              AND nd.TrangThai = 1";
 
         var parameters = new DynamicParameters();
 
@@ -119,17 +126,23 @@ public class CauHoiRepository : ICauHoiRepository
                 c.NgayCapNhat,
                 (SELECT COALESCE(SUM(bc.GiaTri), 0)
                  FROM BINHCHON bc
+                 JOIN NGUOIDUNG ndVote ON bc.ID_NguoiDung = ndVote.ID_NguoiDung
                  WHERE bc.LoaiDoiTuong = 'CAUHOI'
-                   AND bc.ID_DoiTuong = c.ID_CauHoi) AS DiemBinhChon,
+                   AND bc.ID_DoiTuong = c.ID_CauHoi
+                   AND ndVote.TrangThai = 1) AS DiemBinhChon,
                 (SELECT COUNT(1)
                  FROM CAUTRALOI ctl
+                 JOIN NGUOIDUNG ndCtl ON ctl.ID_NguoiDung = ndCtl.ID_NguoiDung
                  WHERE ctl.ID_CauHoi = c.ID_CauHoi
-                   AND ctl.IsDeleted = 0) AS SoCauTraLoi,
+                   AND ctl.IsDeleted = 0
+                   AND ndCtl.TrangThai = 1) AS SoCauTraLoi,
                 (SELECT COUNT(1)
                  FROM BINHLUAN bl
+                 JOIN NGUOIDUNG ndBl ON bl.ID_NguoiDung = ndBl.ID_NguoiDung
                  WHERE bl.LoaiDoiTuong = 'CAUHOI'
                    AND bl.ID_DoiTuong = c.ID_CauHoi
-                   AND bl.IsDeleted = 0) AS SoBinhLuan,
+                   AND bl.IsDeleted = 0
+                   AND ndBl.TrangThai = 1) AS SoBinhLuan,
                 (SELECT GROUP_CONCAT(t.TenThe, ',')
                  FROM CauHoi_The cht
                  JOIN THE t ON cht.ID_The = t.ID_The
@@ -139,10 +152,11 @@ public class CauHoiRepository : ICauHoiRepository
             JOIN CHUYENMUC cm ON c.ID_ChuyenMuc = cm.ID_ChuyenMuc
             JOIN NGUOIDUNG nd ON c.ID_NguoiDung = nd.ID_NguoiDung
             WHERE c.ID_CauHoi = @Id
-              AND c.IsDeleted = 0;";
+              AND c.IsDeleted = 0
+              AND nd.TrangThai = 1;";
 
         return await connection.QueryFirstOrDefaultAsync<CauHoiResponse>(sql, new { Id = id });
-    }  
+    }
 
     public async Task<bool> IncreaseViewAsync(int id)
     {
@@ -152,7 +166,12 @@ public class CauHoiRepository : ICauHoiRepository
             UPDATE CAUHOI
             SET LuotXem = COALESCE(LuotXem, 0) + 1
             WHERE ID_CauHoi = @Id
-            AND IsDeleted = 0;";
+              AND IsDeleted = 0
+              AND ID_NguoiDung IN (
+                  SELECT ID_NguoiDung
+                  FROM NGUOIDUNG
+                  WHERE TrangThai = 1
+              );";
 
         var rowsAffected = await connection.ExecuteAsync(sql, new { Id = id });
 
@@ -162,24 +181,24 @@ public class CauHoiRepository : ICauHoiRepository
     public async Task<bool> UpdateAsync(int id, int userId, int idChuyenMuc, string tieuDe, string noiDung)
     {
         using var connection = _connectionFactory.CreateConnection();
-        
+
         var sql = @"
-            UPDATE CAUHOI 
-            SET TieuDe = @TieuDe, 
-                NoiDung = @NoiDung, 
+            UPDATE CAUHOI
+            SET TieuDe = @TieuDe,
+                NoiDung = @NoiDung,
                 ID_ChuyenMuc = @IdChuyenMuc,
                 NgayCapNhat = CURRENT_TIMESTAMP
-            WHERE ID_CauHoi = @Id 
-              AND ID_NguoiDung = @UserId 
+            WHERE ID_CauHoi = @Id
+              AND ID_NguoiDung = @UserId
               AND IsDeleted = 0;";
 
-        var rowsAffected = await connection.ExecuteAsync(sql, new 
-        { 
-            Id = id, 
-            UserId = userId, 
-            IdChuyenMuc = idChuyenMuc, 
-            TieuDe = tieuDe, 
-            NoiDung = noiDung 
+        var rowsAffected = await connection.ExecuteAsync(sql, new
+        {
+            Id = id,
+            UserId = userId,
+            IdChuyenMuc = idChuyenMuc,
+            TieuDe = tieuDe,
+            NoiDung = noiDung
         });
 
         return rowsAffected > 0;
@@ -188,13 +207,13 @@ public class CauHoiRepository : ICauHoiRepository
     public async Task<bool> DeleteAsync(int id, int userId)
     {
         using var connection = _connectionFactory.CreateConnection();
-        
+
         var sql = @"
-            UPDATE CAUHOI 
+            UPDATE CAUHOI
             SET IsDeleted = 1,
                 NgayCapNhat = CURRENT_TIMESTAMP
-            WHERE ID_CauHoi = @Id 
-              AND ID_NguoiDung = @UserId 
+            WHERE ID_CauHoi = @Id
+              AND ID_NguoiDung = @UserId
               AND IsDeleted = 0;";
 
         var rowsAffected = await connection.ExecuteAsync(sql, new { Id = id, UserId = userId });

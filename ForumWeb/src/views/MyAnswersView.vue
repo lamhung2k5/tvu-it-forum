@@ -19,21 +19,14 @@
         :answer="answer"
       />
 
-      <div
+      <ForumPagination
         v-if="!loading && answers.length > 0"
-        class="pagination-wrap"
-      >
-        <el-pagination
-          v-model:current-page="pagination.page"
-          v-model:page-size="pagination.pageSize"
-          :total="answers.length"
-          :page-sizes="[5, 10, 20]"
-          layout="sizes, prev, pager, next, jumper"
-          background
-          @current-change="handlePageChange"
-          @size-change="handlePageSizeChange"
-        />
-      </div>
+        :total="answers.length"
+        :page="pagination.page"
+        :page-size="pagination.pageSize"
+        @page-change="handlePageChange"
+        @page-size-change="handlePageSizeChange"
+      />
     </el-card>
   </div>
 </template>
@@ -45,6 +38,7 @@ import { getMyAnswers } from '../api/userApi'
 import { normalizeAnswer } from '../utils/format'
 import AnswerCard from '../components/AnswerCard.vue'
 import EmptyState from '../components/EmptyState.vue'
+import ForumPagination from '../components/ForumPagination.vue'
 
 const loading = ref(false)
 const answers = ref([])
@@ -67,7 +61,9 @@ async function load() {
   loading.value = true
 
   try {
-    answers.value = (await getMyAnswers() || []).map(normalizeAnswer)
+    answers.value = (await getMyAnswers() || [])
+      .map(normalizeAnswer)
+      .filter(answer => Number(answer.isDeleted || answer.IsDeleted || 0) === 0)
 
     if ((pagination.page - 1) * pagination.pageSize >= answers.value.length) {
       pagination.page = 1
@@ -127,12 +123,6 @@ function handlePageSizeChange(pageSize) {
   flex-wrap: wrap;
   color: var(--forum-muted);
   font-size: 13px;
-}
-
-.pagination-wrap {
-  display: flex;
-  justify-content: center;
-  margin: 24px 0 6px;
 }
 
 @media (max-width: 760px) {

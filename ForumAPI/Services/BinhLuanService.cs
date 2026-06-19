@@ -10,14 +10,18 @@ public class BinhLuanService : IBinhLuanService
     private const string LoaiCauTraLoi = "CAUTRALOI";
 
     private readonly IBinhLuanRepository _binhLuanRepository;
+    private readonly INguoiDungRepository _nguoiDungRepository;
 
-    public BinhLuanService(IBinhLuanRepository binhLuanRepository)
+    public BinhLuanService(IBinhLuanRepository binhLuanRepository,INguoiDungRepository nguoiDungRepository
+    )
     {
         _binhLuanRepository = binhLuanRepository;
+        _nguoiDungRepository = nguoiDungRepository;
     }
 
     public async Task<int> CreateBinhLuanCauHoiAsync(int cauHoiId, int userId, CreateBinhLuanRequest request)
     {
+        
         return await CreateAsync(LoaiCauHoi, cauHoiId, userId, request);
     }
 
@@ -53,6 +57,7 @@ public class BinhLuanService : IBinhLuanService
 
     public async Task<bool> UpdateBinhLuanAsync(int id, int userId, UpdateBinhLuanRequest request)
     {
+        await EnsureUserActiveAsync(userId);
         if (string.IsNullOrWhiteSpace(request.NoiDung))
         {
             throw new ArgumentException("Nội dung bình luận không được để trống.");
@@ -68,6 +73,7 @@ public class BinhLuanService : IBinhLuanService
 
     private async Task<int> CreateAsync(string loaiDoiTuong, int doiTuongId, int userId, CreateBinhLuanRequest request)
     {
+        await EnsureUserActiveAsync(userId);
         if (string.IsNullOrWhiteSpace(request.NoiDung))
         {
             throw new ArgumentException("Nội dung bình luận không được để trống.");
@@ -91,5 +97,13 @@ public class BinhLuanService : IBinhLuanService
         };
 
         return await _binhLuanRepository.CreateAsync(binhLuan);
+    }
+
+    private async Task EnsureUserActiveAsync(int userId)
+    {
+        if (!await _nguoiDungRepository.IsActiveAsync(userId))
+        {
+            throw new InvalidOperationException("Tài khoản của bạn đã bị khóa, không thể thực hiện thao tác này.");
+        }
     }
 }

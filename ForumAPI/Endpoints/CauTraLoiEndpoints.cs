@@ -40,7 +40,7 @@ public static class CauTraLoiEndpoints
             }
             catch (InvalidOperationException ex)
             {
-                return Results.NotFound(new { Message = ex.Message });
+                return Results.BadRequest(new { Message = ex.Message });
             }
         });
 
@@ -100,6 +100,10 @@ public static class CauTraLoiEndpoints
             {
                 return Results.BadRequest(new { Message = ex.Message });
             }
+            catch (InvalidOperationException ex)
+            {
+                return Results.BadRequest(new { Message = ex.Message });
+            }
         });
 
         // 5. API DELETE: Xóa mềm câu trả lời của chính mình
@@ -113,13 +117,20 @@ public static class CauTraLoiEndpoints
                 return Results.Unauthorized();
             }
 
-            var isSuccess = await cauTraLoiService.DeleteCauTraLoiAsync(id, userId);
-            if (!isSuccess)
+            try
             {
-                return Results.BadRequest(new { Message = "Xóa thất bại! Câu trả lời không tồn tại, đã bị xóa từ trước hoặc bạn không có quyền xóa." });
-            }
+                var isSuccess = await cauTraLoiService.DeleteCauTraLoiAsync(id, userId);
+                if (!isSuccess)
+                {
+                    return Results.BadRequest(new { Message = "Xóa thất bại! Câu trả lời không tồn tại, đã bị xóa từ trước hoặc bạn không có quyền xóa." });
+                }
 
-            return Results.Ok(new { Message = "Đã xóa câu trả lời thành công!" });
+                return Results.Ok(new { Message = "Đã xóa câu trả lời thành công!" });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Results.BadRequest(new { Message = ex.Message });
+            }
         });
 
         // 6. API PATCH: Chủ câu hỏi chọn câu trả lời được chấp nhận
@@ -133,16 +144,23 @@ public static class CauTraLoiEndpoints
                 return Results.Unauthorized();
             }
 
-            var isSuccess = await cauTraLoiService.AcceptCauTraLoiAsync(id, userId);
-            if (!isSuccess)
+            try
             {
-                return Results.BadRequest(new
+                var isSuccess = await cauTraLoiService.AcceptCauTraLoiAsync(id, userId);
+                if (!isSuccess)
                 {
-                    Message = "Chọn câu trả lời thất bại! Câu trả lời không tồn tại, bạn không phải chủ câu hỏi hoặc không được tự chấp nhận câu trả lời của mình."
-                });
-            }
+                    return Results.BadRequest(new
+                    {
+                        Message = "Chọn câu trả lời thất bại! Câu trả lời không tồn tại, bạn không phải chủ câu hỏi hoặc không được tự chấp nhận câu trả lời của mình."
+                    });
+                }
 
-            return Results.Ok(new { Message = "Đã chọn câu trả lời được chấp nhận!" });
+                return Results.Ok(new { Message = "Đã chọn câu trả lời được chấp nhận!" });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Results.BadRequest(new { Message = ex.Message });
+            }
         });
 
         // 7. API PATCH: Chủ câu hỏi bỏ chấp nhận câu trả lời
@@ -156,20 +174,27 @@ public static class CauTraLoiEndpoints
                 return Results.Unauthorized();
             }
 
-            var isSuccess = await cauTraLoiService.UnacceptAnswerAsync(id, userId);
-
-            if (!isSuccess)
+            try
             {
-                return Results.BadRequest(new
+                var isSuccess = await cauTraLoiService.UnacceptAnswerAsync(id, userId);
+
+                if (!isSuccess)
                 {
-                    Message = "Thu hồi thất bại! Câu trả lời không tồn tại, chưa được chấp nhận hoặc bạn không phải chủ câu hỏi."
+                    return Results.BadRequest(new
+                    {
+                        Message = "Thu hồi thất bại! Câu trả lời không tồn tại, chưa được chấp nhận hoặc bạn không phải chủ câu hỏi."
+                    });
+                }
+
+                return Results.Ok(new
+                {
+                    Message = "Đã thu hồi câu trả lời được chấp nhận."
                 });
             }
-
-            return Results.Ok(new
+            catch (InvalidOperationException ex)
             {
-                Message = "Đã thu hồi câu trả lời được chấp nhận."
-            });
+                return Results.BadRequest(new { Message = ex.Message });
+            }
         });
     }
 

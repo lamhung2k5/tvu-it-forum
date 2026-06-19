@@ -7,14 +7,19 @@ namespace ForumAPI.Services;
 public class CauHoiService : ICauHoiService
 {
     private readonly ICauHoiRepository _cauHoiRepository;
+    private readonly INguoiDungRepository _nguoiDungRepository;
 
-    public CauHoiService(ICauHoiRepository cauHoiRepository)
+    public CauHoiService(ICauHoiRepository cauHoiRepository, INguoiDungRepository nguoiDungRepository
+    )
     {
         _cauHoiRepository = cauHoiRepository;
+        _nguoiDungRepository = nguoiDungRepository;
     }
 
     public async Task<int> CreateCauHoiAsync(CreateCauHoiRequest request, int userId)
     {
+        await EnsureUserActiveAsync(userId);
+
         if (request.ID_ChuyenMuc <= 0 || !await _cauHoiRepository.ChuyenMucExistsAsync(request.ID_ChuyenMuc))
         {
             throw new ArgumentException("Chuyên mục không tồn tại. Vui lòng chọn ID chuyên mục hợp lệ.");
@@ -56,6 +61,7 @@ public class CauHoiService : ICauHoiService
 
     public async Task<bool> UpdateCauHoiAsync(int id, int userId, UpdateCauHoiRequest request)
     {
+        await EnsureUserActiveAsync(userId);
         if (request.ID_ChuyenMuc <= 0 || !await _cauHoiRepository.ChuyenMucExistsAsync(request.ID_ChuyenMuc))
         {
             throw new ArgumentException("Chuyên mục không tồn tại. Vui lòng chọn ID chuyên mục hợp lệ.");
@@ -84,6 +90,16 @@ public class CauHoiService : ICauHoiService
 
     public async Task<bool> DeleteCauHoiAsync(int id, int userId)
     {
+        await EnsureUserActiveAsync(userId);
+
         return await _cauHoiRepository.DeleteAsync(id, userId);
+    }
+
+    private async Task EnsureUserActiveAsync(int userId)
+    {
+        if (!await _nguoiDungRepository.IsActiveAsync(userId))
+        {
+            throw new InvalidOperationException("Tài khoản của bạn đã bị khóa, không thể thực hiện thao tác này.");
+        }
     }
 }

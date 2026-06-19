@@ -24,19 +24,25 @@ public class BinhLuanRepository : IBinhLuanRepository
         {
             sql = @"
                 SELECT COUNT(1)
-                FROM CAUHOI
-                WHERE ID_CauHoi = @DoiTuongId
-                  AND IsDeleted = 0;";
+                FROM CAUHOI ch
+                JOIN NGUOIDUNG nd ON ch.ID_NguoiDung = nd.ID_NguoiDung
+                WHERE ch.ID_CauHoi = @DoiTuongId
+                  AND ch.IsDeleted = 0
+                  AND nd.TrangThai = 1;";
         }
         else if (loaiDoiTuong == "CAUTRALOI")
         {
             sql = @"
                 SELECT COUNT(1)
                 FROM CAUTRALOI ctl
+                JOIN NGUOIDUNG ndCtl ON ctl.ID_NguoiDung = ndCtl.ID_NguoiDung
                 JOIN CAUHOI ch ON ctl.ID_CauHoi = ch.ID_CauHoi
+                JOIN NGUOIDUNG ndCh ON ch.ID_NguoiDung = ndCh.ID_NguoiDung
                 WHERE ctl.ID_CauTraLoi = @DoiTuongId
                   AND ctl.IsDeleted = 0
-                  AND ch.IsDeleted = 0;";
+                  AND ch.IsDeleted = 0
+                  AND ndCtl.TrangThai = 1
+                  AND ndCh.TrangThai = 1;";
         }
         else
         {
@@ -63,23 +69,66 @@ public class BinhLuanRepository : IBinhLuanRepository
     {
         using var connection = _connectionFactory.CreateConnection();
 
-        var sql = @"
-            SELECT
-                bl.ID_BinhLuan,
-                bl.ID_NguoiDung,
-                nd.HoTen,
-                nd.AnhDaiDien,
-                bl.LoaiDoiTuong,
-                bl.ID_DoiTuong,
-                bl.NoiDung,
-                bl.NgayTao,
-                bl.NgayCapNhat
-            FROM BINHLUAN bl
-            JOIN NGUOIDUNG nd ON bl.ID_NguoiDung = nd.ID_NguoiDung
-            WHERE bl.LoaiDoiTuong = @LoaiDoiTuong
-              AND bl.ID_DoiTuong = @DoiTuongId
-              AND bl.IsDeleted = 0
-            ORDER BY bl.ID_BinhLuan ASC;";
+        string sql;
+
+        if (loaiDoiTuong == "CAUHOI")
+        {
+            sql = @"
+                SELECT
+                    bl.ID_BinhLuan,
+                    bl.ID_NguoiDung,
+                    nd.HoTen,
+                    nd.AnhDaiDien,
+                    bl.LoaiDoiTuong,
+                    bl.ID_DoiTuong,
+                    bl.NoiDung,
+                    bl.NgayTao,
+                    bl.NgayCapNhat
+                FROM BINHLUAN bl
+                JOIN NGUOIDUNG nd ON bl.ID_NguoiDung = nd.ID_NguoiDung
+                JOIN CAUHOI ch ON bl.ID_DoiTuong = ch.ID_CauHoi
+                JOIN NGUOIDUNG ndCh ON ch.ID_NguoiDung = ndCh.ID_NguoiDung
+                WHERE bl.LoaiDoiTuong = @LoaiDoiTuong
+                  AND bl.ID_DoiTuong = @DoiTuongId
+                  AND bl.IsDeleted = 0
+                  AND ch.IsDeleted = 0
+                  AND nd.TrangThai = 1
+                  AND ndCh.TrangThai = 1
+                ORDER BY bl.ID_BinhLuan ASC;";
+        }
+        else if (loaiDoiTuong == "CAUTRALOI")
+        {
+            sql = @"
+                SELECT
+                    bl.ID_BinhLuan,
+                    bl.ID_NguoiDung,
+                    nd.HoTen,
+                    nd.AnhDaiDien,
+                    bl.LoaiDoiTuong,
+                    bl.ID_DoiTuong,
+                    bl.NoiDung,
+                    bl.NgayTao,
+                    bl.NgayCapNhat
+                FROM BINHLUAN bl
+                JOIN NGUOIDUNG nd ON bl.ID_NguoiDung = nd.ID_NguoiDung
+                JOIN CAUTRALOI ctl ON bl.ID_DoiTuong = ctl.ID_CauTraLoi
+                JOIN NGUOIDUNG ndCtl ON ctl.ID_NguoiDung = ndCtl.ID_NguoiDung
+                JOIN CAUHOI ch ON ctl.ID_CauHoi = ch.ID_CauHoi
+                JOIN NGUOIDUNG ndCh ON ch.ID_NguoiDung = ndCh.ID_NguoiDung
+                WHERE bl.LoaiDoiTuong = @LoaiDoiTuong
+                  AND bl.ID_DoiTuong = @DoiTuongId
+                  AND bl.IsDeleted = 0
+                  AND ctl.IsDeleted = 0
+                  AND ch.IsDeleted = 0
+                  AND nd.TrangThai = 1
+                  AND ndCtl.TrangThai = 1
+                  AND ndCh.TrangThai = 1
+                ORDER BY bl.ID_BinhLuan ASC;";
+        }
+        else
+        {
+            return Enumerable.Empty<BinhLuanResponse>();
+        }
 
         return await connection.QueryAsync<BinhLuanResponse>(sql, new
         {
@@ -106,7 +155,8 @@ public class BinhLuanRepository : IBinhLuanRepository
             FROM BINHLUAN bl
             JOIN NGUOIDUNG nd ON bl.ID_NguoiDung = nd.ID_NguoiDung
             WHERE bl.ID_BinhLuan = @Id
-              AND bl.IsDeleted = 0;";
+              AND bl.IsDeleted = 0
+              AND nd.TrangThai = 1;";
 
         return await connection.QueryFirstOrDefaultAsync<BinhLuanResponse>(sql, new { Id = id });
     }

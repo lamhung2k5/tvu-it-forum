@@ -1,4 +1,3 @@
-```vue
 <template>
   <div class="page-container admin-page">
     <div class="page-header">

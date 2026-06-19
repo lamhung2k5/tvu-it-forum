@@ -72,6 +72,24 @@ namespace ForumAPI.Repositories
             return await connection.ExecuteScalarAsync<int>(sql, user);
         }
 
+        public async Task<bool> IsActiveAsync(int userId)
+        {
+            using var connection = _connectionFactory.CreateConnection();
+
+            var sql = @"
+                SELECT COUNT(1)
+                FROM NGUOIDUNG
+                WHERE ID_NguoiDung = @UserId
+                AND TrangThai = 1;";
+
+            var count = await connection.ExecuteScalarAsync<int>(
+                sql,
+                new { UserId = userId }
+            );
+
+            return count > 0;
+        }
+
         private static string NormalizeEmail(string? email)
         {
             return (email ?? string.Empty).Trim().ToLowerInvariant();

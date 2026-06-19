@@ -376,4 +376,3 @@ function handleJump(value) {
   }
 }
 </style>
-```

@@ -30,17 +30,21 @@ public static class CauHoiEndpoints
                 // Gọi Service để lưu vào DB
                 var newId = await cauHoiService.CreateCauHoiAsync(request, userId);
 
-                return Results.Ok(new 
-                { 
-                    Message = "Đăng câu hỏi thành công!", 
-                    CauHoiId = newId 
+                return Results.Ok(new
+                {
+                    Message = "Đăng câu hỏi thành công!",
+                    CauHoiId = newId
                 });
             }
             catch (ArgumentException ex)
             {
                 return Results.BadRequest(new { Message = ex.Message });
             }
-        }); // <--- Đóng ngoặc API POST ở đây
+            catch (InvalidOperationException ex)
+            {
+                return Results.BadRequest(new { Message = ex.Message });
+            }
+        });
 
         // 2. API GET: Lấy danh sách câu hỏi, có hỗ trợ tìm kiếm và lọc
         // Ví dụ: /api/cauhoi?keyword=dapper&tag=sqlite&idChuyenMuc=1
@@ -61,7 +65,7 @@ public static class CauHoiEndpoints
             ICauHoiService cauHoiService) =>
         {
             var cauHoi = await cauHoiService.GetCauHoiByIdAsync(id, tangLuotXem);
-            
+
             if (cauHoi == null)
             {
                 return Results.NotFound(new { Message = "Không tìm thấy câu hỏi này!" });
@@ -98,6 +102,10 @@ public static class CauHoiEndpoints
             {
                 return Results.BadRequest(new { Message = ex.Message });
             }
+            catch (InvalidOperationException ex)
+            {
+                return Results.BadRequest(new { Message = ex.Message });
+            }
         });
 
         // 5. API DELETE: Xóa câu hỏi (Xóa mềm - Cần đăng nhập)
@@ -111,15 +119,22 @@ public static class CauHoiEndpoints
                 return Results.Unauthorized();
             }
 
-            // Gọi Service xóa bài
-            var isSuccess = await cauHoiService.DeleteCauHoiAsync(id, userId);
-
-            if (!isSuccess)
+            try
             {
-                return Results.BadRequest(new { Message = "Xóa thất bại! Câu hỏi không tồn tại, đã bị xóa từ trước hoặc bạn không có quyền xóa." });
-            }
+                // Gọi Service xóa bài
+                var isSuccess = await cauHoiService.DeleteCauHoiAsync(id, userId);
 
-            return Results.Ok(new { Message = "Đã xóa câu hỏi thành công!" });
+                if (!isSuccess)
+                {
+                    return Results.BadRequest(new { Message = "Xóa thất bại! Câu hỏi không tồn tại, đã bị xóa từ trước hoặc bạn không có quyền xóa." });
+                }
+
+                return Results.Ok(new { Message = "Đã xóa câu hỏi thành công!" });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Results.BadRequest(new { Message = ex.Message });
+            }
         });
     }
 

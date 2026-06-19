@@ -2,7 +2,10 @@
   <div class="auth-page">
     <div class="auth-card">
       <section class="auth-form-panel">
-        <el-button text class="back-link" @click="$router.push('/')">← Về trang chủ</el-button>
+        <el-button text class="back-link" @click="$router.push('/')">
+          ← Về trang chủ
+        </el-button>
+
         <h2>Đăng nhập</h2>
         <p class="muted">Truy cập diễn đàn để đặt câu hỏi, trả lời và bình chọn.</p>
 
@@ -18,11 +21,31 @@
           </el-form-item>
 
           <el-form-item label="Mật khẩu">
-            <el-input v-model="form.password" placeholder="Nhập mật khẩu" size="large" show-password />
+            <el-input
+              v-model="form.password"
+              placeholder="Nhập mật khẩu"
+              size="large"
+              show-password
+            />
           </el-form-item>
 
-          <el-button type="primary" size="large" :loading="loading" class="full-button" @click="submit">
+          <el-button
+            type="primary"
+            size="large"
+            :loading="loading"
+            class="full-button"
+            @click="submit"
+          >
             Đăng nhập
+          </el-button>
+
+          <el-button
+            size="large"
+            plain
+            class="guest-button"
+            @click="continueAsGuest"
+          >
+            Tiếp tục với tư cách khách
           </el-button>
         </el-form>
 
@@ -61,7 +84,11 @@ import { setAuth, isValidEmail, normalizeEmailValue } from '../utils/auth'
 const router = useRouter()
 const route = useRoute()
 const loading = ref(false)
-const form = reactive({ email: '', password: '' })
+
+const form = reactive({
+  email: '',
+  password: ''
+})
 
 async function submit() {
   if (!form.email.trim() || !form.password.trim()) {
@@ -76,23 +103,23 @@ async function submit() {
     return
   }
 
-  if (!isValidEmail(form.email)) {
-    ElMessage.warning('Email không đúng định dạng.')
-    return
-  }
-
   loading.value = true
+
   try {
     const result = await login({
       email,
       password: form.password
     })
+
     const token = result.accessToken || result.AccessToken
     const user = result.user || result.User
 
-    if (!token) throw new Error('API đăng nhập chưa trả về AccessToken.')
+    if (!token) {
+      throw new Error('API đăng nhập chưa trả về AccessToken.')
+    }
 
     setAuth(token, user)
+
     ElMessage.success('Đăng nhập thành công!')
     router.push(route.query.redirect || '/')
   } catch (error) {
@@ -100,6 +127,11 @@ async function submit() {
   } finally {
     loading.value = false
   }
+}
+
+function continueAsGuest() {
+  ElMessage.info('Bạn đang xem diễn đàn với tư cách khách.')
+  router.push('/')
 }
 </script>
 
@@ -125,12 +157,16 @@ async function submit() {
 }
 
 /* Khối form bên trái */
+.auth-form-panel {
+  padding: 56px 54px;
+}
+
 .auth-form-panel h2 {
   margin: 0 0 10px;
   color: var(--forum-text);
   font-size: 32px;
-  line-height: 1.25;
-  font-weight: 700;
+  line-height: 1.2;
+  font-weight: 800;
   font-family: tahoma;
   letter-spacing: -0.2px;
 }
@@ -145,14 +181,6 @@ async function submit() {
 
 .back-link:hover {
   color: var(--forum-primary);
-}
-
-.auth-form-panel h2 {
-  margin: 0 0 10px;
-  color: var(--forum-text);
-  font-size: 32px;
-  line-height: 1.2;
-  font-weight: 800;
 }
 
 .muted {
@@ -170,6 +198,20 @@ async function submit() {
 .full-button {
   width: 100%;
   font-weight: 700;
+}
+
+.guest-button {
+  width: 100%;
+  margin-top: 12px;
+  margin-left: 0;
+  font-weight: 700;
+  color: var(--forum-muted);
+}
+
+.guest-button:hover {
+  color: var(--forum-primary);
+  border-color: var(--forum-primary);
+  background: #fff7ed;
 }
 
 .auth-switch {
@@ -192,6 +234,7 @@ async function submit() {
   color: #ffffff;
   background: var(--forum-primary);
 }
+
 /* Ảnh phủ kín vùng phải, không méo hình */
 .auth-visual-image {
   position: absolute;
@@ -296,3 +339,4 @@ async function submit() {
   }
 }
 </style>
+

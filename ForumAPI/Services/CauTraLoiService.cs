@@ -7,14 +7,21 @@ namespace ForumAPI.Services;
 public class CauTraLoiService : ICauTraLoiService
 {
     private readonly ICauTraLoiRepository _cauTraLoiRepository;
+    private readonly INguoiDungRepository _nguoiDungRepository;
 
-    public CauTraLoiService(ICauTraLoiRepository cauTraLoiRepository)
+    public CauTraLoiService(
+        ICauTraLoiRepository cauTraLoiRepository,
+        INguoiDungRepository nguoiDungRepository
+    )
     {
         _cauTraLoiRepository = cauTraLoiRepository;
+        _nguoiDungRepository = nguoiDungRepository;
     }
 
     public async Task<int> CreateCauTraLoiAsync(int cauHoiId, int userId, CreateCauTraLoiRequest request)
     {
+        await EnsureUserActiveAsync(userId);
+
         if (string.IsNullOrWhiteSpace(request.NoiDung))
         {
             throw new ArgumentException("Nội dung câu trả lời không được để trống.");
@@ -54,6 +61,8 @@ public class CauTraLoiService : ICauTraLoiService
 
     public async Task<bool> UpdateCauTraLoiAsync(int id, int userId, UpdateCauTraLoiRequest request)
     {
+        await EnsureUserActiveAsync(userId);
+
         if (string.IsNullOrWhiteSpace(request.NoiDung))
         {
             throw new ArgumentException("Nội dung câu trả lời không được để trống.");
@@ -64,21 +73,41 @@ public class CauTraLoiService : ICauTraLoiService
 
     public async Task<bool> DeleteCauTraLoiAsync(int id, int userId)
     {
+        await EnsureUserActiveAsync(userId);
+
         return await _cauTraLoiRepository.DeleteAsync(id, userId);
     }
 
     public async Task<bool> AcceptCauTraLoiAsync(int id, int userId)
     {
+        await EnsureUserActiveAsync(userId);
+
+        if (id <= 0)
+        {
+            return false;
+        }
+
         return await _cauTraLoiRepository.AcceptAsync(id, userId);
     }
 
     public async Task<bool> UnacceptAnswerAsync(int id, int userId)
     {
+        await EnsureUserActiveAsync(userId);
+
         if (id <= 0)
         {
-            throw new Exception("Câu trả lời không hợp lệ.");
+            return false;
         }
 
         return await _cauTraLoiRepository.UnacceptAsync(id, userId);
     }
+
+    private async Task EnsureUserActiveAsync(int userId)
+    {
+        if (!await _nguoiDungRepository.IsActiveAsync(userId))
+        {
+            throw new InvalidOperationException("Tài khoản của bạn đã bị khóa, không thể thực hiện thao tác này.");
+        }
+    }
 }
+

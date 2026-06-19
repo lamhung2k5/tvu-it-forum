@@ -119,9 +119,11 @@ async function loadDashboard() {
 
     questions.value = (pick(data, ['cauHoiGanDay', 'CauHoiGanDay'], []) || [])
       .map(normalizeQuestion)
+      .filter(question => Number(question.isDeleted || question.IsDeleted || 0) === 0)
 
     answers.value = (pick(data, ['cauTraLoiGanDay', 'CauTraLoiGanDay'], []) || [])
       .map(normalizeAnswer)
+      .filter(answer => Number(answer.isDeleted || answer.IsDeleted || 0) === 0)
   } catch (error) {
     ElMessage.error(error.message || 'Không tải được dashboard.')
   } finally {

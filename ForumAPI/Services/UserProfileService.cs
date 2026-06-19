@@ -68,12 +68,18 @@ public class UserProfileService : IUserProfileService
 
     public async Task<IEnumerable<UserQuestionResponse>> GetMyQuestionsAsync(int userId)
     {
-        return await _userProfileRepository.GetMyQuestionsAsync(userId);
+        return await _userProfileRepository.GetMyQuestionsAsync(
+            userId,
+            includeDeleted: false
+        );
     }
 
     public async Task<IEnumerable<UserAnswerResponse>> GetMyAnswersAsync(int userId)
     {
-        return await _userProfileRepository.GetMyAnswersAsync(userId);
+        return await _userProfileRepository.GetMyAnswersAsync(
+            userId,
+            includeDeleted: false
+        );
     }
 
     public async Task<IEnumerable<UserCommentResponse>> GetMyCommentsAsync(int userId)
