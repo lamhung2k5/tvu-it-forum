@@ -17,13 +17,19 @@
       </div>
 
       <nav class="main-nav">
-        <el-button text @click="$router.push('/')">
-          Giới thiệu
-        </el-button>
+      <el-button text @click="$router.push('/gioi-thieu')">
+        Giới thiệu
+      </el-button>
 
-        <el-button text @click="$router.push('/')">
+
+        <a
+          :href="EXPLORE_CET_LINK"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="nav-link"
+        >
           Khám phá CET
-        </el-button>
+        </a>
       </nav>
     </div>
 
@@ -57,6 +63,7 @@
       </el-button>
 
       <template v-if="isLoggedIn">
+        <NotificationBell />
         <UserDropdown :user="user" />
       </template>
 
@@ -78,6 +85,7 @@ import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Search } from '@element-plus/icons-vue'
 import UserDropdown from './UserDropdown.vue'
+import NotificationBell from './NotificationBell.vue'
 
 const props = defineProps({
   user: { type: Object, default: null }
@@ -87,6 +95,9 @@ const router = useRouter()
 const route = useRoute()
 
 const navKeyword = ref('')
+
+const ABOUT_LINK = 'DAN_LINK_GIOI_THIE'
+const EXPLORE_CET_LINK = 'https://cet.tvu.edu.vn/'
 
 const isLoggedIn = computed(() => Boolean(props.user))
 
@@ -203,6 +214,25 @@ function searchFromHeader() {
 }
 
 .main-nav :deep(.el-button.is-text:hover) {
+  color: var(--forum-primary);
+  background: var(--forum-primary-soft);
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: var(--forum-text);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.nav-link:hover {
   color: var(--forum-primary);
   background: var(--forum-primary-soft);
 }

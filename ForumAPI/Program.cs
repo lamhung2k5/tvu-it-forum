@@ -42,6 +42,12 @@ builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
 builder.Services.AddScoped<IUserProfileService, UserProfileService>();
 
+// Đăng ký cho khối Thông báo và Tố cáo
+builder.Services.AddScoped<IThongBaoRepository, ThongBaoRepository>();
+builder.Services.AddScoped<IThongBaoService, ThongBaoService>();
+builder.Services.AddScoped<IToCaoRepository, ToCaoRepository>();
+builder.Services.AddScoped<IToCaoService, ToCaoService>();
+
 // Cấu hình CORS để frontend Vue có thể gọi API khi chạy khác port
 builder.Services.AddCors(options =>
 {
@@ -144,5 +150,9 @@ app.MapBinhLuanEndpoints();
 app.MapAdminEndpoints();
 
 app.MapUserEndpoints();
+
+app.MapThongBaoEndpoints();
+
+app.MapToCaoEndpoints();
 
 app.Run();

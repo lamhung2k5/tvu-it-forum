@@ -231,7 +231,16 @@
               </el-table-column>
             </el-table>
 
-            <ForumPagination v-if="unansweredQuestions.length > pagination.overviewUnanswered.pageSize" compact class="overview-small-pagination" :total="unansweredQuestions.length" :page="pagination.overviewUnanswered.page" :page-size="pagination.overviewUnanswered.pageSize" @page-change="page => handlePageChange('overviewUnanswered', page)" @page-size-change="pageSize => handlePageSizeChange('overviewUnanswered', pageSize)" />
+            <ForumPagination
+              v-if="unansweredQuestions.length > pagination.overviewUnanswered.pageSize"
+              compact
+              class="overview-small-pagination"
+              :total="unansweredQuestions.length"
+              :page="pagination.overviewUnanswered.page"
+              :page-size="pagination.overviewUnanswered.pageSize"
+              @page-change="page => handlePageChange('overviewUnanswered', page)"
+              @page-size-change="pageSize => handlePageSizeChange('overviewUnanswered', pageSize)"
+            />
 
             <el-empty
               v-if="unansweredQuestions.length === 0"
@@ -263,7 +272,16 @@
               </el-timeline-item>
             </el-timeline>
 
-            <ForumPagination v-if="recentActivities.length > pagination.overviewActivities.pageSize" compact class="overview-small-pagination" :total="recentActivities.length" :page="pagination.overviewActivities.page" :page-size="pagination.overviewActivities.pageSize" @page-change="page => handlePageChange('overviewActivities', page)" @page-size-change="pageSize => handlePageSizeChange('overviewActivities', pageSize)" />
+            <ForumPagination
+              v-if="recentActivities.length > pagination.overviewActivities.pageSize"
+              compact
+              class="overview-small-pagination"
+              :total="recentActivities.length"
+              :page="pagination.overviewActivities.page"
+              :page-size="pagination.overviewActivities.pageSize"
+              @page-change="page => handlePageChange('overviewActivities', page)"
+              @page-size-change="pageSize => handlePageSizeChange('overviewActivities', pageSize)"
+            />
 
             <el-empty
               v-if="recentActivities.length === 0"
@@ -273,7 +291,7 @@
         </div>
       </el-tab-pane>
 
-      <el-tab-pane label="Người dùng" name="users">
+      <el-tab-pane :label="tabLabel('Người dùng', users.length)" name="users">
         <div class="admin-toolbar">
           <el-input
             v-model="filters.users.keyword"
@@ -425,7 +443,7 @@
         />
       </el-tab-pane>
 
-      <el-tab-pane label="Câu hỏi" name="questions">
+      <el-tab-pane :label="tabLabel('Câu hỏi', questions.length)" name="questions">
         <div class="admin-toolbar">
           <el-input
             v-model="filters.questions.keyword"
@@ -578,7 +596,7 @@
         />
       </el-tab-pane>
 
-      <el-tab-pane label="Câu trả lời" name="answers">
+      <el-tab-pane :label="tabLabel('Câu trả lời', answers.length)" name="answers">
         <div class="admin-toolbar">
           <el-input
             v-model="filters.answers.keyword"
@@ -721,7 +739,7 @@
         />
       </el-tab-pane>
 
-      <el-tab-pane label="Bình luận" name="comments">
+      <el-tab-pane :label="tabLabel('Bình luận', comments.length)" name="comments">
         <div class="admin-toolbar">
           <el-input
             v-model="filters.comments.keyword"
@@ -864,6 +882,212 @@
           @page-size-change="pageSize => handlePageSizeChange('comments', pageSize)"
         />
       </el-tab-pane>
+
+      <el-tab-pane :label="reportTabLabel" name="reports">
+        <div class="admin-toolbar">
+          <el-input
+            v-model="filters.reports.keyword"
+            class="admin-search"
+            placeholder="Tìm nội dung, người tố cáo"
+            clearable
+            @keyup.enter="loadReports"
+          />
+
+          <el-select
+            v-model="filters.reports.loaiDoiTuong"
+            placeholder="Loại nội dung"
+            clearable
+          >
+            <el-option label="Câu hỏi" value="CAUHOI" />
+            <el-option label="Câu trả lời" value="CAUTRALOI" />
+            <el-option label="Bình luận" value="BINHLUAN" />
+          </el-select>
+
+          <el-select
+            v-model="filters.reports.trangThai"
+            placeholder="Trạng thái"
+            clearable
+          >
+            <el-option label="Chờ xử lý" value="PENDING" />
+            <el-option label="Đã nhắc nhở" value="REMINDED" />
+            <el-option label="Đã xử lý" value="RESOLVED" />
+            <el-option label="Bỏ qua" value="REJECTED" />
+          </el-select>
+
+          <el-select
+            v-model="filters.reports.timeRange"
+            placeholder="Thời gian"
+            clearable
+          >
+            <el-option
+              v-for="option in timeOptions"
+              :key="option.value"
+              :label="option.label"
+              :value="option.value"
+            />
+          </el-select>
+
+          <el-button type="primary" @click="loadReports">
+            Tải dữ liệu
+          </el-button>
+        </div>
+
+        <el-table
+          :data="pagedReports"
+          v-loading="loading"
+          border
+          stripe
+          class="responsive-table report-table"
+        >
+          <el-table-column label="ID" width="70">
+            <template #default="s">
+              {{ reportId(s.row) }}
+            </template>
+          </el-table-column>
+
+          <el-table-column label="Nội dung bị tố cáo" min-width="420">
+            <template #default="s">
+              <div class="admin-title-block report-content-cell">
+                <div class="admin-main-text">
+                  <el-tag size="small" type="info" class="report-type-tag">
+                    {{ reportTypeLabel(s.row) }}
+                  </el-tag>
+
+                  <span>
+                    {{ truncateText(pick(s.row, ['noiDungBiToCao', 'NoiDungBiToCao'], '—'), 130) }}
+                  </span>
+                </div>
+
+                <div class="admin-sub-text report-meta-line">
+                  Người đăng:
+                  {{ pick(s.row, ['nguoiBiToCao', 'NguoiBiToCao'], '—') }}
+                  · Người tố cáo:
+                  {{ pick(s.row, ['nguoiToCao', 'NguoiToCao'], '—') }}
+                </div>
+              </div>
+            </template>
+          </el-table-column>
+
+          <el-table-column label="Lý do" min-width="240">
+            <template #default="s">
+              <div class="admin-title-block">
+                <div class="admin-main-text">
+                  {{ pick(s.row, ['lyDo', 'LyDo'], '—') }}
+                </div>
+
+                <div
+                  v-if="pick(s.row, ['moTa', 'MoTa'], '')"
+                  class="admin-sub-text report-note"
+                >
+                  {{ truncateText(pick(s.row, ['moTa', 'MoTa'], ''), 90) }}
+                </div>
+              </div>
+            </template>
+          </el-table-column>
+
+          <el-table-column label="Trạng thái" width="130" align="center">
+            <template #default="s">
+              <el-tag :type="reportStatusType(s.row)">
+                {{ reportStatusLabel(s.row) }}
+              </el-tag>
+            </template>
+          </el-table-column>
+
+          <el-table-column
+            label="Thời gian"
+            width="155"
+            sortable
+            :sort-method="sortByNgayTao"
+          >
+            <template #default="s">
+              <div class="time-cell">
+                <div>
+                  <span class="time-label">Tạo:</span>
+                  {{ displayDate(s.row) }}
+                </div>
+
+                <div>
+                  <span class="time-label">Xử lý:</span>
+                  {{ displayReportHandledDate(s.row) }}
+                </div>
+              </div>
+            </template>
+          </el-table-column>
+
+          <el-table-column
+            label="Thao tác"
+            width="190"
+            align="center"
+            fixed="right"
+            class-name="report-action-column"
+          >
+            <template #default="s">
+              <div class="report-action-grid">
+                <el-button
+                  v-if="pick(s.row, ['link', 'Link'], '')"
+                  size="small"
+                  plain
+                  class="report-action-button"
+                  @click="$router.push(pick(s.row, ['link', 'Link'], '/'))"
+                >
+                  Xem
+                </el-button>
+
+                <el-button
+                  v-else
+                  size="small"
+                  plain
+                  class="report-action-button"
+                  disabled
+                >
+                  Xem
+                </el-button>
+
+                <el-button
+                  size="small"
+                  type="info"
+                  plain
+                  class="report-action-button"
+                  :disabled="reportStatus(s.row) !== 'PENDING'"
+                  @click="rejectReportAction(s.row)"
+                >
+                  Bỏ qua
+                </el-button>
+
+                <el-button
+                  size="small"
+                  type="warning"
+                  plain
+                  class="report-action-button"
+                  :disabled="reportStatus(s.row) !== 'PENDING'"
+                  @click="remindReportAction(s.row)"
+                >
+                  Nhắc nhở
+                </el-button>
+
+                <el-button
+                  size="small"
+                  type="danger"
+                  plain
+                  class="report-action-button"
+                  :disabled="reportStatus(s.row) !== 'PENDING' && reportStatus(s.row) !== 'REMINDED'"
+                  @click="resolveReportAction(s.row)"
+                >
+                  Xóa ND
+                </el-button>
+              </div>
+            </template>
+          </el-table-column>
+        </el-table>
+
+        <ForumPagination
+          :total="filteredReports.length"
+          :page="pagination.reports.page"
+          :page-size="pagination.reports.pageSize"
+          @page-change="page => handlePageChange('reports', page)"
+          @page-size-change="pageSize => handlePageSizeChange('reports', pageSize)"
+        />
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -885,7 +1109,11 @@ import {
   restoreAdminComment,
   lockAdminUser,
   unlockAdminUser,
-  updateAdminUserRole
+  updateAdminUserRole,
+  getAdminReports,
+  rejectAdminReport,
+  remindAdminReport,
+  resolveAdminReport
 } from '../api/adminApi'
 import { pick, idOf, formatDate } from '../utils/format'
 import SimpleBarChart from '../components/SimpleBarChart.vue'
@@ -901,6 +1129,7 @@ const users = ref([])
 const questions = ref([])
 const answers = ref([])
 const comments = ref([])
+const reports = ref([])
 
 const overviewFilters = reactive({
   timeRange: 'last7days'
@@ -930,6 +1159,10 @@ const pagination = reactive({
   comments: {
     page: 1,
     pageSize: 5
+  },
+  reports: {
+    page: 1,
+    pageSize: 5
   }
 })
 
@@ -957,6 +1190,12 @@ const filters = reactive({
     loaiDoiTuong: '',
     isDeleted: '',
     timeRange: ''
+  },
+  reports: {
+    keyword: '',
+    loaiDoiTuong: '',
+    trangThai: 'PENDING',
+    timeRange: ''
   }
 })
 
@@ -974,6 +1213,10 @@ const timeOptions = [
 
 const overviewPeriodLabel = computed(() => {
   return timeRangeLabel(overviewFilters.timeRange)
+})
+
+const reportTabLabel = computed(() => {
+  return tabLabel('Tố cáo', num(dashboard.value, ['toCaoChoXuLy', 'ToCaoChoXuLy']))
 })
 
 const overviewUsers = computed(() => {
@@ -1058,6 +1301,14 @@ const overviewCards = computed(() => {
       hint: overviewPeriodLabel.value,
       icon: '🗑️',
       className: 'card-deleted'
+    },
+    {
+      key: 'pendingReports',
+      label: 'Tố cáo chờ xử lý',
+      value: num(dashboard.value, ['toCaoChoXuLy', 'ToCaoChoXuLy']),
+      hint: 'Cần admin xem xét',
+      icon: '🚩',
+      className: 'card-reports'
     }
   ]
 })
@@ -1385,8 +1636,40 @@ const pagedAnswers = computed(() => {
   return paginate(filteredAnswers.value, pagination.answers)
 })
 
+const filteredReports = computed(() => {
+  const keyword = normalizeKeyword(filters.reports.keyword)
+
+  return reports.value.filter(row => {
+    const status = reportStatus(row)
+    const type = String(pick(row, ['loaiDoiTuong', 'LoaiDoiTuong'], '')).toUpperCase()
+
+    const matchKeyword = !keyword || includesKeyword(row, keyword, [
+      ['noiDungBiToCao', 'NoiDungBiToCao'],
+      ['nguoiBiToCao', 'NguoiBiToCao'],
+      ['nguoiToCao', 'NguoiToCao'],
+      ['lyDo', 'LyDo'],
+      ['moTa', 'MoTa'],
+      ['loaiDoiTuong', 'LoaiDoiTuong']
+    ])
+
+    const matchType = !filters.reports.loaiDoiTuong
+      || type === filters.reports.loaiDoiTuong
+
+    const matchStatus = !filters.reports.trangThai
+      || status === filters.reports.trangThai
+
+    const matchTime = isInTimeRange(row, filters.reports.timeRange)
+
+    return matchKeyword && matchType && matchStatus && matchTime
+  })
+})
+
 const pagedComments = computed(() => {
   return paginate(filteredComments.value, pagination.comments)
+})
+
+const pagedReports = computed(() => {
+  return paginate(filteredReports.value, pagination.reports)
 })
 
 onMounted(loadAll)
@@ -1447,8 +1730,24 @@ watch(
   }
 )
 
+watch(
+  () => [
+    filters.reports.keyword,
+    filters.reports.loaiDoiTuong,
+    filters.reports.trangThai,
+    filters.reports.timeRange
+  ],
+  () => {
+    pagination.reports.page = 1
+  }
+)
+
 function num(obj, keys) {
   return Number(pick(obj, keys, 0)) || 0
+}
+
+function tabLabel(label, count) {
+  return `${label} (${Number(count) || 0})`
 }
 
 function arr(obj, keys) {
@@ -1733,6 +2032,14 @@ function displayUpdatedDate(row) {
   return formatDate(updatedValue)
 }
 
+function displayReportHandledDate(row) {
+  const value = pick(row, ['ngayXuLy', 'NgayXuLy'], '')
+
+  if (!value) return '—'
+
+  return formatDate(value)
+}
+
 function userId(row) {
   return Number(pick(row, ['iD_NguoiDung', 'ID_NguoiDung'], 0))
 }
@@ -1834,6 +2141,7 @@ function loadCurrentTab() {
   if (activeTab.value === 'questions') return loadQuestions()
   if (activeTab.value === 'answers') return loadAnswers()
   if (activeTab.value === 'comments') return loadComments()
+  if (activeTab.value === 'reports') return loadReports()
 }
 
 async function runLoad(fn) {
@@ -1887,6 +2195,19 @@ async function loadComments() {
     })
 
     pagination.comments.page = 1
+  })
+}
+
+async function loadReports() {
+  await runLoad(async () => {
+    reports.value = await getAdminReports({
+      keyword: filters.reports.keyword,
+      loaiDoiTuong: filters.reports.loaiDoiTuong,
+      trangThai: filters.reports.trangThai,
+      timeRange: filters.reports.timeRange
+    })
+
+    pagination.reports.page = 1
   })
 }
 
@@ -1966,6 +2287,106 @@ function restoreComment(row) {
     () => restoreAdminComment(idOf(row, 'comment')),
     loadComments
   )
+}
+
+function reportId(row) {
+  return Number(pick(row, ['iD_ToCao', 'ID_ToCao', 'idToCao', 'IdToCao'], 0)) || 0
+}
+
+function reportStatus(row) {
+  return String(pick(row, ['trangThai', 'TrangThai'], 'PENDING') || 'PENDING').toUpperCase()
+}
+
+function reportStatusLabel(row) {
+  const status = reportStatus(row)
+  const map = {
+    PENDING: 'Chờ xử lý',
+    REMINDED: 'Đã nhắc nhở',
+    RESOLVED: 'Đã xử lý',
+    REJECTED: 'Bỏ qua'
+  }
+
+  return map[status] || status
+}
+
+function reportStatusType(row) {
+  const status = reportStatus(row)
+
+  if (status === 'PENDING') return 'warning'
+  if (status === 'REMINDED') return 'primary'
+  if (status === 'RESOLVED') return 'success'
+  return 'info'
+}
+
+function reportTypeLabel(row) {
+  const type = String(pick(row, ['loaiDoiTuong', 'LoaiDoiTuong'], '')).toUpperCase()
+  const map = {
+    CAUHOI: 'Câu hỏi',
+    CAUTRALOI: 'Câu trả lời',
+    BINHLUAN: 'Bình luận'
+  }
+
+  return map[type] || type || 'Nội dung'
+}
+
+async function askReportNote(title, defaultValue = '') {
+  const { value } = await ElMessageBox.prompt(
+    'Nhập ghi chú xử lý gửi cho người dùng nếu cần.',
+    title,
+    {
+      inputValue: defaultValue,
+      inputType: 'textarea',
+      confirmButtonText: 'Xác nhận',
+      cancelButtonText: 'Hủy'
+    }
+  )
+
+  return value || ''
+}
+
+async function rejectReportAction(row) {
+  try {
+    const note = await askReportNote('Bỏ qua tố cáo')
+    const result = await rejectAdminReport(reportId(row), note)
+    ElMessage.success(result?.message || result?.Message || 'Đã bỏ qua tố cáo.')
+    await loadReports()
+    await loadDashboard()
+  } catch (error) {
+    if (error === 'cancel' || error === 'close') return
+    ElMessage.error(error.message || 'Không thể bỏ qua tố cáo.')
+  }
+}
+
+async function remindReportAction(row) {
+  try {
+    const note = await askReportNote(
+      'Nhắc nhở người dùng',
+      'Nội dung của bạn đã được quản trị viên nhắc nhở sau khi có tố cáo. Vui lòng kiểm tra và chỉnh sửa nếu cần.'
+    )
+    const result = await remindAdminReport(reportId(row), note)
+    ElMessage.success(result?.message || result?.Message || 'Đã nhắc nhở người dùng.')
+    await loadReports()
+    await loadDashboard()
+  } catch (error) {
+    if (error === 'cancel' || error === 'close') return
+    ElMessage.error(error.message || 'Không thể nhắc nhở người dùng.')
+  }
+}
+
+async function resolveReportAction(row) {
+  try {
+    const note = await askReportNote(
+      'Xóa nội dung bị tố cáo',
+      'Nội dung của bạn đã bị quản trị viên xóa do vi phạm quy định diễn đàn.'
+    )
+    const result = await resolveAdminReport(reportId(row), note)
+    ElMessage.success(result?.message || result?.Message || 'Đã xử lý tố cáo.')
+    await loadReports()
+    await loadDashboard()
+  } catch (error) {
+    if (error === 'cancel' || error === 'close') return
+    ElMessage.error(error.message || 'Không thể xử lý tố cáo.')
+  }
 }
 </script>
 
@@ -2085,6 +2506,10 @@ function restoreComment(row) {
   background: #fef2f2;
 }
 
+.card-reports {
+  background: #fff1f2;
+}
+
 .activity-line-card {
   border-radius: 14px;
   margin-top: 16px;
@@ -2132,7 +2557,8 @@ function restoreComment(row) {
 }
 
 .chart-line {
-  stroke-width: 2.4;
+  fill: none !important;
+  stroke-width: 2.8;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -2142,36 +2568,52 @@ function restoreComment(row) {
   stroke-width: 2;
 }
 
-.chart-line.users,
-.chart-point.users,
-.legend-dot.users {
+.chart-line.users {
   stroke: #409eff;
-  background: #409eff;
+}
+
+.chart-point.users {
   fill: #409eff;
 }
 
-.chart-line.questions,
-.chart-point.questions,
-.legend-dot.questions {
+.legend-dot.users {
+  background: #409eff;
+}
+
+.chart-line.questions {
   stroke: #67c23a;
-  background: #67c23a;
+}
+
+.chart-point.questions {
   fill: #67c23a;
 }
 
-.chart-line.answers,
-.chart-point.answers,
-.legend-dot.answers {
+.legend-dot.questions {
+  background: #67c23a;
+}
+
+.chart-line.answers {
   stroke: #e6a23c;
-  background: #e6a23c;
+}
+
+.chart-point.answers {
   fill: #e6a23c;
 }
 
-.chart-line.comments,
-.chart-point.comments,
-.legend-dot.comments {
+.legend-dot.answers {
+  background: #e6a23c;
+}
+
+.chart-line.comments {
   stroke: #f56c6c;
-  background: #f56c6c;
+}
+
+.chart-point.comments {
   fill: #f56c6c;
+}
+
+.legend-dot.comments {
+  background: #f56c6c;
 }
 
 .line-legend {
@@ -2342,6 +2784,72 @@ function restoreComment(row) {
   font-weight: 400;
 }
 
+.table-action-group {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.table-action-group :deep(.el-button + .el-button) {
+  margin-left: 0;
+}
+
+.report-table :deep(.el-table__cell) {
+  padding: 9px 0;
+}
+
+.report-content-cell .admin-main-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.report-type-tag {
+  flex-shrink: 0;
+}
+
+.report-meta-line {
+  margin-top: 6px;
+}
+
+.report-note {
+  margin-top: 5px;
+}
+
+.report-action-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 74px);
+  gap: 6px;
+  justify-content: center;
+  align-items: center;
+}
+
+.report-action-grid .el-button + .el-button {
+  margin-left: 0;
+}
+
+.report-action-button {
+  width: 74px;
+  height: 28px;
+  padding: 0;
+  justify-content: center;
+}
+
+.responsive-table :deep(.report-action-column .cell) {
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.responsive-table :deep(.el-table__fixed-right) {
+  box-shadow: -4px 0 10px rgba(15, 23, 42, 0.04);
+}
+
+.responsive-table :deep(.el-table__fixed-right::before) {
+  display: none;
+}
+
 @media (max-width: 1180px) {
   .overview-metric-grid,
   .overview-chart-grid {
@@ -2367,5 +2875,14 @@ function restoreComment(row) {
   .admin-toolbar .el-button {
     width: 100%;
   }
+
+  .report-action-grid {
+    grid-template-columns: repeat(2, 68px);
+  }
+
+  .report-action-button {
+    width: 68px;
+  }
 }
 </style>
+

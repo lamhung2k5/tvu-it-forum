@@ -161,6 +161,45 @@ public class BinhLuanRepository : IBinhLuanRepository
         return await connection.QueryFirstOrDefaultAsync<BinhLuanResponse>(sql, new { Id = id });
     }
 
+
+    public async Task<ContentOwnerInfo?> GetOwnerInfoAsync(int id)
+    {
+        using var connection = _connectionFactory.CreateConnection();
+
+        var sql = @"
+            SELECT
+                bl.ID_BinhLuan AS ID_DoiTuong,
+                'BINHLUAN' AS LoaiDoiTuong,
+                bl.ID_NguoiDung,
+                CASE
+                    WHEN bl.LoaiDoiTuong = 'CAUHOI' THEN bl.ID_DoiTuong
+                    WHEN bl.LoaiDoiTuong = 'CAUTRALOI' THEN ctl.ID_CauHoi
+                    ELSE 0
+                END AS ID_CauHoi,
+                CASE
+                    WHEN bl.LoaiDoiTuong = 'CAUHOI' THEN ch.TieuDe
+                    WHEN bl.LoaiDoiTuong = 'CAUTRALOI' THEN chCtl.TieuDe
+                    ELSE ''
+                END AS TieuDe,
+                bl.NoiDung,
+                bl.IsDeleted
+            FROM BINHLUAN bl
+            LEFT JOIN CAUHOI ch ON bl.LoaiDoiTuong = 'CAUHOI' AND bl.ID_DoiTuong = ch.ID_CauHoi
+            LEFT JOIN CAUTRALOI ctl ON bl.LoaiDoiTuong = 'CAUTRALOI' AND bl.ID_DoiTuong = ctl.ID_CauTraLoi
+            LEFT JOIN CAUHOI chCtl ON ctl.ID_CauHoi = chCtl.ID_CauHoi
+            JOIN NGUOIDUNG ndBl ON bl.ID_NguoiDung = ndBl.ID_NguoiDung
+            WHERE bl.ID_BinhLuan = @Id
+              AND bl.IsDeleted = 0
+              AND ndBl.TrangThai = 1
+              AND (
+                    (bl.LoaiDoiTuong = 'CAUHOI' AND ch.IsDeleted = 0)
+                    OR
+                    (bl.LoaiDoiTuong = 'CAUTRALOI' AND ctl.IsDeleted = 0 AND chCtl.IsDeleted = 0)
+              );";
+
+        return await connection.QueryFirstOrDefaultAsync<ContentOwnerInfo>(sql, new { Id = id });
+    }
+
     public async Task<bool> UpdateAsync(int id, int userId, string noiDung)
     {
         using var connection = _connectionFactory.CreateConnection();

@@ -158,6 +158,29 @@ public class CauHoiRepository : ICauHoiRepository
         return await connection.QueryFirstOrDefaultAsync<CauHoiResponse>(sql, new { Id = id });
     }
 
+
+    public async Task<ContentOwnerInfo?> GetOwnerInfoAsync(int id)
+    {
+        using var connection = _connectionFactory.CreateConnection();
+
+        var sql = @"
+            SELECT
+                c.ID_CauHoi AS ID_DoiTuong,
+                'CAUHOI' AS LoaiDoiTuong,
+                c.ID_NguoiDung,
+                c.ID_CauHoi,
+                c.TieuDe,
+                c.NoiDung,
+                c.IsDeleted
+            FROM CAUHOI c
+            JOIN NGUOIDUNG nd ON c.ID_NguoiDung = nd.ID_NguoiDung
+            WHERE c.ID_CauHoi = @Id
+              AND c.IsDeleted = 0
+              AND nd.TrangThai = 1;";
+
+        return await connection.QueryFirstOrDefaultAsync<ContentOwnerInfo>(sql, new { Id = id });
+    }
+
     public async Task<bool> IncreaseViewAsync(int id)
     {
         using var connection = _connectionFactory.CreateConnection();

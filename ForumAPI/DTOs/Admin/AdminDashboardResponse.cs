@@ -9,6 +9,7 @@ public class AdminDashboardResponse
     public int CauHoiDaXoa { get; set; }
     public int CauTraLoiDaXoa { get; set; }
     public int BinhLuanDaXoa { get; set; }
+    public int ToCaoChoXuLy { get; set; }
     public IEnumerable<AdminChartItemResponse> NoiDungTheoLoai { get; set; } = Enumerable.Empty<AdminChartItemResponse>();
     public IEnumerable<AdminChartItemResponse> TrangThaiNoiDung { get; set; } = Enumerable.Empty<AdminChartItemResponse>();
     public IEnumerable<AdminChartItemResponse> TopTags { get; set; } = Enumerable.Empty<AdminChartItemResponse>();

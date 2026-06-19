@@ -107,9 +107,46 @@ namespace ForumAPI.Data
                     FOREIGN KEY (ID_NguoiDung) REFERENCES NGUOIDUNG(ID_NguoiDung),
                     CHECK (LoaiDoiTuong IN ('CAUHOI', 'CAUTRALOI'))
                 );
+
+                CREATE TABLE IF NOT EXISTS THONGBAO (
+                    ID_ThongBao INTEGER PRIMARY KEY AUTOINCREMENT,
+                    ID_NguoiNhan INTEGER NOT NULL,
+                    ID_NguoiTao INTEGER NULL,
+                    LoaiThongBao TEXT NOT NULL,
+                    TieuDe TEXT NOT NULL,
+                    NoiDung TEXT NOT NULL,
+                    Link TEXT NULL,
+                    DaDoc INTEGER NOT NULL DEFAULT 0,
+                    DaXoa INTEGER NOT NULL DEFAULT 0,
+                    NgayTao TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (ID_NguoiNhan) REFERENCES NGUOIDUNG(ID_NguoiDung),
+                    FOREIGN KEY (ID_NguoiTao) REFERENCES NGUOIDUNG(ID_NguoiDung)
+                );
+
+                CREATE TABLE IF NOT EXISTS TOCAO (
+                    ID_ToCao INTEGER PRIMARY KEY AUTOINCREMENT,
+                    ID_NguoiToCao INTEGER NOT NULL,
+                    LoaiDoiTuong TEXT NOT NULL,
+                    ID_DoiTuong INTEGER NOT NULL,
+                    LyDo TEXT NOT NULL,
+                    MoTa TEXT NULL,
+                    TrangThai TEXT NOT NULL DEFAULT 'PENDING',
+                    ID_AdminXuLy INTEGER NULL,
+                    GhiChuXuLy TEXT NULL,
+                    NgayTao TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    NgayXuLy TEXT NULL,
+                    FOREIGN KEY (ID_NguoiToCao) REFERENCES NGUOIDUNG(ID_NguoiDung),
+                    FOREIGN KEY (ID_AdminXuLy) REFERENCES NGUOIDUNG(ID_NguoiDung),
+                    CHECK (LoaiDoiTuong IN ('CAUHOI', 'CAUTRALOI', 'BINHLUAN')),
+                    CHECK (TrangThai IN ('PENDING', 'REMINDED', 'RESOLVED', 'REJECTED'))
+                );
+
             ";
 
             connection.Execute(sql);
+
+            // Bổ sung cột mới cho database cũ đã tồn tại từ các phiên bản trước.
+            EnsureColumn(connection, "THONGBAO", "DaXoa", "INTEGER NOT NULL DEFAULT 0");
 
             // Seed dữ liệu chuyên mục cơ bản nếu chưa có, tránh bị nhân bản khi app khởi động nhiều lần.
             var seedChuyenMucSql = @"
@@ -127,6 +164,21 @@ namespace ForumAPI.Data
             ";
 
             connection.Execute(seedChuyenMucSql);
+        }
+
+        private static void EnsureColumn(System.Data.IDbConnection connection, string tableName, string columnName, string definition)
+        {
+            var existing = connection.Query($"PRAGMA table_info({tableName});");
+
+            foreach (var column in existing)
+            {
+                if (string.Equals((string)column.name, columnName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return;
+                }
+            }
+
+            connection.Execute($"ALTER TABLE {tableName} ADD COLUMN {columnName} {definition};");
         }
     }
 }

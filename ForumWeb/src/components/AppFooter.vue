@@ -12,26 +12,53 @@
 
         <div class="footer-brand-text">
           <h3>CET FORIT</h3>
-          <p>Diễn đàn hỏi đáp công nghệ thông tin dành cho sinh viên.</p>
+          <p>
+            Diễn đàn hỏi đáp công nghệ thông tin dành cho sinh viên
+            Trường Kỹ thuật và Công nghệ.
+          </p>
         </div>
       </div>
 
       <div class="footer-section footer-links">
-        <h4>LIÊN KẾT</h4>
-        <RouterLink to="/">Trang chủ</RouterLink>
-        <RouterLink to="/">Câu hỏi</RouterLink>
-        <RouterLink to="/questions/create">Đặt câu hỏi</RouterLink>
-        <RouterLink to="/dashboard">Dashboard</RouterLink>
-      </div>
+      <h4>LIÊN KẾT</h4>
+
+      <RouterLink to="/">
+        Trang chủ
+      </RouterLink>
+
+      <RouterLink to="/gioi-thieu">
+        Giới thiệu
+      </RouterLink>
+
+      <RouterLink to="/">
+        Câu hỏi
+      </RouterLink>
+
+      <RouterLink to="/questions/create">
+        Đặt câu hỏi
+      </RouterLink>
+
+      <RouterLink to="/dashboard">
+        Dashboard
+      </RouterLink>
+    </div>
 
       <div class="footer-section footer-info">
         <h4>THÔNG TIN</h4>
+
         <p>Trường Kỹ thuật và Công nghệ</p>
         <p>Khoa Công nghệ thông tin</p>
+        <p>Email: {{ contactEmail }}</p>
         <p>© {{ currentYear }} CET FORIT</p>
 
         <div class="footer-socials">
-          <a href="#" aria-label="Facebook" title="Facebook">
+          <a
+            :href="facebookLink"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Facebook CET"
+            title="Facebook CET"
+          >
             <svg viewBox="0 0 24 24">
               <path
                 d="M22 12.06C22 6.48 17.52 2 11.94 2S2 6.48 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.84c0-2.5 1.49-3.88 3.77-3.88 1.09 0 2.23.19 2.23.19v2.45h-1.25c-1.24 0-1.63.77-1.63 1.56v1.9h2.78l-.44 2.91h-2.34V22C18.34 21.24 22 17.08 22 12.06Z"
@@ -39,7 +66,14 @@
             </svg>
           </a>
 
-          <a href="#" aria-label="TikTok" title="TikTok">
+          <a
+            v-if="tiktokLink && tiktokLink !== '#'"
+            :href="tiktokLink"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="TikTok"
+            title="TikTok"
+          >
             <svg viewBox="0 0 24 24">
               <path
                 d="M16.6 5.82c1.13.82 2.43 1.3 3.82 1.35v3.1a7.7 7.7 0 0 1-3.82-1.02v5.78c0 3.12-2.53 5.65-5.65 5.65S5.3 18.15 5.3 15.03s2.53-5.65 5.65-5.65c.36 0 .72.03 1.06.1v3.22a2.5 2.5 0 1 0 1.77 2.39V3.32h2.82v2.5Z"
@@ -47,7 +81,11 @@
             </svg>
           </a>
 
-          <a href="#" aria-label="Email" title="Email">
+          <a
+            :href="emailLink"
+            aria-label="Gửi email liên hệ"
+            title="Gửi email liên hệ"
+          >
             <svg viewBox="0 0 24 24">
               <path
                 d="M4 5h16c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2Zm8 7.4L4 8.1V17h16V8.1l-8 4.3Zm0-2.2L20 6H4l8 4.2Z"
@@ -62,6 +100,16 @@
 
 <script setup>
 const currentYear = new Date().getFullYear()
+
+const contactEmail = 'admin.cetforit@tvu.edu.vn'
+const facebookLink = 'https://www.facebook.com/tvuCET'
+
+// Nếu không có TikTok chính thức thì để '#', nút TikTok sẽ tự ẩn.
+const tiktokLink = '#'
+
+const emailSubject = encodeURIComponent('Liên hệ CET FORIT')
+const emailBody = encodeURIComponent('Xin chào CET FORIT,\n\nTôi muốn liên hệ về diễn đàn hỏi đáp công nghệ thông tin.')
+const emailLink = `mailto:${contactEmail}?subject=${emailSubject}&body=${emailBody}`
 </script>
 
 <style scoped>
@@ -96,9 +144,11 @@ const currentYear = new Date().getFullYear()
   background: #ffffff;
   border-radius: 10px;
   padding: 5px;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   flex-shrink: 0;
 }
 
@@ -174,6 +224,7 @@ const currentYear = new Date().getFullYear()
   border-radius: 50%;
   color: #ffffff;
   background: rgba(255, 255, 255, 0.12);
+  text-decoration: none;
   transition: background 0.2s ease, transform 0.2s ease;
 }
 

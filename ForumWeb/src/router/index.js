@@ -13,6 +13,7 @@ const ProfileView = () => import('../views/ProfileView.vue')
 const MyQuestionsView = () => import('../views/MyQuestionsView.vue')
 const MyAnswersView = () => import('../views/MyAnswersView.vue')
 const PublicProfileView = () => import('../views/PublicProfileView.vue')
+const NotificationsView = () => import('../views/NotificationsView.vue')
 const NotFoundView = () => import('../views/NotFoundView.vue')
 
 const router = createRouter({
@@ -27,10 +28,18 @@ const router = createRouter({
     { path: '/my-questions', name: 'my-questions', component: MyQuestionsView, meta: { requiresAuth: true } },
     { path: '/my-answers', name: 'my-answers', component: MyAnswersView, meta: { requiresAuth: true } },
     { path: '/users/:id', name: 'public-profile', component: PublicProfileView, props: true },
+    { path: '/notifications', name: 'notifications', component: NotificationsView, meta: { requiresAuth: true } },
     { path: '/login', name: 'login', component: LoginView, meta: { authLayout: true } },
     { path: '/register', name: 'register', component: RegisterView, meta: { authLayout: true } },
     { path: '/admin', name: 'admin', component: AdminView, meta: { requiresAuth: true, requiresAdmin: true } },
-    { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFoundView }
+    { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFoundView },
+    {
+      path: '/gioi-thieu',
+      name: 'about',
+      component: () => import('../views/AboutView.vue')
+    }
+
+
   ],
 })
 

@@ -1,4 +1,3 @@
-```vue
 <template>
   <div
     v-if="props.total > 0"

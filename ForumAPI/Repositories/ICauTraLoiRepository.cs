@@ -9,6 +9,7 @@ public interface ICauTraLoiRepository
     Task<int> CreateAsync(CauTraLoi cauTraLoi);
     Task<IEnumerable<CauTraLoiResponse>> GetByCauHoiIdAsync(int cauHoiId);
     Task<CauTraLoiResponse?> GetByIdAsync(int id);
+    Task<ContentOwnerInfo?> GetOwnerInfoAsync(int id);
     Task<bool> UpdateAsync(int id, int userId, string noiDung);
     Task<bool> DeleteAsync(int id, int userId);
     Task<bool> AcceptAsync(int id, int userId);

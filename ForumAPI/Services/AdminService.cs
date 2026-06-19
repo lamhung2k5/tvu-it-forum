@@ -6,10 +6,12 @@ namespace ForumAPI.Services;
 public class AdminService : IAdminService
 {
     private readonly IAdminRepository _adminRepository;
+    private readonly IThongBaoService _thongBaoService;
 
-    public AdminService(IAdminRepository adminRepository)
+    public AdminService(IAdminRepository adminRepository, IThongBaoService thongBaoService)
     {
         _adminRepository = adminRepository;
+        _thongBaoService = thongBaoService;
     }
 
 
@@ -111,6 +113,15 @@ public class AdminService : IAdminService
         {
             throw new KeyNotFoundException("Không tìm thấy người dùng cần khóa.");
         }
+
+        await _thongBaoService.CreateAsync(
+            idNguoiDung,
+            currentUserId,
+            "ACCOUNT_LOCK",
+            "Tài khoản của bạn đã bị khóa",
+            "Tài khoản của bạn đã bị quản trị viên khóa. Bạn sẽ không thể đăng nhập hoặc tương tác cho đến khi được mở khóa.",
+            null
+        );
     }
 
     public async Task MoKhoaNguoiDungAsync(int idNguoiDung)
@@ -121,6 +132,15 @@ public class AdminService : IAdminService
         {
             throw new KeyNotFoundException("Không tìm thấy người dùng cần mở khóa.");
         }
+
+        await _thongBaoService.CreateAsync(
+            idNguoiDung,
+            null,
+            "ACCOUNT_UNLOCK",
+            "Tài khoản của bạn đã được mở khóa",
+            "Tài khoản của bạn đã được quản trị viên mở khóa. Bạn có thể đăng nhập và sử dụng diễn đàn trở lại.",
+            null
+        );
     }
 
     public async Task CapNhatVaiTroNguoiDungAsync(int idNguoiDung, string vaiTro, int? currentUserId)

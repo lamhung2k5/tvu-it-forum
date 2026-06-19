@@ -62,3 +62,31 @@ export function updateAdminUserRole(id, vaiTro) {
     body: JSON.stringify({ vaiTro })
   })
 }
+export function getAdminReports(params = {}) {
+  return request(`/api/admin/tocao${buildQuery(params)}`)
+}
+
+export function getPendingReportCount() {
+  return request('/api/admin/tocao/pending-count')
+}
+
+export function rejectAdminReport(id, ghiChuXuLy = '') {
+  return request(`/api/admin/tocao/${id}/reject`, {
+    method: 'PATCH',
+    body: JSON.stringify({ ghiChuXuLy })
+  })
+}
+
+export function remindAdminReport(id, ghiChuXuLy = '') {
+  return request(`/api/admin/tocao/${id}/remind`, {
+    method: 'PATCH',
+    body: JSON.stringify({ ghiChuXuLy })
+  })
+}
+
+export function resolveAdminReport(id, ghiChuXuLy = '') {
+  return request(`/api/admin/tocao/${id}/resolve`, {
+    method: 'PATCH',
+    body: JSON.stringify({ ghiChuXuLy })
+  })
+}

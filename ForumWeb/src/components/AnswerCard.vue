@@ -114,6 +114,16 @@
               Xóa
             </el-button>
 
+            <el-button
+              v-if="canReport"
+              link
+              type="warning"
+              size="small"
+              @click.stop="$emit('report', answer)"
+            >
+              Tố cáo
+            </el-button>
+
             <span
               v-if="!detailMode"
               class="answer-link"
@@ -158,10 +168,14 @@ const props = defineProps({
   canInteract: {
     type: Boolean,
     default: false
+  },
+  canReport: {
+    type: Boolean,
+    default: false
   }
 })
 
-defineEmits(['vote', 'accept', 'unaccept', 'edit', 'delete'])
+defineEmits(['vote', 'accept', 'unaccept', 'edit', 'delete', 'report'])
 
 const router = useRouter()
 

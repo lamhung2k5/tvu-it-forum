@@ -1,5 +1,6 @@
 <template>
   <div class="page-container detail-page">
+    <ReportDialog ref="reportDialogRef" />
     <el-skeleton v-if="loading" :rows="8" animated />
 
     <template v-else-if="question">
@@ -50,6 +51,17 @@
                   @click="deleteQuestionHandler"
                 >
                   Xóa
+                </el-button>
+              </div>
+
+              <div v-else-if="isLoggedIn" class="owner-actions">
+                <el-button
+                  size="small"
+                  type="warning"
+                  plain
+                  @click="openReport('CAUHOI', Number(questionId))"
+                >
+                  Tố cáo
                 </el-button>
               </div>
             </div>
@@ -114,6 +126,17 @@
               Xóa
             </el-button>
           </span>
+
+          <span v-else-if="isLoggedIn" class="inline-actions">
+            <el-button
+              link
+              type="warning"
+              size="small"
+              @click="openReport('BINHLUAN', comment.id)"
+            >
+              Tố cáo
+            </el-button>
+          </span>
         </div>
 
         <div v-if="isLoggedIn" class="comment-form">
@@ -161,7 +184,9 @@
           :can-accept="isQuestionOwner && !isOwner(answer) && Number(answer.daChapNhan) !== 1"
           :can-unaccept="isQuestionOwner && Number(answer.daChapNhan) === 1"
           :can-interact="isLoggedIn"
+          :can-report="isLoggedIn && !isOwner(answer)"
           @vote="voteAnswerHandler(answer, $event)"
+          @report="openReport('CAUTRALOI', answer.id)"
           @accept="acceptAnswerHandler(answer)"
           @unaccept="unacceptAnswerHandler(answer)"
           @edit="editAnswer(answer)"
@@ -206,6 +231,17 @@
                   @click="deleteCommentHandler(comment)"
                 >
                   Xóa
+                </el-button>
+              </span>
+
+              <span v-else-if="isLoggedIn" class="inline-actions">
+                <el-button
+                  link
+                  type="warning"
+                  size="small"
+                  @click="openReport('BINHLUAN', comment.id)"
+                >
+                  Tố cáo
                 </el-button>
               </span>
             </div>
@@ -300,6 +336,7 @@ import {
 import VoteBox from '../components/VoteBox.vue'
 import AnswerCard from '../components/AnswerCard.vue'
 import EmptyState from '../components/EmptyState.vue'
+import ReportDialog from '../components/ReportDialog.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -316,6 +353,7 @@ const newQuestionComment = ref('')
 
 const answering = ref(false)
 const commentingQuestion = ref(false)
+const reportDialogRef = ref(null)
 
 const currentUser = computed(() => getCurrentUser())
 const isLoggedIn = computed(() => isAuthenticated())
@@ -404,6 +442,18 @@ async function loadAnswers() {
 
 function isOwner(item) {
   return isMine(item.userId, currentUser.value)
+}
+
+function openReport(loaiDoiTuong, idDoiTuong) {
+  if (!isLoggedIn.value) {
+    ElMessage.info('Bạn cần đăng nhập để tố cáo nội dung.')
+    return
+  }
+
+  reportDialogRef.value?.open({
+    loaiDoiTuong,
+    idDoiTuong
+  })
 }
 
 async function voteQuestionHandler(giaTri) {

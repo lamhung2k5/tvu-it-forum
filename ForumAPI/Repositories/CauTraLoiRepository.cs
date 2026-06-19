@@ -125,6 +125,33 @@ public class CauTraLoiRepository : ICauTraLoiRepository
         return await connection.QueryFirstOrDefaultAsync<CauTraLoiResponse>(sql, new { Id = id });
     }
 
+
+    public async Task<ContentOwnerInfo?> GetOwnerInfoAsync(int id)
+    {
+        using var connection = _connectionFactory.CreateConnection();
+
+        var sql = @"
+            SELECT
+                ctl.ID_CauTraLoi AS ID_DoiTuong,
+                'CAUTRALOI' AS LoaiDoiTuong,
+                ctl.ID_NguoiDung,
+                ctl.ID_CauHoi,
+                ch.TieuDe,
+                ctl.NoiDung,
+                ctl.IsDeleted
+            FROM CAUTRALOI ctl
+            JOIN CAUHOI ch ON ctl.ID_CauHoi = ch.ID_CauHoi
+            JOIN NGUOIDUNG ndCtl ON ctl.ID_NguoiDung = ndCtl.ID_NguoiDung
+            JOIN NGUOIDUNG ndCh ON ch.ID_NguoiDung = ndCh.ID_NguoiDung
+            WHERE ctl.ID_CauTraLoi = @Id
+              AND ctl.IsDeleted = 0
+              AND ch.IsDeleted = 0
+              AND ndCtl.TrangThai = 1
+              AND ndCh.TrangThai = 1;";
+
+        return await connection.QueryFirstOrDefaultAsync<ContentOwnerInfo>(sql, new { Id = id });
+    }
+
     public async Task<bool> UpdateAsync(int id, int userId, string noiDung)
     {
         using var connection = _connectionFactory.CreateConnection();

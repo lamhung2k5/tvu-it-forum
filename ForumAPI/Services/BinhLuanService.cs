@@ -10,24 +10,64 @@ public class BinhLuanService : IBinhLuanService
     private const string LoaiCauTraLoi = "CAUTRALOI";
 
     private readonly IBinhLuanRepository _binhLuanRepository;
+    private readonly ICauHoiRepository _cauHoiRepository;
+    private readonly ICauTraLoiRepository _cauTraLoiRepository;
     private readonly INguoiDungRepository _nguoiDungRepository;
+    private readonly IThongBaoService _thongBaoService;
 
-    public BinhLuanService(IBinhLuanRepository binhLuanRepository,INguoiDungRepository nguoiDungRepository
+    public BinhLuanService(
+        IBinhLuanRepository binhLuanRepository,
+        ICauHoiRepository cauHoiRepository,
+        ICauTraLoiRepository cauTraLoiRepository,
+        INguoiDungRepository nguoiDungRepository,
+        IThongBaoService thongBaoService
     )
     {
         _binhLuanRepository = binhLuanRepository;
+        _cauHoiRepository = cauHoiRepository;
+        _cauTraLoiRepository = cauTraLoiRepository;
         _nguoiDungRepository = nguoiDungRepository;
+        _thongBaoService = thongBaoService;
     }
 
     public async Task<int> CreateBinhLuanCauHoiAsync(int cauHoiId, int userId, CreateBinhLuanRequest request)
     {
-        
-        return await CreateAsync(LoaiCauHoi, cauHoiId, userId, request);
+        var newId = await CreateAsync(LoaiCauHoi, cauHoiId, userId, request);
+
+        var questionInfo = await _cauHoiRepository.GetOwnerInfoAsync(cauHoiId);
+        if (questionInfo != null && questionInfo.ID_NguoiDung != userId)
+        {
+            await _thongBaoService.CreateAsync(
+                questionInfo.ID_NguoiDung,
+                userId,
+                "COMMENT_QUESTION",
+                "Câu hỏi của bạn có bình luận mới",
+                $"Có người đã bình luận vào câu hỏi: {questionInfo.TieuDe}",
+                $"/questions/{cauHoiId}"
+            );
+        }
+
+        return newId;
     }
 
     public async Task<int> CreateBinhLuanCauTraLoiAsync(int cauTraLoiId, int userId, CreateBinhLuanRequest request)
     {
-        return await CreateAsync(LoaiCauTraLoi, cauTraLoiId, userId, request);
+        var newId = await CreateAsync(LoaiCauTraLoi, cauTraLoiId, userId, request);
+
+        var answerInfo = await _cauTraLoiRepository.GetOwnerInfoAsync(cauTraLoiId);
+        if (answerInfo != null && answerInfo.ID_NguoiDung != userId)
+        {
+            await _thongBaoService.CreateAsync(
+                answerInfo.ID_NguoiDung,
+                userId,
+                "COMMENT_ANSWER",
+                "Câu trả lời của bạn có bình luận mới",
+                "Có người đã bình luận vào câu trả lời của bạn.",
+                $"/questions/{answerInfo.ID_CauHoi}"
+            );
+        }
+
+        return newId;
     }
 
     public async Task<IEnumerable<BinhLuanResponse>> GetBinhLuanCauHoiAsync(int cauHoiId)
@@ -68,6 +108,7 @@ public class BinhLuanService : IBinhLuanService
 
     public async Task<bool> DeleteBinhLuanAsync(int id, int userId)
     {
+        await EnsureUserActiveAsync(userId);
         return await _binhLuanRepository.DeleteAsync(id, userId);
     }
 

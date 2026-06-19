@@ -7,15 +7,21 @@ namespace ForumAPI.Services;
 public class CauTraLoiService : ICauTraLoiService
 {
     private readonly ICauTraLoiRepository _cauTraLoiRepository;
+    private readonly ICauHoiRepository _cauHoiRepository;
     private readonly INguoiDungRepository _nguoiDungRepository;
+    private readonly IThongBaoService _thongBaoService;
 
     public CauTraLoiService(
         ICauTraLoiRepository cauTraLoiRepository,
-        INguoiDungRepository nguoiDungRepository
+        ICauHoiRepository cauHoiRepository,
+        INguoiDungRepository nguoiDungRepository,
+        IThongBaoService thongBaoService
     )
     {
         _cauTraLoiRepository = cauTraLoiRepository;
+        _cauHoiRepository = cauHoiRepository;
         _nguoiDungRepository = nguoiDungRepository;
+        _thongBaoService = thongBaoService;
     }
 
     public async Task<int> CreateCauTraLoiAsync(int cauHoiId, int userId, CreateCauTraLoiRequest request)
@@ -40,7 +46,22 @@ public class CauTraLoiService : ICauTraLoiService
             NoiDung = request.NoiDung.Trim()
         };
 
-        return await _cauTraLoiRepository.CreateAsync(cauTraLoi);
+        var newId = await _cauTraLoiRepository.CreateAsync(cauTraLoi);
+
+        var questionInfo = await _cauHoiRepository.GetOwnerInfoAsync(cauHoiId);
+        if (questionInfo != null && questionInfo.ID_NguoiDung != userId)
+        {
+            await _thongBaoService.CreateAsync(
+                questionInfo.ID_NguoiDung,
+                userId,
+                "ANSWER",
+                "Câu hỏi của bạn có câu trả lời mới",
+                $"Có người đã trả lời câu hỏi: {questionInfo.TieuDe}",
+                $"/questions/{cauHoiId}"
+            );
+        }
+
+        return newId;
     }
 
     public async Task<IEnumerable<CauTraLoiResponse>> GetCauTraLoiByCauHoiIdAsync(int cauHoiId)
@@ -110,4 +131,3 @@ public class CauTraLoiService : ICauTraLoiService
         }
     }
 }
-

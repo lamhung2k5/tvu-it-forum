@@ -9,6 +9,7 @@ public interface IBinhLuanRepository
     Task<int> CreateAsync(BinhLuan binhLuan);
     Task<IEnumerable<BinhLuanResponse>> GetByTargetAsync(string loaiDoiTuong, int doiTuongId);
     Task<BinhLuanResponse?> GetByIdAsync(int id);
+    Task<ContentOwnerInfo?> GetOwnerInfoAsync(int id);
     Task<bool> UpdateAsync(int id, int userId, string noiDung);
     Task<bool> DeleteAsync(int id, int userId);
 }

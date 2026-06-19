@@ -26,7 +26,8 @@ public class AdminRepository : IAdminRepository
                 (SELECT COUNT(1) FROM BINHLUAN WHERE IsDeleted = 0) AS TongBinhLuan,
                 (SELECT COUNT(1) FROM CAUHOI WHERE IsDeleted = 1) AS CauHoiDaXoa,
                 (SELECT COUNT(1) FROM CAUTRALOI WHERE IsDeleted = 1) AS CauTraLoiDaXoa,
-                (SELECT COUNT(1) FROM BINHLUAN WHERE IsDeleted = 1) AS BinhLuanDaXoa;";
+                (SELECT COUNT(1) FROM BINHLUAN WHERE IsDeleted = 1) AS BinhLuanDaXoa,
+                (SELECT COUNT(1) FROM TOCAO WHERE TrangThai = 'PENDING') AS ToCaoChoXuLy;";
 
         var dashboard = await connection.QuerySingleAsync<AdminDashboardResponse>(totalsSql);
 
