@@ -1,38 +1,52 @@
-# ForumWeb
+# ForumWeb - Frontend TVU IT Forum
 
-This template should help get you started developing with Vue 3 in Vite.
+Frontend được xây dựng bằng Vue 3 + Vite + Element Plus, gọi API thật từ backend `ForumAPI`.
 
-## Recommended IDE Setup
+## Chạy frontend
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Recommended Browser Setup
-
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
+```bash
+cd ForumWeb
 npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
 npm run dev
 ```
 
-### Compile and Minify for Production
+Mặc định frontend gọi backend ở:
 
-```sh
-npm run build
+```text
+http://localhost:5182
 ```
+
+Nếu backend chạy port khác, tạo file `.env` trong thư mục `ForumWeb`:
+
+```text
+VITE_API_BASE_URL=http://localhost:<PORT_BACKEND>
+```
+
+## Các màn hình đã có
+
+- Đăng ký
+- Đăng nhập / đăng xuất
+- Danh sách câu hỏi
+- Tìm kiếm câu hỏi theo từ khóa
+- Lọc câu hỏi theo thẻ và chuyên mục
+- Đăng câu hỏi
+- Sửa/xóa câu hỏi của chính mình
+- Chi tiết câu hỏi
+- Trả lời câu hỏi
+- Sửa/xóa câu trả lời của chính mình
+- Chọn câu trả lời được chấp nhận
+- Vote câu hỏi / câu trả lời
+- Bình luận câu hỏi / câu trả lời
+- Trang Admin quản lý user, câu hỏi, câu trả lời, bình luận
+
+## Lưu ý test Admin
+
+Backend kiểm tra role `Admin` từ JWT. Để test Admin, đăng ký user rồi cập nhật role trong SQLite:
+
+```sql
+UPDATE NGUOIDUNG
+SET VaiTro = 'Admin'
+WHERE Email = 'email_cua_ban@gmail.com';
+```
+
+Sau đó đăng nhập lại để lấy token mới.
